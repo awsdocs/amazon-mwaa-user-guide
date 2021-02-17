@@ -1,11 +1,6 @@
-## My Project
+## Amazon Managed Workflows for Apache Airflow (MWAA)
 
-TODO: Fill this README out!
-
-Be sure to:
-
-* Change the title in this README
-* Edit your repository description on GitHub
+The open source version of the Amazon MWAA User Guide. To submit feedback or requests for changes, submit an issue or make changes and submit a pull request.
 
 ## Security
 
