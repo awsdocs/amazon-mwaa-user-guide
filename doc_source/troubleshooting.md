@@ -167,19 +167,22 @@ from airflow.contrib.secrets.aws_secrets_manager import SecretsManagerBackend
 ```
 def get_variable(self, key):
   return self._get_secret('airflow/variables2', key)
-  SecretsManagerBackend.get_variable=get_variable
+
+SecretsManagerBackend.get_variable=get_variable
 ```
 
 ```
 def get_conn_uri(self, key):
   return self._get_secret('airflow/connections2', key)
-  SecretsManagerBackend.get_conn_uri=get_conn_uri
+
+SecretsManagerBackend.get_conn_uri=get_conn_uri
 ```
 
 ```
 def get_config(self, key):
   return self._get_secret('airflow/config2', key)
-  SecretsManagerBackend.get_config=get_config
+
+SecretsManagerBackend.get_config=get_config
 ```
 
 To learn more about adding permissions to an execution role, see [Amazon MWAA Execution role](mwaa-create-role.md)\. To learn more about AWS Secrets Manager integrations, see [Using the Amazon MWAA console](configuring-env-variables.md) and [AWS Secrets Manager Backend](https://airflow.apache.org/docs/apache-airflow/1.10.12/howto/use-alternative-secrets-backend.html?highlight=secrets%20manager#aws-secrets-manager-backend) in the *Apache Airflow reference guide*\.
