@@ -171,8 +171,8 @@ def get_variable(self, key):
 ```
 
 ```
-def get_conn_uri(self, key):
-  return self._get_secret('airflow/connections2', key)
+def get_conn_uri(self, conn_id):
+  return self._get_secret('airflow/connections2', conn_id)
   SecretsManagerBackend.get_conn_uri=get_conn_uri
 ```
 
