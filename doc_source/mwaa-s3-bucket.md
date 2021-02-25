@@ -1,6 +1,6 @@
 # Create an Amazon S3 bucket for Amazon MWAA<a name="mwaa-s3-bucket"></a>
 
-Amazon MWAA uses an Amazon S3 bucket to store your DAGs and associated support files\. You must create an S3 bucket or an environment before you can create the environment\. The name of the bucket must be globally unique\. To use a bucket with a Amazon MWAA environment, you must create the bucket in the same Region where you create the environment\.
+Amazon MWAA uses an Amazon S3 bucket to store your DAGs and associated files\. You must create an S3 bucket or an environment before you can create the environment\. The name of the bucket must be globally unique\. To use a bucket with a Amazon MWAA environment, you must create the bucket in the same Region where you create the environment\.
 
 Buckets have configuration properties, including geographical Region, access settings for the objects in the bucket, and other metadata\.
 

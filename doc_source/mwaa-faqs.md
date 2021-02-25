@@ -1,4 +1,4 @@
-# Amazon Managed Workflows for Apache Airflow \(MWAA\) frequently asked questions<a name="mwaa-faqs"></a>
+# Amazon MWAA frequently asked questions<a name="mwaa-faqs"></a>
 
 Review the following answers to frequently asked questions about Amazon MWAA\.
 
@@ -50,8 +50,8 @@ DAGs are synchronized from the S3 bucket the environment\. If you add a new DAG 
 
 The following are possible solutions for this issue:
 + Ensure that the execution role you chose for the environment has sufficient permissions to the S3 bucket\. To learn more, see [Amazon MWAA Execution role](mwaa-create-role.md)\.
-+ Ensure that the S3 bucket for the environment has Block Public Access configured\. To prevent malicious code injection, Amazon MWAA does not copy DAGs from a bucket that potentially allows public access\. To learn more, see [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)\.
-+ Verify the DAG file itself\. For example, make sure that each DAG has a unique DAG ID\.
++ Ensure that the S3 bucket for the environment has *Block Public Access* configured\. To prevent malicious code injection, Amazon MWAA does not copy DAGs from a bucket that potentially allows public access\. To learn more, see [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)\.
++ Verify the DAG file itself\. For example, be sure that each DAG has a unique DAG ID\.
 
 ## Does Amazon MWAA support SPOT instances?<a name="spot-instances"></a>
 
@@ -59,7 +59,7 @@ Amazon MWAA does not currently support SPOT instances for managed Apache Airflow
 
 ## How do I specify a newer version of the AWS boto3 Python library?<a name="new-boto-version"></a>
 
-To use a different version of the Python library by including a line in the requirements\.txt file used for the environment\. For example, to use version 1\.16\.32, add the following line:
+To use a different version, specify the minimum version in your `requirements.txt`\. For example, to use version 1\.16\.32, add the following line:
 
 ```
 boto3 >= 1.16.32
@@ -67,7 +67,7 @@ boto3 >= 1.16.32
 
 ## How much local storage is available to each worker?<a name="worker-storage"></a>
 
-Each container for workers has 8 GB of storage available\.
+The container for workers is determined by the environment class you specify\. To learn more, see [Amazon MWAA environment class](environment-class.md)\. 
 
 ## How do I enable the Log UI link?<a name="enable-log-ui"></a>
 

@@ -15,7 +15,7 @@ Directed Acyclic Graphs \(DAGs\) are defined within a Python file that defines t
 
 1. The required AWS resources configured for your environment as defined in [Get started with Amazon Managed Workflows for Apache Airflow \(MWAA\)](get-started.md)\.
 
-1. An execution role with a permissions policy that grants Amazon MWAA access to the AWS services used by your environment as defined in [Amazon MWAA Execution role](mwaa-create-role.md)\.
+1. An execution role with a permissions policy that grants Amazon MWAA access to the AWS resources used by your environment as defined in [Amazon MWAA Execution role](mwaa-create-role.md)\.
 
 1. An AWS account with access in AWS Identity and Access Management \(IAM\) to the Amazon S3 console, or the AWS Command Line Interface \(AWS CLI\) as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
 
@@ -115,6 +115,8 @@ The following steps assume you are specifying the path to a folder on your Amazo
 You can begin using the new DAG immediately after your environment finishes updating\.
 
 ## Viewing changes on your Apache Airflow UI<a name="configuring-dag-folder-mwaaconsole-view"></a>
+
+**To access your Apache Airflow UI**
 
 1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
 

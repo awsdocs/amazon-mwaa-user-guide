@@ -17,7 +17,7 @@ Apache Airflow configuration options can be attached to your Amazon Managed Work
 
 1. The required AWS resources configured for your environment as defined in [Get started with Amazon Managed Workflows for Apache Airflow \(MWAA\)](get-started.md)\.
 
-1. An execution role with a permissions policy that grants Amazon MWAA access to the AWS services used by your environment as defined in [Amazon MWAA Execution role](mwaa-create-role.md)\.
+1. An execution role with a permissions policy that grants Amazon MWAA access to the AWS resources used by your environment as defined in [Amazon MWAA Execution role](mwaa-create-role.md)\.
 
 1. An AWS account with access in AWS Identity and Access Management \(IAM\) to the Amazon S3 console, or the AWS Command Line Interface \(AWS CLI\) as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
 

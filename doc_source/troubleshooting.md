@@ -5,11 +5,12 @@ This topic describes common questions and resolutions to some errors and issues 
 **Contents**
 + [Common questions](#t-common-questions)
   + [When should I use AWS Step Functions vs\. Amazon MWAA?](#t-step-functions)
-  + [Can I connect to the Aurora PostgreSQLmetadata database?](#q-access-database)
 + [Create environment](#troubleshooting-create-environment)
   + [I tried to create an environment but it shows the status as "Create failed"](#t-create-environ-failed)
   + [I tried to select a VPC and received a "Network Failure" error](#t-network-failure)
   + [I received a service, partition, or resource "must be passed" error](#t-service-partition)
++ [Updating requirements\.txt](#troubleshooting-dependencies)
+  + [I specified a new version of my `requirements.txt` and it's taking more than 20 minutes to update my environment](#t-requirements)
 + [Access environment](#troubleshooting-access-environment)
   + [I can't access the Apache Airflow UI](#t-no-access-airflow-ui)
 + [Broken DAG](#troubleshooting-broken-dags)
@@ -30,11 +31,9 @@ This topic describes common questions and resolutions to some errors and issues 
 
 ### When should I use AWS Step Functions vs\. Amazon MWAA?<a name="t-step-functions"></a>
 + You can use Step Functions to process individual customer orders, since Step Functions can scale to meet demand for one order or one million orders\.
-+ If you’re running an overnight workflow that processes the previous day’s orders, you can use Step Functions or Amazon MWAA\. Amazon MWAA allows you an open source option to abstract the workflow from the AWS resources you are using\.
++ If you’re running an overnight workflow that processes the previous day’s orders, you can use Step Functions or Amazon MWAA\. Amazon MWAA allows you an open source option to abstract the workflow from the AWS resources you're using\.
 
-### Can I connect to the Aurora PostgreSQLmetadata database?<a name="q-access-database"></a>
-+ While you can't connect to the database on an Amazon MWAA environment directly, it is possible from a DAG\. To learn more, see [Aurora PostgreSQL database cleanup on an Amazon MWAA environment](samples-database-cleanup.md)\.
-+ We also recommend viewing performance metrics for your environment using CloudWatch\. To learn more, see [What Is Amazon CloudWatch?](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html)\.
+For a list of other common questions, see [Amazon MWAA frequently asked questions](mwaa-faqs.md)\.
 
 ## Create environment<a name="troubleshooting-create-environment"></a>
 
@@ -43,8 +42,11 @@ The following topic describes the errors you may receive when creating an enviro
 ### I tried to create an environment but it shows the status as "Create failed"<a name="t-create-environ-failed"></a>
 
 We recommend the following steps:
-+ If you try to create an environment and it fails, confirm that the Amazon VPC network includes 2 private subnets that can access the Internet for creating containers\. To learn more, see [Create the VPC network](vpc-create.md)\.
-+ Amazon MWAA performs a dry run against a user's credentials before creating an environment\. You may also be receiving this error because you do not have permission to create some of the resources for an environment\. For example, if you chose the **Private network** option, which requires VPC endpoints, your AWS account may not be permitted to create an Amazon MWAA environment with VPC endpoints\. We recommend asking your AWS account administrator for access\.
++ Check user permissions\. Amazon MWAA performs a dry run against a user's credentials before creating an environment\. You may be receiving this error because you don't have permission to create some of the resources for an environment\. For example, the **Private network** option requires VPC endpoints and your AWS account may not be permitted to create an Amazon MWAA environment with VPC endpoints\. We recommend asking your AWS account administrator for access\.
++ Check execution role permissions\. An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon MWAA permission to invoke the resources of other AWS services \(such as Amazon S3, CloudWatch, Amazon SQS, Amazon ECR\) on your behalf\. Your [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) or [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) also needs to be permitted access\. To learn more, see [Execution role](mwaa-create-role.md)\.
++ Check private subnets\. If you're creating your own Amazon VPC components, verify the VPC has 2 private subnets\. If you're using a **Public network**, verify that the subnets route to a [NAT gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html), and that the NAT gateway's subnets route to an [Internet gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)\.
++ Check connections\. If you're creating your own Amazon VPC components, verify that each of the AWS resources used by the environment are configured to allow traffic\. For example, the [Network access control lists \(ACLs\)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) and security groups for your Amazon Aurora PostgreSQL database should have an ingress rule to allow traffic on port `443` and `5432`\.
++ Check log groups\. If you enabled Apache Airflow logs, verify your log groups were created successfully on the [Logs groups page](https://console.aws.amazon.com/cloudwatch/home#logsV2:log-groups) on the CloudWatch console\. If you see blank logs, the most common reason is due to missing permissions in your execution role for CloudWatch or Amazon S3 where logs are written\. To learn more, see [Execution role](mwaa-create-role.md)\.
 
 ### I tried to select a VPC and received a "Network Failure" error<a name="t-network-failure"></a>
 
@@ -59,6 +61,29 @@ We recommend the following steps:
   ```
   s3://your-bucket-name
   ```
+
+## Updating requirements\.txt<a name="troubleshooting-dependencies"></a>
+
+The following topic describes the errors you may receive when updating your `requirements.txt`\.
+
+### I specified a new version of my `requirements.txt` and it's taking more than 20 minutes to update my environment<a name="t-requirements"></a>
+
+If it takes more than twenty minutes for your environment to install a new version of a `requirements.txt` file, the environment update failed and Amazon MWAA is rolling back to the last stable version of the container image\.
++ Check package versions\. We recommend always specifying either a specific version \(`==`\) or a maximum version \(`>=`\) for the dependencies in your `requirements.txt` file\. This helps to prevent a future breaking update from [PyPi\.org](http://pypi.org/) from being automatically applied\. We also recommend verifying whether you need to add any dependent packages\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
++ If you've enabled Apache Airflow logs for your environment, you can view logs in Amazon CloudWatch to ensure your packages were installed successfully\. 
+
+  1. Open the [Logs groups page](https://console.aws.amazon.com/cloudwatch/home#logsV2:log-groups) on the CloudWatch console\.
+
+  1. Choose the log group name for your scheduler\. For example, `airflow-YOUR_ENVIRONMENT_NAME-Scheduler`\.
+
+  1. Choose the `requirements_install_ip` log in **Log streams**\.
+
+  1. Review the list of packages and whether any of these encountered an error during installation\.
+**Note**  
+If a package in your `requirements.txt` is not available on [PyPi\.org](http://pypi.org/), then the installation will fail with no logging\.
++ Check Apache Airflow configuration options\. Verify that the key\-value pairs you specified as an Apache Airflow configuration option, such as AWS Secrets Manager, were configured correctly\. To learn more, see [I can't connect to Secrets Manager](#access-secrets-manager)\.
++ Check execution role permissions\. An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon MWAA permission to invoke the resources of other AWS services \(such as Amazon S3, CloudWatch, Amazon SQS, Amazon ECR\) on your behalf\. Your [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) or [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) also needs to be permitted access\. To learn more, see [Execution role](mwaa-create-role.md)\.
++ Check connections\. If you're creating your own Amazon VPC components, verify that each of the AWS resources used by the environment are configured to allow traffic\. For example, the [Network access control lists \(ACLs\)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) and security groups for your Amazon Aurora PostgreSQL database should have an ingress rule to allow traffic on port `443` and `5432`\.
 
 ## Access environment<a name="troubleshooting-access-environment"></a>
 
@@ -208,6 +233,8 @@ The following topic describes the errors you may receive for Apache Airflow task
 We recommend the following steps:
 + If you have a DAG with tasks stuck in the running state, you can try to clear the tasks or mark them as succeeded or failed\. This allows the autoscaling component for your environment to scale down the number of workers running in an environment\. The following image shows an example of a stranded task\.  
 ![\[This is an image with a stranded task.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-airflow-scaling.png)
+
+**To access your Apache Airflow UI**
 
   1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
 

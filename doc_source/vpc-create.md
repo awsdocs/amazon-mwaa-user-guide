@@ -8,13 +8,13 @@ You can use an existing VPC that meets these requirements, create the VPC and ne
 + [Required VPC networking components](#vpc-create-required)
 + [Prerequisites](#vpc-create-prereqs)
 + [How it works](#vpc-create-how)
-+ [Using the Amazon MWAA console](#vpc-create-onconsole)
++ [Create Amazon MWAA VPC](#vpc-create-onconsole)
 + [Using an Amazon MWAA AWS CloudFormation template](#vpc-create-template-code)
 + [What's next?](#create-vpc-next-up)
 
 ## Required VPC networking components<a name="vpc-create-required"></a>
 
-**Your VPC network must meet the following requirements:**
+Your Amazon VPC and its networking components must meet the following requirements to support an Amazon MWAA environment:
 
 1. Two private subnets in two different availability zones within the same Region\.
 
@@ -35,27 +35,28 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
 
 ## How it works<a name="vpc-create-how"></a>
 
-This section describes the public and private networking options, and how the subnets in different availability zones are used in an Amazon MWAA environment\.
+This section describes the public and private network options, and the architecture of an Amazon MWAA environment\.
 
-### Private and public network<a name="vpc-create-how-networking"></a>
+### Environment architecture<a name="configuring-networking-infra"></a>
 
-Amazon MWAA provides private and public networking options for your Apache Airflow web server\.
-+ A public network allows your Airflow UI to be accessed over the Internet by users granted access in your IAM policy\. When you choose this option, Amazon MWAA attaches an [Application Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) with an HTTPS endpoint for your web server as part of the Amazon MWAA managed service\.
-+ A private network limits access to your Airflow UI to users within your VPC\. When you choose this option, Amazon MWAA attaches a [VPC endpoint](https://docs.aws.amazon.com/vpc/latest/userguide/endpoint-services-overview.html) to your web server\. Enabling access to this endpoint requires additional configuration, such as a proxy or [Linux Bastion](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/welcome.html)\. In addition, you must grant users access in your IAM policy\.
+The following image shows the architecture of a Amazon MWAA environment\.
 
-### Environment infrastructure<a name="vpc-create-how-container-db"></a>
+![\[This image shows the architecture of a Amazon MWAA environment.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-architecture.png)
 + When you create an environment, Amazon MWAA creates an AWS\-managed Amazon Aurora PostgreSQL metadata database and an Fargate container in each of your two private subnets in different availability zones\. For example, a metadata database and container in `us-east-1a` and a metadata database and container in `us-east-1b` availability zones for the `us-east-1` region\.
 + The environment class you choose for your Amazon MWAA environment determines the size of the AWS\-managed AWS Fargate containers where the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/stable/executor/celery.html) runs, and the AWS\-managed Amazon Aurora PostgreSQL metadata database where the Apache Airflow scheduler creates task instances\.
 + The Apache Airflow workers on an Amazon MWAA environment use the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/stable/executor/celery.html) to queue and distribute tasks to multiple Celery workers from an Apache Airflow platform\. The Celery Executor runs in an AWS Fargate container\. If a Fargate container in one availability zone fails, Amazon MWAA switches to the other container in a different availability zone to run the Celery Executor, and the Apache Airflow scheduler creates a new task instance in the Amazon Aurora PostgreSQL metadata database\.
 
-## Using the Amazon MWAA console<a name="vpc-create-onconsole"></a>
+### Private and public network<a name="vpc-create-how-networking"></a>
++ Amazon MWAA provides private and public networking options for your Apache Airflow web server\. A public network allows the Apache Airflow UI to be accessed over the Internet by users granted access to your IAM policy\. A private network limits access to the Apache Airflow UI to users within your VPC\. Additional configuration is required to use a private network\. To learn more, see [Amazon MWAA network access](configuring-networking.md)\.
 
-You can use the Amazon MWAA console to create the VPC network needed for an Amazon MWAA environment\. The following image shows how to use the **Create MWAA VPC** button to create the VPC network\.
+## Create Amazon MWAA VPC<a name="vpc-create-onconsole"></a>
+
+You can use the Amazon MWAA console to create the VPC network needed for an Amazon MWAA environment\. The following image shows where you can find the **Create MWAA VPC** button on the Amazon MWAA console\.
 
 ![\[This image shows where you can find the Create MWAA VPC on the MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-create-vpc.png)
 
 **Note**  
-It can take several minutes to setup the VPC network\.
+This creates a VPC and the required networking components for an environment\. You need to create and configure additional resources for a private network\. It can take several minutes to create the VPC network\.
 
 ## Using an Amazon MWAA AWS CloudFormation template<a name="vpc-create-template-code"></a>
 

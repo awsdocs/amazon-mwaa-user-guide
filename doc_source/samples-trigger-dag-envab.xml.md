@@ -4,7 +4,8 @@ The following sample code creates an Apache Airflow CLI token, then uses a DAG i
 
 **Topics**
 + [Version](#samples-trigger-dag-envab.xml-version)
-+ [Prerequisites](#samples-trigger-dag-envab.xml-prereqs)
++ [Prerequisites](#samples-lambda-prereqs)
++ [Permissions](#samples-lambda-permissions)
 + [Dependencies](#samples-sql-server-dependencies)
 + [Code sample](#samples-trigger-dag-envab-code)
 + [What's next?](#samples-trigger-dag-envab.xml-next-up)
@@ -12,29 +13,18 @@ The following sample code creates an Apache Airflow CLI token, then uses a DAG i
 ## Version<a name="samples-trigger-dag-envab.xml-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1\.10\.12**\.
 
-## Prerequisites<a name="samples-trigger-dag-envab.xml-prereqs"></a>
+## Prerequisites<a name="samples-lambda-prereqs"></a>
 
 To use the sample code on this page, you'll need the following:
-+ An [Amazon MWAA environment](get-started.md)\.
-+ The following JSON policy document attached to your [Amazon MWAA Execution role](mwaa-create-role.md):
++ The **Public network** option for your [Amazon MWAA environment](get-started.md)\.
 
-  ```
-  {
-      "Version": "2012-10-17",
-      "Statement": [
-          {
-              "Sid": "VisualEditor0",
-              "Effect": "Allow",
-              "Action": "airflow:CreateCliToken",
-              "Resource": "*"
-          }
-      ]
-  }
-  ```
+## Permissions<a name="samples-lambda-permissions"></a>
+
+To use the sample code on this page, your AWS account needs access to the `AmazonMWAAAirflowCliAccess` policy\. To learn more, see [Apache Airflow CLI policy: AmazonMWAAAirflowCliAccess](access-policies.md)\.
 
 ## Dependencies<a name="samples-sql-server-dependencies"></a>
 
-To use the sample code in this section, add the following dependency to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
+To use the sample code on this page, add the following dependency to the `requirements.txt` on your Amazon S3 bucket\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
 
 ```
 boto3 >= 1.17.4
@@ -101,6 +91,24 @@ with DAG(
         provide_context=True 
     )
 ```
+
+**To create the Lambda function**
+
+1. Open the [Functions page](https://console.aws.amazon.com/lambda/home#/functions) of the Lambda console\.
+
+1. Choose **Create function**\.
+
+1. Enter a name in **Function name** \(such as `MyMWAAFunction`\)\.
+
+1. Choose **Python 3\.8** in the **Runtime** dropdown list\.
+
+1. Choose **Create function**\.
+
+1. Open the `lambda_function.py` file\.
+
+1. Paste the code\.
+
+1. Choose **Deploy**\.
 
 ## What's next?<a name="samples-trigger-dag-envab.xml-next-up"></a>
 + Learn how to upload code to a DAGs folder in [Adding or updating DAGs](configuring-dag-folder.md)\.
