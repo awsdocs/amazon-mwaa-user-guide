@@ -1,7 +1,7 @@
 # Amazon Managed Workflows for Apache Airflow User Guide
 
 -----
-*****Copyright &copy; 2021 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
+*****Copyright &copy;  Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
 Amazon's trademarks and trade dress may not be used in 
@@ -15,6 +15,7 @@ Amazon's trademarks and trade dress may not be used in
 -----
 ## Contents
 + [What Is Amazon Managed Workflows for Apache Airflow (MWAA)?](what-is-mwaa.md)
++ [Quick start tutorial for Amazon Managed Workflows for Apache Airflow (MWAA)](quick-start.md)
 + [Get started with Amazon Managed Workflows for Apache Airflow (MWAA)](get-started.md)
    + [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)
    + [Create the VPC network](vpc-create.md)
@@ -24,6 +25,8 @@ Amazon's trademarks and trade dress may not be used in
    + [Amazon MWAA Execution role](mwaa-create-role.md)
    + [Accessing an Amazon MWAA environment](access-policies.md)
    + [Accessing the Apache Airflow UI](access-airflow-ui.md)
++ [Managing connections to Apache Airflow](manage-connections.md)
+   + [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)
 + [Configuring environments](using-mwaa.md)
    + [Amazon MWAA automatic scaling](mwaa-autoscaling.md)
    + [Amazon MWAA environment class](environment-class.md)
@@ -35,13 +38,15 @@ Amazon's trademarks and trade dress may not be used in
    + [Installing Python dependencies](working-dags-dependencies.md)
 + [Tutorials](tutorials.md)
    + [Tutorial: Configuring private network access using a Linux Bastion Host](tutorials-private-network-bastion.md)
-+ [Code examples](sample-code.md)
++ [Code examples for Amazon Managed Workflows for Apache Airflow (MWAA)](sample-code.md)
    + [Invoking DAGs with an AWS Lambda function](samples-lambda.md)
    + [Invoking DAGs in different Amazon MWAA environments](samples-trigger-dag-envab.xml.md)
    + [Aurora PostgreSQL database cleanup on an Amazon MWAA environment](samples-database-cleanup.md)
    + [Using Amazon MWAA with Amazon RDS Microsoft SQL Server](samples-sql-server.md)
    + [Using Amazon MWAA with Amazon EMR](samples-emr.md)
    + [Using Amazon MWAA with Amazon EKS](mwaa-eks-example.md)
++ [Best practices for Amazon Managed Workflows for Apache Airflow (MWAA)](best-practices.md)
+   + [Managing Python dependencies in requirements.txt](best-practices-dependencies.md)
 + [Amazon MWAA metrics](cw-metrics.md)
 + [Amazon Managed Workflows for Apache Airflow service quotas](mwaa-quotas.md)
 + [Security in Amazon Managed Workflows for Apache Airflow](security.md)
@@ -49,14 +54,14 @@ Amazon's trademarks and trade dress may not be used in
       + [Encryption at Rest](encryption-at-rest.md)
       + [Encryption in Transit](encryption-in-transit.md)
       + [Customer managed CMKs for Data Encryption](custom-keys-certs.md)
-   + [Identity and access management for Amazon MWAA](security-iam.md)
+   + [AWS Identity and Access Management](security-iam.md)
       + [Troubleshooting Amazon Managed Workflows for Apache Airflow identity and access](security_iam_troubleshoot.md)
       + [How Amazon MWAA works with IAM](security_iam_service-with-iam.md)
    + [Monitoring Amazon Managed Workflows for Apache Airflow](monitoring.md)
    + [Compliance Validation for Amazon Managed Workflows for Apache Airflow](compliance-validation.md)
    + [Resilience in Amazon Managed Workflows for Apache Airflow](disaster-recovery-resiliency.md)
    + [Infrastructure Security in Amazon MWAA](infrastructure-security.md)
-   + [Configuration and Vulnerability Analysis in Amazon MWAA](w389aac24c32.md)
+   + [Configuration and Vulnerability Analysis in Amazon MWAA](w457aac31c32.md)
    + [Best practices](security-best-practices.md)
 + [Amazon MWAA API actions and resources](mwaa-actions-resources.md)
 + [Amazon MWAA frequently asked questions](mwaa-faqs.md)

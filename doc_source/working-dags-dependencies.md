@@ -1,6 +1,6 @@
 # Installing Python dependencies<a name="working-dags-dependencies"></a>
 
-An extra package is a Python subpackage that is not included in the Apache Airflow base install on your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. It is referred to throughout this page as a Python dependency\. This page describes the steps to install Apache Airflow [Extra packages](https://airflow.apache.org/docs/stable/installation.html#extra-packages) on your Amazon MWAA environment using a `requirements.txt` file\.
+An "extra" is a Python subpackage that is not included in the Apache Airflow base install \([https://pypi.org/project/apache-airflow/1.10.12/](https://pypi.org/project/apache-airflow/1.10.12/)\) on your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. It is referred to throughout this page as a Python dependency\. This page describes the steps to install Apache Airflow Python dependencies on your Amazon MWAA environment using a `requirements.txt` file\.
 
 **Topics**
 + [Prerequisites](#working-dags-dependencies-prereqs)
@@ -46,13 +46,20 @@ We recommend always specifying either a specific version \(`==`\) or a maximum v
 
 **To find the package version and its dependencies**
 
-1. Open the [Documentation](https://airflow.apache.org/docs/) page in the *Apache Airflow reference guide*\.
+1. Open the [Documentation page](https://airflow.apache.org/docs/) in the *Apache Airflow reference guide*\.
 
-1. Choose a package\.
+1. Choose an Apache Airflow package\.
 
-1. Verify the required dependencies in **Pip requirements** are specified in your `requirements.txt` file\.
+1. Add the required dependencies in **Pip requirements** to your `requirements.txt` file\.
 
-1. Apache Airflow provides a list of packages typically used with the current package in **Cross provider package dependencies**\. Identify any other dependencies you may want to specify in your `requirements.txt` file\.
+   For example, if you're using the [apache\-airflow\-providers\-apache\-spark](https://airflow.apache.org/docs/apache-airflow-providers-apache-spark/stable/index.html) package, add the following packages and its required pip dependency with the versions:
+
+   ```
+   apache-airflow-providers-apache-spark==1.0.1
+   pyspark>=3.1.1
+   ```
+
+1. Apache Airflow provides a list of packages typically used with the current package in **Cross provider package dependencies**\. Identify any other dependencies from this list that you may want to specify in your `requirements.txt` file\.
 
 ## Example requirements\.txt for Apache Hive<a name="working-dags-dependencies-example-install"></a>
 
@@ -90,16 +97,16 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
 
 **To upload using the AWS CLI**
 
-1. The following command lists all Amazon S3 buckets\.
+1. Use the following command to list all of your Amazon S3 buckets\.
 
    ```
    aws s3 ls
    ```
 
-1. The following command lists the files and folders in an Amazon S3 bucket\.
+1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\. Substitute the sample value in *YOUR\_S3\_BUCKET\_NAME*\.
 
    ```
-   aws s3 ls s3://your-s3-bucket-any-name
+   aws s3 ls s3://YOUR_S3_BUCKET_NAME
    ```
 
 1. The following command uploads a `requirements.txt` file to an Amazon S3 bucket\.
@@ -162,18 +169,33 @@ You can begin using the new packages immediately after your environment finishes
 
 ## Viewing logs for your `requirements.txt`<a name="working-dags-dependencies-logs"></a>
 
-If you've enabled Apache Airflow logs for your environment, you can view logs in Amazon CloudWatch to ensure your packages were installed successfully\. 
+You can view Apache Airflow logs for the *Scheduler* scheduling your workflows and parsing your `dags` folder\. The following steps describe how to open the log group for the *Scheduler* on the Amazon MWAA console, and view Apache Airflow logs on the CloudWatch Logs console\.
 
-1. Open the [Logs groups page](https://console.aws.amazon.com/cloudwatch/home#logsV2:log-groups) on the CloudWatch console\.
+**To view logs for a `requirements.txt`**
 
-1. Choose the log group name for your scheduler\. For example, `airflow-YOUR_ENVIRONMENT_NAME-Scheduler`\.
+1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
+
+1. Choose an environment\.
+
+1. Choose the **Airflow scheduler log group** on the **Monitoring** pane\.
 
 1. Choose the `requirements_install_ip` log in **Log streams**\.
 
-1. Review the list of packages and whether any of these encountered an error during installation\.
+1. You should see the list of packages that were installed on the environment at `/usr/local/airflow/requirements/requirements.txt`\. For example:
 
-**Note**  
-If a package in your `requirements.txt` is not available on [PyPi\.org](http://pypi.org/), then the installation will fail with no logging\.
+   ```
+   Collecting appdirs==1.4.4 (from -r /usr/local/airflow/requirements/requirements.txt (line 1))
+   Downloading https://files.pythonhosted.org/packages/3b/00/2344469e2084fb28kjdsfiuyweb47389789vxbmnbjhsdgf5463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl  
+   Collecting astroid==2.4.2 (from -r /usr/local/airflow/requirements/requirements.txt (line 2))
+   ```
+
+1. Review the list of packages and whether any of these encountered an error during installation\. If something went wrong, you may see an error similar to the following:
+
+   ```
+   2021-03-05T14:34:42.731-07:00
+   No matching distribution found for LibraryName==1.0.0 (from -r /usr/local/airflow/requirements/requirements.txt (line 4))
+   No matching distribution found for LibraryName==1.0.0 (from -r /usr/local/airflow/requirements/requirements.txt (line 4))
+   ```
 
 ## Viewing changes on your Apache Airflow UI<a name="configuring-dag-dependencies-mwaaconsole-view"></a>
 
@@ -183,7 +205,7 @@ If a package in your `requirements.txt` is not available on [PyPi\.org](http://p
 
 1. Choose an environment\.
 
-1. Choose **Open Airflow UI** to view your Apache Airflow UI\.
+1. Choose **Open Airflow UI**\.
 
 **Note**  
 You may need to ask your account administrator to add `AmazonMWAAWebServerAccess` permissions for your account to view your Apache Airflow UI\. For more information, see [Managing access](https://docs.aws.amazon.com/mwaa/latest/userguide/manage-access.html)\.

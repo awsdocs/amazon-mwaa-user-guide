@@ -52,16 +52,16 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
 
 **To upload using the AWS CLI**
 
-1. The following command lists all Amazon S3 buckets\.
+1. Use the following command to list all of your Amazon S3 buckets\.
 
    ```
    aws s3 ls
    ```
 
-1. The following command lists the files and folders in an Amazon S3 bucket\.
+1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\. Substitute the sample value in *YOUR\_S3\_BUCKET\_NAME*\.
 
    ```
-   aws s3 ls s3://your-s3-bucket-any-name
+   aws s3 ls s3://YOUR_S3_BUCKET_NAME
    ```
 
 1. The following command uploads a `dag_def.py` file to a `dags` folder\. 
@@ -122,7 +122,7 @@ You can begin using the new DAG immediately after your environment finishes upda
 
 1. Choose an environment\.
 
-1. Choose **Open Airflow UI** to view your Apache Airflow UI\.
+1. Choose **Open Airflow UI**\.
 
 **Note**  
 You may need to ask your account administrator to add `AmazonMWAAWebServerAccess` permissions for your account to view your Apache Airflow UI\. For more information, see [Managing access](https://docs.aws.amazon.com/mwaa/latest/userguide/manage-access.html)\.

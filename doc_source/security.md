@@ -12,10 +12,10 @@ This documentation helps you understand how to apply the shared responsibility m
 
 **Topics**
 + [Data Protection](data-protection.md)
-+ [Identity and access management for Amazon MWAA](security-iam.md)
++ [AWS Identity and Access Management](security-iam.md)
 + [Monitoring](monitoring.md)
 + [Compliance Validation](compliance-validation.md)
 + [Resilience](disaster-recovery-resiliency.md)
 + [Infrastructure Security](infrastructure-security.md)
-+ [Configuration and Vulnerability Analysis in Amazon MWAA](w389aac24c32.md)
++ [Configuration and Vulnerability Analysis in Amazon MWAA](w457aac31c32.md)
 + [Best practices](security-best-practices.md)

@@ -1,4 +1,4 @@
-# Code examples<a name="sample-code"></a>
+# Code examples for Amazon Managed Workflows for Apache Airflow \(MWAA\)<a name="sample-code"></a>
 
 This guide contains code examples that you can use with an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 

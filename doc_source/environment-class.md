@@ -33,21 +33,18 @@ The environment class you choose for your Amazon MWAA environment determines the
 + 5 concurrent tasks \(by default\)
 + 1 vCPUs
 + 2 GB RAM
-+ 4 GB storage
 
 ------
 #### [ mw1\.medium ]
 + 10 concurrent tasks \(by default\)
 + 2 vCPUs
 + 4 GB RAM
-+ 8 GB storage
 
 ------
 #### [ mw1\.large ]
 + 20 concurrent tasks \(by default\)
 + 4 vCPUs
 + 8 GB RAM
-+ 16 GB storage
 
 ------
 

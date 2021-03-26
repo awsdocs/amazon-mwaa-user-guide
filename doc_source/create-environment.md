@@ -10,9 +10,9 @@ When you create an Amazon MWAA environment, it uses the [VPC network that you cr
 
 1. Choose **Create environment**\.
 
-1. On the **Specify details** page, under **Environment details**, provide a name for your environment and select the Apache Airflow version to use\.
+1. On the **Specify details** page, under **Environment details**, provide a name for your environment, and select the Apache Airflow version to use in **Airflow version**\.
 
-   The environment name must be unique to the account and Region\.
+   The environment name must be unique to the account and Region\. The current version of Apache Airflow on Amazon MWAA is Apache Airflow v1\.10\.12\.
 
 1. Under **DAG code in Amazon S3**:
 
@@ -38,13 +38,13 @@ When you create an Amazon MWAA environment, it uses the [VPC network that you cr
 
 1. Choose **Next**\. 
 
-1. On the **Configure advanced settings** page, under **Networking**, choose the VPC that was you [created for Amazon MWAA](vpc-create.md)\.
+1. On the **Configure advanced settings** page, under **Networking**, choose the VPC that you [created for Amazon MWAA](vpc-create.md)\.
 
 1. Under **Subnets**, ensure that only private subnets are selected\. Only private subnets are supported\. You can't change the VPC for an environment after you create it\.
 
-1. Under **Web server access**, select **Public Network**\. This creates a public URL to access the Apache Airflow user interface in the environment\.
+1. Under **Web server access**, select **Public Network**\. This creates a public URL to access the Apache Airflow user interface in the environment\. Access to this URL is managed by the AWS Identity and Access Management \(IAM\) policies for your environment\.
 **Note**  
-To restrict access to the Apache Airflow UI to be accessible only from within the VPC selected, choose **Private Network**\. This creates a VPC endpoint that requires additional configuration to allow access, including a Linux Bastion\. The VPC endpoint for to access the Apache Airflow UI is listed on the Environment details page after you create the environment\.
+To restrict access to the Apache Airflow UI to be accessible only from within the VPC selected, choose **Private Network**\. This creates a VPC endpoint that requires additional configuration to allow access, such as [creating a Linux Bastion](tutorials-private-network-bastion.md), or using existing VPN\-based access for the Apache Airflow UI\. The VPC endpoint for you to access the Apache Airflow UI is listed on the Environment details page after you create the environment\.
 
 1. Under **Security group\(s\)**, do one of the following:
    + Choose **Create new security group** to have Amazon MWAA create a new security group with inbound and outbound rules based on your **Web server access** selection\.
@@ -71,7 +71,7 @@ To restrict access to the Apache Airflow UI to be accessible only from within th
    + **Airflow worker logs**
    + **Airflow DAG processing logs**
 
-   After you enable a log category, choose the **Log level** for each as appropriate for your environment\.
+   After you enable a log category, choose the **Log level** for each as appropriate for your environment\. We recommend enabling Apache Airflow logs at the `INFO` level\. When you enable logs at this level, Amazon MWAA sends information\-level logs and up to CloudWatch Logs\.
 
 1. For **Airflow configuration options**, to add a customer configuration option, choose **Add custom configuration option**\. Select the configuration option to use a custom value for, then enter the **Custom value**\.
 

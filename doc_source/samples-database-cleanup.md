@@ -18,10 +18,11 @@ To use the sample code on this page, you'll need the following:
 
 ## Dependencies<a name="samples-sql-server-dependencies"></a>
 
-To use the sample code in this section, add the following dependency to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)
+To use the sample code in this section, ensure you've added one of the following database options to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
 
 ```
-apache-airflow[mssql]==1.10.12
+apache-airflow[postgres]==1.10.12
+apache-airflow[mysql]==1.10.12
 ```
 
 ## Code sample<a name="samples-database-cleanup-code"></a>

@@ -82,7 +82,7 @@ Let's say, when you created your environment, you chose the following settings:
 
 This means you can run 50 concurrent tasks in your environment\. Any tasks beyond 50 will be queued, and wait for the running tasks to complete\.
 
-You can modify your environment to run more tasks concurrently using the following configurations:
+**Run more concurrent tasks**\. You can modify your environment to run more tasks concurrently using the following configurations:
 
 1. Increase the maximum number of concurrent tasks each worker can run by default and the vCPU of containers by choosing the `mw1.medium` \(10 concurrent tasks by default\) [environment class](environment-class.md)\.
 
@@ -90,7 +90,7 @@ You can modify your environment to run more tasks concurrently using the followi
 
 1. Increase the **Maximum worker count**\. In this example, increasing maximum workers from `10` to `20` would double the number of concurrent tasks the environment can run\.
 
-To learn more about Apache Airflow configuration options, see [Apache Airflow configuration options](configuring-env-variables.md)\.
+**Specify Minimum workers**\. You can also specify the minimum number of Apache Airflow *Workers* that run in your environment using the AWS Command Line Interface \(AWS CLI\)\. To learn more, see the [update\-environment](https://docs.aws.amazon.com/cli/latest/reference/mwaa/update-environment.html) command in the AWS CLI\.
 
 ## Troubleshooting tasks stuck in the running state<a name="mwaa-autoscaling-stranded"></a>
 
@@ -98,3 +98,4 @@ In rare cases, Apache Airflow may think there are tasks still running\. To resol
 
 ## What's next?<a name="mwaa-autoscaling-next-up"></a>
 + Learn how to increase the size of your environment in [Amazon MWAA environment class](environment-class.md)\.
++ Learn how to specify the minimum number of Apache Airflow *Workers* using the [update\-environment](https://docs.aws.amazon.com/cli/latest/reference/mwaa/update-environment.html) command in the AWS Command Line Interface \(AWS CLI\)\. 

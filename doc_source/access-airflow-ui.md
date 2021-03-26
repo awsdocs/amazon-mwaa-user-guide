@@ -9,6 +9,8 @@ An Apache Airflow UI link is available on the Amazon Managed Workflows for Apach
 + [Examples to create an Apache Airflow web login token](#call-mwaa-apis-web)
 + [Examples to create an Apache Airflow CLI token](#call-mwaa-apis-cli)
 + [Apache Airflow CLI command reference](#airflow-cli-commands-supported)
++ [Sample code with Apache Airflow commands](#airflow-cli-commands-sample-code)
++ [Using AWS blogs and tutorials](#airflow-cli-commands-tutorials)
 
 ## Prerequisites<a name="access-airflow-ui-prereqs"></a>
 
@@ -39,7 +41,7 @@ The following steps describe how to log\-in to your Apache Airflow UI\.
 
 1. Choose an environment\.
 
-1. Choose **Open Airflow UI** to view your Apache Airflow UI\.
+1. Choose **Open Airflow UI**\.
 
 **Note**  
 You may need to ask your account administrator to add `AmazonMWAAWebServerAccess` permissions for your account to view your Apache Airflow UI\. For more information, see [Managing access](https://docs.aws.amazon.com/mwaa/latest/userguide/manage-access.html)\.
@@ -360,3 +362,55 @@ The following Apache Airflow CLI commands are not supported when running Apache 
 + `upgradedb`
 + `webserver`
 + `worker`
+
+## Sample code with Apache Airflow commands<a name="airflow-cli-commands-sample-code"></a>
+
+The following section contains sample code you can use with Apache Airflow commands\.
+
+### Adding a configuration when triggering a DAG<a name="airflow-cli-commands-trigger"></a>
+
+You can use the following sample code to add a configuration when triggering a DAG, such as `airflow trigger_dag 'dag_name' —conf '{"key":"value"}'`\.
+
+```
+import boto3
+import json
+import requests 
+import base64
+
+mwaa_env_name = 'YOUR_ENVIRONMENT_NAME'
+dag_name = 'YOUR_DAG_NAME'
+key = "YOUR_KEY"
+value = "YOUR_VALUE"
+conf = "{\"" + key + "\":\"" + value + "\"}"
+
+client = boto3.client('mwaa')
+
+mwaa_cli_token = client.create_cli_token(
+    Name=mwaa_env_name
+)
+
+mwaa_auth_token = 'Bearer ' + mwaa_cli_token['CliToken']
+mwaa_webserver_hostname = 'https://{0}/aws_mwaa/cli'.format(mwaa_cli_token['WebServerHostname'])
+raw_data = "trigger_dag {0} -c '{1}'".format(dag_name, conf)
+
+mwaa_response = requests.post(
+        mwaa_webserver_hostname,
+        headers={
+            'Authorization': mwaa_auth_token,
+            'Content-Type': 'text/plain'
+            },
+        data=raw_data
+        )
+        
+mwaa_std_err_message = base64.b64decode(mwaa_response.json()['stderr']).decode('utf8')
+mwaa_std_out_message = base64.b64decode(mwaa_response.json()['stdout']).decode('utf8')
+
+print(mwaa_response.status_code)
+print(mwaa_std_err_message)
+print(mwaa_std_out_message)
+```
+
+## Using AWS blogs and tutorials<a name="airflow-cli-commands-tutorials"></a>
+
+The following section contains other AWS blogs and tutorials with Apache Airflow CLI tokens, web tokens, and commands\.
++ [Interacting with Amazon Managed Workflows for Apache Airflow \(MWAA\) via the command line](https://dev.to/aws/interacting-with-amazon-managed-workflows-for-apache-airflow-via-the-command-line-4e91)

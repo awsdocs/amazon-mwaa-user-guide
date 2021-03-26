@@ -20,15 +20,15 @@ A Linux Bastion Host is an instance that is provisioned with a public IP address
 
 1. Check for user permissions\. Be sure that your account in AWS Identity and Access Management \(IAM\) has sufficient permissions to create and manage VPC resources\. 
 
-1. This tutorial assumes that you are adding the bastion host in an existing Amazon VPC, as defined in [Create the VPC network](vpc-create.md)\.
+1. Use your Amazon MWAA VPC\. This tutorial assumes that you are attaching the bastion host to your existing Amazon MWAA Amazon VPC\. The Amazon VPC must be in the same region as your Amazon MWAA environment and have two public subnets and two private subnets, as defined in [Create the VPC network](vpc-create.md)\.
 
-1. You need an Amazon EC2 SSH key in your target region to connect to the virtual servers\. If you don't have an SSH key, see [Create or import a key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#prepare-key-pair) in the *Amazon EC2 User Guide for Linux Instances*\.
+1. Create an SSH key\. You need to create an Amazon EC2 SSH key \(**\.pem**\) in the same Region as your Amazon MWAA environment to connect to the virtual servers\. If you don't have an SSH key, see [Create or import a key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#prepare-key-pair) in the *Amazon EC2 User Guide for Linux Instances*\.
 
 ## Objectives<a name="private-network-objectives"></a>
 
 In this tutorial, you'll do the following:
 
-1. Create a Linux Bastion Host instance\.
+1. Create a Linux Bastion Host instance using a [AWS CloudFormation template for an existing VPC](https://fwd.aws/vWMxm)\.
 
 1. Authorize inbound traffic to the bastion instance's security group using an ingress rule on port `22`\.
 
@@ -46,13 +46,17 @@ You can use the Amazon MWAA console to enable private access to your Apache Airf
 
 ## Create the bastion instance<a name="private-network-create-bastion"></a>
 
-You can use the AWS CloudFormation console to launch the AWS CloudFormation stack needed for a Linux Bastion Host\. To learn more about each of the fields in this tutorial, see [Launch the Stack](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/step2.html) in the *Linux Bastion Hosts on the AWS Cloud Quick Start Guide*\. 
+The following section describes the steps to create the linux bastion instance using a [AWS CloudFormation template for an existing VPC](https://fwd.aws/vWMxm) on the AWS CloudFormation console\.
 
 **To create the Linux Bastion Host**
 
 1. Open the [Deploy Quick Start](https://fwd.aws/Jwzqv) page on the AWS CloudFormation console\.
 
+1. Use the region selector in the navigation bar to choose the same AWS Region as your Amazon MWAA environment\.
+
 1. Choose **Next**\.
+
+1. Type a name in the **Stack name** text field, such as `mwaa-linux-bastion`\.
 
 1. On the **Parameters**, **Network configuration** pane, choose the following options:
 
@@ -63,16 +67,20 @@ You can use the AWS CloudFormation console to launch the AWS CloudFormation stac
    1. Choose your Amazon MWAA environment's **Public subnet 2 ID**\.
 
    1. Enter the narrowest possible address range \(for example, an internal CIDR range\) in **Allowed bastion external access CIDR**\.
-
-   1. Leave the remaining options blank, or set to their default values\.
+**Note**  
+The simplest way to identify a range is to use the same CIDR range as your public subnets\. For example, the public subnets in the AWS CloudFormation template on the [Create the VPC network](vpc-create.md) page are `10.192.10.0/24` and `10.192.11.0/24`\.
 
 1. On the **Amazon EC2 configuration** pane, choose the following:
 
-   1. Choose your Amazon MWAA environment's **Key pair name**\.
+   1. Choose your SSH key in the dropdown list in **Key pair name**\.
 
    1. Enter a name in **Bastion Host Name**\.
 
+   1. Leave the remaining options blank, or set to their default values\.
+
    1. Choose **true** for **TCP forwarding**\.
+**Warning**  
+TCP forwarding must be set to **true** in this step\. Otherwise, you won't be able to create an SSH tunnel in the next step\.
 
    1. Leave the remaining options blank, or set to their default values\.
 
@@ -80,9 +88,11 @@ You can use the AWS CloudFormation console to launch the AWS CloudFormation stac
 
 1. Select the acknowledgement, and then choose **Create stack**\.
 
+To learn more about the architecture of your Linux Bastion Host, see [Linux Bastion Hosts on the AWS Cloud: Architecture](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html)\.
+
 ## Create the ssh tunnel<a name="private-network-create-test"></a>
 
-The following steps describe how to create the ssh tunnel to your bastion\.
+The following steps describe how to create the ssh tunnel to your linux bastion\. An SSH tunnel recieves the request from your local IP address to the linux bastion, which is why TCP forwarding for the linux bastion was set to `true` in previous steps\.
 
 1. Open the [Instances](https://console.aws.amazon.com/ec2/v2/home#/Instances:) page on the Amazon EC2 console\.
 
@@ -99,7 +109,7 @@ The following steps describe how to create the ssh tunnel to your bastion\.
    ```
 
 **Note**  
-If you receive a `Permission denied (publickey)` error, see the following Amazon support topic in [I'm receiving "Permission denied \(publickey\)"](http://aws.amazon.com/premiumsupport/knowledge-center/ec2-linux-fix-permission-denied-errors/)\.
+If you receive a `Permission denied (publickey)` error, we recommend using the [AWSSupport\-TroubleshootSSH](https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-awssupport-troubleshootssh.html) tool, and choose **Run this Automation \(console\)** to troubleshoot your SSH setup\.
 
 ## Configure the bastion security group as an inbound rule<a name="private-network-create-sgsource"></a>
 

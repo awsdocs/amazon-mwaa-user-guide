@@ -1,6 +1,8 @@
-# Identity and access management for Amazon MWAA<a name="security-iam"></a>
+# AWS Identity and Access Management<a name="security-iam"></a>
 
-To learn about managing access to Amazon MWAA, see [Managing access to an Amazon MWAA environment](manage-access.md)\.
+AWS Identity and Access Management \(IAM\) is an AWS service that helps an administrator securely control access to AWS resources\. IAM administrators control who can be authenticated \(signed in\) and authorized \(have permissions\) to use Amazon Managed Workflows for Apache Airflow \(MWAA\) resources\. IAM is an AWS service that you can use with no additional charge\.
+
+This topic provides a basic overview of how Amazon MWAA uses AWS Identity and Access Management \(IAM\)\. To learn about managing access to Amazon MWAA, see [Managing access to an Amazon MWAA environment](manage-access.md)\.
 
 **Topics**
 + [Audience](#security_iam_audience)

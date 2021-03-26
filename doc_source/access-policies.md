@@ -337,9 +337,11 @@ You can create the JSON policy, and attach the policy to your user, role, or gro
 
 ## Example use case to attach policies to a developer group<a name="access-policy-use-case"></a>
 
-Let's say you're using a group in IAM named `AirflowDevelopmentGroup` to apply permissions to all of the developers on your Apache Airflow development team\. These users need access to the `AmazonMWAAFullConsoleAccess`, `AmazonMWAAAirflowCliAccess`, and `AmazonMWAAWebServerAccess` permission policies\. This section describes how to create a group in IAM, create and attach these policies, and associate the group to a new user\. The steps assume you're using an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)\.
+Let's say you're using a group in IAM named `AirflowDevelopmentGroup` to apply permissions to all of the developers on your Apache Airflow development team\. These users need access to the `AmazonMWAAFullConsoleAccess`, `AmazonMWAAAirflowCliAccess`, and `AmazonMWAAWebServerAccess` permission policies\. This section describes how to create a group in IAM, create and attach these policies, and associate the group to an IAM user\. The steps assume you're using an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)\.
 
 **To create the AmazonMWAAFullConsoleAccess policy**
+
+1. Download the [AmazonMWAAFullConsoleAccess access policy](./samples/AmazonMWAAFullConsoleAccess.zip)\.
 
 1. Open the [Policies page](https://console.aws.amazon.com/iam/home#/policies) on the IAM console\.
 
@@ -353,7 +355,7 @@ Let's say you're using a group in IAM named `AirflowDevelopmentGroup` to apply p
 
    1. *\{your\-account\-id\}* – your AWS account ID \(such as `0123456789`\)
 
-   1. *\{your\-kms\-id\}* – `aws/airflow`
+   1. *\{your\-kms\-id\}* – the `aws/airflow` identifer for an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)
 
 1. Choose the **Review policy**\.
 
@@ -362,6 +364,8 @@ Let's say you're using a group in IAM named `AirflowDevelopmentGroup` to apply p
 1. Choose **Create policy**\.
 
 **To create the AmazonMWAAWebServerAccess policy**
+
+1. Download the [AmazonMWAAWebServerAccess access policy](./samples/AmazonMWAAWebServerAccess.zip)\.
 
 1. Open the [Policies page](https://console.aws.amazon.com/iam/home#/policies) on the IAM console\.
 
@@ -379,7 +383,7 @@ Let's say you're using a group in IAM named `AirflowDevelopmentGroup` to apply p
 
    1. *\{your\-environment\-name\}* – your Amazon MWAA environment name \(such as `MyAirflowEnvironment`\)
 
-   1. *\{airflow\-role\}* – `Admin`
+   1. *\{airflow\-role\}* – the `Admin` Apache Airflow [Default Role](https://airflow.apache.org/docs/apache-airflow/1.10.6/security.html?highlight=ldap#default-roles)
 
 1. Choose **Review policy**\.
 
@@ -388,6 +392,8 @@ Let's say you're using a group in IAM named `AirflowDevelopmentGroup` to apply p
 1. Choose **Create policy**\.
 
 **To create the AmazonMWAAAirflowCliAccess policy**
+
+1. Download the [AmazonMWAAAirflowCliAccess access policy](./samples/AmazonMWAAAirflowCliAccess.zip)\.
 
 1. Open the [Policies page](https://console.aws.amazon.com/iam/home#/policies) on the IAM console\.
 

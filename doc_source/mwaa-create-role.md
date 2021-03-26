@@ -6,22 +6,41 @@ An execution role is an AWS Identity and Access Management \(IAM\) role with a p
 + [How it works](#mwaa-create-role-how)
 + [Create a new role](#mwaa-create-role-mwaa-onconsole)
 + [Viewing and updating an execution role policy](#mwaa-create-role-update)
++ [Attaching a JSON policy to use other AWS services](#mwaa-create-role-attach-json-policy)
 + [Using Apache Airflow connections](#mwaa-create-role-airflow-connections)
 + [Sample JSON policies for an execution role](#mwaa-create-role-json)
 + [What's next?](#mwaa-create-role-next-up)
 
 ## How it works<a name="mwaa-create-role-how"></a>
 
-You can use the Amazon MWAA console to create an execution role and an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) on your behalf when you create a MWAA environment\.
+Permission for Amazon MWAA to use other AWS services used by your environment are obtained from the execution role\. An Amazon MWAA execution role needs permission to the following AWS services used by an environment:
++ Amazon CloudWatch \(CloudWatch\) – to send Apache Airflow metrics and logs\.
++ Amazon Simple Storage Service \(Amazon S3\) – to parse your environment's DAG code and supporting files \(such as a `requirements.txt`\)\.
++ Amazon Simple Queue Service \(Amazon SQS\) – to queue your environment's Apache Airflow tasks\.
++ AWS Key Management Service \(AWS KMS\) – for your environment's data encryption \(using either an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) or your [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk)\)\.
+
+An execution role also needs permission to the following IAM actions:
++ `airflow:PublishMetrics` – to allow Amazon MWAA to monitor the health of an environment\.
+
+### Permissions attached by default<a name="mwaa-create-role-how-create-role"></a>
+
+You can use the default options on the Amazon MWAA console to create an execution role and an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), then use the steps on this page to add permission policies to your execution role\.
 + When you choose the **Create new role** option on the console, Amazon MWAA attaches the minimal permissions needed by an environment to your execution role\.
-+ In some cases, Amazon MWAA attaches the maximum permissions\. For example, if you choose the option on the Amazon MWAA console to create an execution role, Amazon MWAA adds the permissions policies for all CloudWatch Logs groups automatically by using the regex pattern in the execution role as `"arn:aws:logs:your-region:your-account-id:log-group:airflow-your-environment-name-*"`\.
-+ Amazon MWAA can't add or edit permission policies to an existing execution role after an environment is created\. You must update your execution role with additional permission policies needed by your environment\. For example, if your DAG requires access to Glue, Amazon MWAA can't automatically detect these permissions are required by your environment and add the permissions to your execution role\.
++ In some cases, Amazon MWAA attaches the maximum permissions\. For example, we recommend choosing the option on the Amazon MWAA console to create an execution role when you create an environment\. Amazon MWAA adds the permissions policies for all CloudWatch Logs groups automatically by using the regex pattern in the execution role as `"arn:aws:logs:your-region:your-account-id:log-group:airflow-your-environment-name-*"`\.
 
-The sample permission policies on this page show two policies you can use to replace the permissions policy used for your existing execution role, or to create a new execution role\. In detail:
-+ **Updating an existing role** – If you are modifying an existing execution role for your environment, you can use the sample [JSON policy documents](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_grammar.html) on this page to either add to or replace the JSON policy of your execution role on the IAM console\. Assuming the execution role is already associated to your environment, Amazon MWAA can start using the added permission policies immediately\. This also means if you remove any permissions from your execution role that are required, your DAG executions may fail\.
-+ **Creating a new role** – If you are creating a new execution role, you can use the default option on the Amazon MWAA console to create an execution role, then use the steps on this page to modify your permissions policy\.
+### How to add permission to use other AWS services<a name="mwaa-create-role-how-adding"></a>
 
-You can change the execution role for your environment at any time\. If a new execution role is not already associated with your environment, use the steps on this page to associate a new execution role and specify the role when you create your environment\.
+Amazon MWAA can't add or edit permission policies to an existing execution role after an environment is created\. You must update your execution role with additional permission policies needed by your environment\. For example, if your DAG requires access to AWS Glue, Amazon MWAA can't automatically detect these permissions are required by your environment, or add the permissions to your execution role\.
+
+You can add permissions to an execution role in two ways:
++ By modifying the JSON policy for your execution role inline\. You can use the sample [JSON policy documents](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_grammar.html) on this page to either add to or replace the JSON policy of your execution role on the IAM console\.
++ By creating a JSON policy for an AWS service and attaching it to your execution role\. You can use the steps on this page to associate a new JSON policy document for an AWS service to your execution role on the IAM console\.
+
+Assuming the execution role is already associated to your environment, Amazon MWAA can start using the added permission policies immediately\. This also means if you remove any required permissions from an execution role, your DAGs may fail\.
+
+### How to associate a new execution role<a name="mwaa-create-role-how-associating"></a>
+
+You can change the execution role for your environment at any time\. If a new execution role is not already associated with your environment, use the steps on this page to create a new execution role policy, and associate the role to your environment\. 
 
 ## Create a new role<a name="mwaa-create-role-mwaa-onconsole"></a>
 
@@ -33,11 +52,15 @@ By default, Amazon MWAA creates an [AWS owned CMK](https://docs.aws.amazon.com/k
 
 You can view the execution role for your environment on the Amazon MWAA console, and update the JSON policy for the role on the IAM console\.
 
-**To update a JSON policy**
+**To update an execution role policy**
 
 1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
 
-1. Choose the policy name\.
+1. Choose an environment\.
+
+1. Choose the execution role on the **Permissions** pane to open the permissions page in IAM\.
+
+1. Choose the execution role name to open the permissions policy\.
 
 1. Choose **Edit policy**\.
 
@@ -49,17 +72,59 @@ You can view the execution role for your environment on the Amazon MWAA console,
 
 1. Choose **Save changes**\.
 
+## Attaching a JSON policy to use other AWS services<a name="mwaa-create-role-attach-json-policy"></a>
+
+You can create a JSON policy for an AWS service and attach it to your execution role\. For example, you can attach the following JSON policy to grant read\-only access to all resources in AWS Secrets Manager\.
+
+```
+{
+   "Version":"2012-10-17",
+   "Statement":[
+      {
+         "Effect":"Allow",
+         "Action":[
+            "secretsmanager:GetResourcePolicy",
+            "secretsmanager:GetSecretValue",
+            "secretsmanager:DescribeSecret",
+            "secretsmanager:ListSecretVersionIds"
+         ],
+         "Resource":[
+            "*"
+         ]
+      }
+   ]
+}
+```
+
+**To attach a policy to your execution role**
+
+1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
+
+1. Choose an environment\.
+
+1. Choose your execution role on the **Permissions** pane\.
+
+1. Choose **Attach policies**\.
+
+1. Choose **Create policy**\.
+
+1. Choose **JSON**\.
+
+1. Paste the JSON policy\.
+
+1. Choose **Next: Tags**, **Next: Review**\.
+
+1. Enter a descriptive name \(such as `SecretsManagerReadPolicy`\) and a description for the policy\.
+
+1. Choose **Create policy**\.
+
 ## Using Apache Airflow connections<a name="mwaa-create-role-airflow-connections"></a>
 
-You can also add your execution role to your Apache Airflow UI\. If your DAG requires access to any AWS resources that are not already permitted by your execution role, you can use Apache Airflow connections to pass your execution role credentials into your environment\. You can then use this connection by referring to the connection in your DAG\(s\)\.
-
-While Amazon MWAA does not support environment variables directly, you can add your execution role and its ARN as an Airflow configuration option on the Amazon MWAA console\.
-
-To learn more, see [Amazon Web Services Connection](https://airflow.apache.org/docs/apache-airflow-providers-amazon/stable/connections/aws.html) in the *Apache Airflow reference guide*\.
+You can also create an Apache Airflow connection and specify your execution role and its ARN in your Apache Airflow connection object\. To learn more, see [Managing connections to Apache Airflow](manage-connections.md)\.
 
 ## Sample JSON policies for an execution role<a name="mwaa-create-role-json"></a>
 
-The sample policies in this section contain [Resource ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_resource.html) placeholders for Apache Airflow log groups, an [Amazon S3 bucket](mwaa-s3-bucket.md), and an [Amazon MWAA environment](create-environment.md)\.
+The sample permission policies in this section show two policies you can use to replace the permissions policy used for your existing execution role, or to create a new execution role and use for your environment\. These policies contain [Resource ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_resource.html) placeholders for Apache Airflow log groups, an [Amazon S3 bucket](mwaa-s3-bucket.md), and an [Amazon MWAA environment](create-environment.md)\.
 
 We recommend copying the example policy, replacing the sample ARNs or placeholders, then using the JSON policy to create or update an execution role\. For example, replacing `{your-region}` with `us-east-1`\.
 
