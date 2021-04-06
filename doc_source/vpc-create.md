@@ -66,7 +66,7 @@ This creates a VPC and the required networking components for an environment\. Y
 
 ## Using an Amazon MWAA AWS CloudFormation template<a name="vpc-create-template-code"></a>
 
-AWS CloudFormation allows you to create AWS resources using a template that describes the AWS resources you want you want to create\. The following section describes how to use an Amazon MWAA AWS CloudFormation template to create the VPC network in your default region\.
+AWS CloudFormation allows you to create AWS resources using a template that describes the AWS resources you want to create\. The following section describes how to use an Amazon MWAA AWS CloudFormation template to create the VPC network in your default region\.
 
 ### AWS CloudFormation VPC stack specifications<a name="vpc-create-template-components"></a>
 
