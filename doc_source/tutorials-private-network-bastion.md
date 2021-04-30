@@ -1,30 +1,41 @@
 # Tutorial: Configuring private network access using a Linux Bastion Host<a name="tutorials-private-network-bastion"></a>
 
-To reduce exposure of your Apache Airflow UI within a VPC, you need to create and use a Linux Bastion Host\.
-
-A Linux Bastion Host is an instance that is provisioned with a public IP address and can be accessed via SSH\. Administrative tasks on the individual servers are performed using SSH, proxied through the bastion\. Amazon Managed Workflows for Apache Airflow \(MWAA\) connects \(SSH\) securely to the instance's private IP address via the bastion host to install or update any required software, e\.g\. for your Apache Airflow web server\. Once set up, the bastion acts as a jump server allowing secure connection to the Amazon EC2 instance used by an environment\. This tutorial walks you through the deployment of a Linux Bastion Host to securely access remote instances within a Amazon VPC for an Amazon MWAA environment\.
+This tutorial walks you through the steps to create an SSH tunnel from your computer to the to the Apache Airflow *Web server* for your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. It assumes you've already created an Amazon MWAA environment\. Once set up, a Linux Bastion Host acts as a jump server allowing a secure connection from your computer to the resources in your VPC\. You'll then use a SOCKS proxy management add\-on to control the proxy settings in your browser to access your Apache Airflow UI\. 
 
 **Topics**
-+ [Before you begin](#private-network-prereqs)
-+ [Objectives](#private-network-objectives)
-+ [Private network](#private-network-onconsole)
-+ [Create the bastion instance](#private-network-create-bastion)
-+ [Create the ssh tunnel](#private-network-create-test)
-+ [Configure the bastion security group as an inbound rule](#private-network-create-sgsource)
-+ [Copy the Apache Airflow URL](#private-network-view-env)
-+ [Configure proxy settings](#private-network-browser-extension)
-+ [Open the Apache Airflow UI](#private-network-open)
++ [Private network](#private-network-lb-onconsole)
++ [Use cases](#private-network-lb-usecases)
++ [Before you begin](#private-network-lb-prereqs)
++ [Objectives](#private-network-lb-objectives)
++ [Step one: Create the bastion instance](#private-network-lb-create-bastion)
++ [Step two: Create the ssh tunnel](#private-network-lb-create-test)
++ [Step three: Configure the bastion security group as an inbound rule](#private-network-lb-create-sgsource)
++ [Step four: Copy the Apache Airflow URL](#private-network-lb-view-env)
++ [Step five: Configure proxy settings](#private-network-lb-browser-extension)
++ [Step six: Open the Apache Airflow UI](#private-network-lb-open)
 + [What's next?](#create-vpc-next-up)
 
-## Before you begin<a name="private-network-prereqs"></a>
+## Private network<a name="private-network-lb-onconsole"></a>
+
+This tutorial assumes you've chosen the **Private network** access mode for your Apache Airflow *Web server*\.
++ **Private network**\. The private network access mode limits access of the Apache Airflow UI to users *within your Amazon VPC* that have been granted access to the [IAM policy for your environment](access-policies.md)\.
+
+  The following image shows where to find the **Private network** option on the Amazon MWAA console\.   
+![\[This image shows where to find the Private network option on the Amazon MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-private-network.png)
+
+## Use cases<a name="private-network-lb-usecases"></a>
+
+You can use this tutorial after you've created an Amazon MWAA environment\. You must use the same Amazon VPC, VPC security group\(s\), and public subnets as your environment\. 
+
+## Before you begin<a name="private-network-lb-prereqs"></a>
 
 1. Check for user permissions\. Be sure that your account in AWS Identity and Access Management \(IAM\) has sufficient permissions to create and manage VPC resources\. 
 
-1. Use your Amazon MWAA VPC\. This tutorial assumes that you are attaching the bastion host to your existing Amazon MWAA Amazon VPC\. The Amazon VPC must be in the same region as your Amazon MWAA environment and have two public subnets and two private subnets, as defined in [Create the VPC network](vpc-create.md)\.
+1. Use your Amazon MWAA VPC\. This tutorial assumes that you are associating the bastion host to an existing VPC\. The Amazon VPC must be in the same region as your Amazon MWAA environment and have two private subnets, as defined in [Create the VPC network](vpc-create.md)\.
 
 1. Create an SSH key\. You need to create an Amazon EC2 SSH key \(**\.pem**\) in the same Region as your Amazon MWAA environment to connect to the virtual servers\. If you don't have an SSH key, see [Create or import a key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#prepare-key-pair) in the *Amazon EC2 User Guide for Linux Instances*\.
 
-## Objectives<a name="private-network-objectives"></a>
+## Objectives<a name="private-network-lb-objectives"></a>
 
 In this tutorial, you'll do the following:
 
@@ -38,13 +49,7 @@ In this tutorial, you'll do the following:
 
 1. Install and configure the FoxyProxy add\-on for the Firefox browser to view the Apache Airflow UI\.
 
-## Private network<a name="private-network-onconsole"></a>
-
-You can use the Amazon MWAA console to enable private access to your Apache Airflow UI\. The following image shows where to find the **Private network** option on the Amazon MWAA console\. The steps on this page assume you have chosen this option to access your Apache Airflow UI\.
-
-![\[This image shows where to find the Private network option on the Amazon MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-private-public.png)
-
-## Create the bastion instance<a name="private-network-create-bastion"></a>
+## Step one: Create the bastion instance<a name="private-network-lb-create-bastion"></a>
 
 The following section describes the steps to create the linux bastion instance using a [AWS CloudFormation template for an existing VPC](https://fwd.aws/vWMxm) on the AWS CloudFormation console\.
 
@@ -90,9 +95,14 @@ TCP forwarding must be set to **true** in this step\. Otherwise, you won't be ab
 
 To learn more about the architecture of your Linux Bastion Host, see [Linux Bastion Hosts on the AWS Cloud: Architecture](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html)\.
 
-## Create the ssh tunnel<a name="private-network-create-test"></a>
+## Step two: Create the ssh tunnel<a name="private-network-lb-create-test"></a>
 
 The following steps describe how to create the ssh tunnel to your linux bastion\. An SSH tunnel recieves the request from your local IP address to the linux bastion, which is why TCP forwarding for the linux bastion was set to `true` in previous steps\.
+
+------
+#### [ macOS/Linux ]
+
+**To create a tunnel via command line**
 
 1. Open the [Instances](https://console.aws.amazon.com/ec2/v2/home#/Instances:) page on the Amazon EC2 console\.
 
@@ -108,10 +118,39 @@ The following steps describe how to create the ssh tunnel to your linux bastion\
    ssh -i mykeypair.pem -N -D 8157 ec2-user@YOUR_PUBLIC_IPV4_DNS
    ```
 
+------
+#### [ Windows \(PuTTY\) ]
+
+**To create a tunnel using PuTTY**
+
+1. Open the [Instances](https://console.aws.amazon.com/ec2/v2/home#/Instances:) page on the Amazon EC2 console\.
+
+1. Choose an instance\.
+
+1. Copy the address in **Public IPv4 DNS**\. For example, `ip-10-192-11-219.ec2.internal`\.
+
+1. Open [PuTTY](https://www.putty.org/), select **Session**\.
+
+1. Enter the host name in **Host Name** as ec2\-user@*YOUR\_PUBLIC\_IPV4\_DNS* and the **port** as `22`\.
+
+1. Expand the **SSH** tab, select **Auth**\. In **Private Key file for authentication**, choose your local "ppk" file\.
+
+1. Under SSH, choose the **Tunnels** tab, and then select the *Dynamic* and *Auto* options\.
+
+1. In **Source Port**, add the `8157` port \(or any other unused port\), and then leave the **Destination** port blank\. Choose **Add**\.
+
+1. Choose the **Session** tab and enter a session name\. For example `SSH Tunnel`\. 
+
+1. Choose **Save**, **Open**\.
+**Note**  
+You may need to enter a pass phrase for your public key\.
+
+------
+
 **Note**  
 If you receive a `Permission denied (publickey)` error, we recommend using the [AWSSupport\-TroubleshootSSH](https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-awssupport-troubleshootssh.html) tool, and choose **Run this Automation \(console\)** to troubleshoot your SSH setup\.
 
-## Configure the bastion security group as an inbound rule<a name="private-network-create-sgsource"></a>
+## Step three: Configure the bastion security group as an inbound rule<a name="private-network-lb-create-sgsource"></a>
 
 Access to the servers and regular internet access from the servers is allowed with a special maintenance security group attached to those servers\. The following steps describe how to configure the bastion security group as an inbound source of traffic to an environment's VPC security group\.
 
@@ -131,7 +170,7 @@ Access to the servers and regular internet access from the servers is allowed wi
 
 1. Choose **Save rules**\.
 
-## Copy the Apache Airflow URL<a name="private-network-view-env"></a>
+## Step four: Copy the Apache Airflow URL<a name="private-network-lb-view-env"></a>
 
 The following steps describe how to open the Amazon MWAA console and copy the URL to the Apache Airflow UI\.
 
@@ -141,11 +180,11 @@ The following steps describe how to open the Amazon MWAA console and copy the UR
 
 1. Copy the URL in **Airflow UI** for subsequent steps\.
 
-## Configure proxy settings<a name="private-network-browser-extension"></a>
+## Step five: Configure proxy settings<a name="private-network-lb-browser-extension"></a>
 
 If you use an SSH tunnel with dynamic port forwarding, you must use a SOCKS proxy management add\-on to control the proxy settings in your browser\. For example, you can use the `--proxy-server` feature of Chromium to kick off a browser session, or use the FoxyProxy extension in the Mozilla FireFox browser\.
 
-### Proxies via command line<a name="private-network-browser-extension-foxyp"></a>
+### Proxies via command line<a name="private-network-lb-browser-extension-foxyp"></a>
 
 Most web browsers allow you to configure proxies via a command line or configuration parameter\. For example, with Chromium you can start the browser with the following command:
 
@@ -159,7 +198,7 @@ This starts a browser session which uses the ssh tunnel you created in previous 
 https://{unique-id}-vpce.{region}.airflow.amazonaws.com/home.
 ```
 
-### Proxies using FoxyProxy for Mozilla Firefox<a name="private-network-browser-extension-foxyp"></a>
+### Proxies using FoxyProxy for Mozilla Firefox<a name="private-network-lb-browser-extension-foxyp"></a>
 
  The following example demonstrates a FoxyProxy Standard \(version 7\.5\.1\) configuration for Mozilla Firefox\. FoxyProxy provides a set of proxy management tools\. It lets you use a proxy server for URLs that match patterns corresponding to domains used by the Apache Airflow UI\.
 
@@ -231,7 +270,7 @@ https://{unique-id}-vpce.{region}.airflow.amazonaws.com/home.
 
 1. Choose **OK**\.
 
-## Open the Apache Airflow UI<a name="private-network-open"></a>
+## Step six: Open the Apache Airflow UI<a name="private-network-lb-open"></a>
 
 The following steps describe how to open your Apache Airflow UI\.
 

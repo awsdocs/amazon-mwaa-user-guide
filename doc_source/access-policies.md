@@ -1,6 +1,6 @@
 # Accessing an Amazon MWAA environment<a name="access-policies"></a>
 
-To use Amazon Managed Workflows for Apache Airflow \(MWAA\), you must use an account, user, or role with the necessary permissions\. This page describes the access policies you can attach to your team and Apache Airflow users to access your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment and its services\.
+To use Amazon Managed Workflows for Apache Airflow \(MWAA\), you must use an account, user, or role with the necessary permissions\. This page describes the access policies you can attach to your Apache Airflow development team and Apache Airflow users for your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
 **Topics**
 + [How it works](#access-policies-how)
@@ -26,7 +26,7 @@ You can use the JSON policies in this topic to create a policy for your Apache A
 + [AmazonMWAAWebServerAccess](#web-ui-access) – A user may need access to this permissions policy if they need to access the Apache Airflow UI\.
 + [AmazonMWAAAirflowCliAccess](#cli-access) – A user may need access to this permissions policy to run Apache Airflow CLI commands\.
 
-The sample policies on this page contain placeholders\. For example, replace *\{your\-account\-id\}* with your account ID as `0123456789`\.
+The sample policies on this page contain placeholders\. For example, replace ***YOUR\_ACCOUNT\_ID*** with your account ID as `0123456789`\.
 
 ## Full console access policy: AmazonMWAAFullConsoleAccess<a name="console-full-access"></a>
 
@@ -34,133 +34,140 @@ A user may need access to the `AmazonMWAAFullConsoleAccess` permissions policy i
 
 ```
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "airflow:*",
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "iam:ListRoles"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "iam:CreateServiceLinkedRole"
-            ],
-            "Resource": "arn:aws:iam::*:role/aws-service-role/airflow.amazonaws.com/AWSServiceRoleForAmazonMWAA"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetBucketLocation",
-                "s3:ListAllMyBuckets",
-                "s3:ListBucket",
-                "s3:ListBucketVersions"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:CreateBucket",
-                "s3:PutObject",
-                "s3:GetEncryptionConfiguration"
-            ],
-            "Resource": "arn:aws:s3:::*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:DescribeSecurityGroups",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "ec2:DescribeRouteTables"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:AuthorizeSecurityGroupIngress",
-                "ec2:CreateSecurityGroup"
-            ],
-            "Resource": "arn:aws:ec2:*:*:security-group/airflow-security-group-*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "kms:ListAliases"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "kms:DescribeKey",
-                "kms:ListGrants",
-                "kms:CreateGrant",
-                "kms:RevokeGrant",
-                "kms:Decrypt", 
-                "kms:Encrypt", 
-                "kms:GenerateDataKey*", 
-                "kms:ReEncrypt*"
-            ],
-            "Resource": "arn:aws:kms:*:{your-account-id}:key/{your-kms-id}"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "iam:PassRole"
-            ],
-            "Resource": "*",
-            "Condition": {
-                "StringLike": {
-                    "iam:PassedToService": "airflow.amazonaws.com"
-                }
+   "Version":"2012-10-17",
+   "Statement":[
+      {
+         "Effect":"Allow",
+         "Action":"airflow:*",
+         "Resource":"*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "iam:ListRoles"
+         ],
+         "Resource":"*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "iam:CreatePolicy"
+         ],
+         "Resource":"arn:aws:iam::YOUR_ACCOUNT_ID:policy/service-role/MWAA-Execution-Policy*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "iam:CreateServiceLinkedRole"
+         ],
+         "Resource":"arn:aws:iam::*:role/aws-service-role/airflow.amazonaws.com/AWSServiceRoleForAmazonMWAA"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "s3:GetBucketLocation",
+            "s3:ListAllMyBuckets",
+            "s3:ListBucket",
+            "s3:ListBucketVersions"
+         ],
+         "Resource":"*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "s3:CreateBucket",
+            "s3:PutObject",
+            "s3:GetEncryptionConfiguration"
+         ],
+         "Resource":"arn:aws:s3:::*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "ec2:DescribeSecurityGroups",
+            "ec2:DescribeSubnets",
+            "ec2:DescribeVpcs",
+            "ec2:DescribeRouteTables"
+         ],
+         "Resource":"*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "ec2:AuthorizeSecurityGroupIngress",
+            "ec2:CreateSecurityGroup"
+         ],
+         "Resource":"arn:aws:ec2:*:*:security-group/airflow-security-group-*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "kms:ListAliases"
+         ],
+         "Resource":"*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "kms:DescribeKey",
+            "kms:ListGrants",
+            "kms:CreateGrant",
+            "kms:RevokeGrant",
+            "kms:Decrypt",
+            "kms:Encrypt",
+            "kms:GenerateDataKey*",
+            "kms:ReEncrypt*"
+         ],
+         "Resource":"arn:aws:kms:*:YOUR_ACCOUNT_ID:key/YOUR_KMS_ID"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "iam:PassRole"
+         ],
+         "Resource":"*",
+         "Condition":{
+            "StringLike":{
+               "iam:PassedToService":"airflow.amazonaws.com"
             }
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "iam:AttachRolePolicy",
-                "iam:CreateRole"
-            ],
-            "Resource": "arn:aws:iam::{your-account-id}:policy/service-role/MWAA-Execution-Policy-*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetEncryptionConfiguration"
-            ],
-            "Resource": "arn:aws:s3:::*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": "ec2:CreateVpcEndpoint",
-            "Resource": [
-                "arn:aws:ec2:*:*:vpc-endpoint/*",
-                "arn:aws:ec2:*:*:vpc/*",
-                "arn:aws:ec2:*:*:subnet/*",
-                "arn:aws:ec2:*:*:security-group/*"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:CreateNetworkInterface"
-            ],
-            "Resource": [
-                "arn:aws:ec2:*:*:subnet/*",
-                "arn:aws:ec2:*:*:network-interface/*"
-            ]
-        }
-    ]
+         }
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "iam:AttachRolePolicy",
+            "iam:CreateRole"
+         ],
+         "Resource":"arn:aws:iam::YOUR_ACCOUNT_ID:role/service-role/AmazonMWAA*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "s3:GetEncryptionConfiguration"
+         ],
+         "Resource":"arn:aws:s3:::*"
+      },
+      {
+         "Effect":"Allow",
+         "Action":"ec2:CreateVpcEndpoint",
+         "Resource":[
+            "arn:aws:ec2:*:*:vpc-endpoint/*",
+            "arn:aws:ec2:*:*:vpc/*",
+            "arn:aws:ec2:*:*:subnet/*",
+            "arn:aws:ec2:*:*:security-group/*"
+         ]
+      },
+      {
+         "Effect":"Allow",
+         "Action":[
+            "ec2:CreateNetworkInterface"
+         ],
+         "Resource":[
+            "arn:aws:ec2:*:*:subnet/*",
+            "arn:aws:ec2:*:*:network-interface/*"
+         ]
+      }
+   ]
 }
 ```
 
@@ -206,7 +213,7 @@ A user may need access to the `AmazonMWAAFullApiAccess` permissions policy if th
             "kms:GenerateDataKey*",
             "kms:ReEncrypt*"
          ],
-         "Resource":"arn:aws:kms:*:{your-account-id}:key/{your-kms-id}"
+         "Resource":"arn:aws:kms:*:YOUR_ACCOUNT_ID:key/YOUR_KMS_ID"
       },
       {
          "Effect":"Allow",
@@ -284,7 +291,7 @@ A user may need access to the `AmazonMWAAWebServerAccess` permissions policy if 
             "Effect": "Allow",
             "Action": "airflow:CreateWebLoginToken",
             "Resource": [
-                "arn:aws:airflow:{your-region}:{your-account-id}:role/{your-environment-name}/{airflow-role}"
+                "arn:aws:airflow:{your-region}:YOUR_ACCOUNT_ID:role/{your-environment-name}/{airflow-role}"
             ]
         }
     ]

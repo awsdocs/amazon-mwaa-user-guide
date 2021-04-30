@@ -1,10 +1,10 @@
 # Quick start tutorial for Amazon Managed Workflows for Apache Airflow \(MWAA\)<a name="quick-start"></a>
 
-This quick start tutorial uses a AWS CloudFormation \(AWS CloudFormation\) template to create the VPC infrastructure, an Amazon S3 bucket, and an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. The template in this tutorial uses the public network option for an Apache Airflow *Web server*\. It then walks you through three AWS Command Line Interface \(AWS CLI\) commands to upload a DAG to Amazon S3, then run the DAG in Apache Airflow, and view logs in CloudWatch\. It concludes by walking you through the steps to create an IAM policy for an Apache Airflow development team\.
+This quick start tutorial uses an AWS CloudFormation template that creates the Amazon VPC infrastructure, an Amazon S3 bucket with a `dags` folder, and an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment at the same time\. It then walks you through three AWS Command Line Interface \(AWS CLI\) commands to upload a DAG to Amazon S3, then run the DAG in Apache Airflow, and view logs in CloudWatch\. It concludes by walking you through the steps to create an IAM policy for an Apache Airflow development team\.
 
 **Topics**
 + [In this tutorial](#quick-start-overview)
-+ [Before you begin](#quick-start-before)
++ [Prerequisites](#quick-start-before)
 + [Step one: Save the AWS CloudFormation template locally](#quick-start-template)
 + [Step two: Create the stack using the AWS CLI](#quick-start-createstack)
 + [Step three: Upload a DAG to Amazon S3 and run in the Apache Airflow UI](#quick-start-upload-dag)
@@ -15,20 +15,19 @@ This quick start tutorial uses a AWS CloudFormation \(AWS CloudFormation\) templ
 ## In this tutorial<a name="quick-start-overview"></a>
 
 The AWS CloudFormation template on this page creates the following:
-+ **Create VPC infrastructure**\. The AWS CloudFormation template on this page creates the required VPC infrastructure for an Amazon MWAA environment, as defined in [Create the VPC network](vpc-create.md)\.
-+ **Use public network**\. The AWS CloudFormation template on this page uses the public network option for Apache Airflow\. The public network option allows the Apache Airflow UI to be accessed *over the Internet* by users granted access to the [IAM policy for your environment](access-policies.md)\. In AWS CloudFormation, this value is `WebserverAccessMode: PUBLIC_ONLY`\.
-+ **Create Amazon S3 bucket**\. The AWS CloudFormation template on this page creates an Amazon S3 bucket with a `dags` folder, with versioning enabled and public access blocked, as defined in [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)\.
-+ **Create Amazon MWAA environment**\. The AWS CloudFormation template on this page creates an Amazon MWAA environment\. The environment is associated to the `dags` folder in the Amazon S3 bucket, an execution role for permissions, and it specifies the default for encryption using an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), as defined in [Create an Amazon MWAA environment](create-environment.md)\.
-+ **Enable logs**\. The AWS CloudFormation template on this page enables Apache Airflow logs in CloudWatch at the "info" level and up for the following log groups: *Airflow scheduler log group*, *Airflow web server log group*, *Airflow worker log group*, *Airflow DAG processing log group*, and the *Airflow task log group*\.
++ **VPC infrastructure**\. This template uses [Public routing over the Internet](networking-about.md#networking-about-overview-public)\. It uses the [Public network access mode](configuring-networking.md#access-overview-public) for the Apache Airflow *Web server* in `WebserverAccessMode: PUBLIC_ONLY`\.
++ **Amazon S3 bucket**\. The AWS CloudFormation template creates an Amazon S3 bucket with a `dags` folder\. It's configured to **Block all public access**, with **Bucket Versioning** enabled, as defined in [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)\.
++ **Amazon MWAA environment**\. The AWS CloudFormation template creates an Amazon MWAA environment that is associated to the `dags` folder in the Amazon S3 bucket, an execution role with permission to AWS services used by Amazon MWAA, and it specifies the default for encryption using an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), as defined in [Create an Amazon MWAA environment](create-environment.md)\.
++ **CloudWatch Logs**\. The AWS CloudFormation template enables Apache Airflow logs in CloudWatch at the "INFO" level and up for the following log groups: *Airflow scheduler log group*, *Airflow web server log group*, *Airflow worker log group*, *Airflow DAG processing log group*, and the *Airflow task log group*\.
 
 In this tutorial, you'll create and complete the following:
-+ **Upload and run DAG**\. The tutorial walks you through the steps to upload Apache Airflow's tutorial DAG for Apache Airflow v1\.10\.12 to Amazon S3, and then run in the Apache Airflow UI, as defined in [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)\.
-+ **View logs**\. The tutorial walks you through the steps to view *Airflow web server log group* in CloudWatch Logs\.
++ **Upload and run DAG**\. The tutorial walks you through the steps to upload Apache Airflow's tutorial DAG for Apache Airflow v1\.10\.12 to Amazon S3, and then run in the Apache Airflow UI, as defined in [Adding or updating DAGs](configuring-dag-folder.md)\.
++ **View logs**\. The tutorial walks you through the steps to view the *Airflow web server log group* in CloudWatch Logs\.
 + **Create IAM policy**\. The tutorial walks you through the steps to create an IAM policy for your Apache Airflow development team, as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
 
-## Before you begin<a name="quick-start-before"></a>
+## Prerequisites<a name="quick-start-before"></a>
 
-The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps in this section, you need the following:
+The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
 + [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 + [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
@@ -488,7 +487,7 @@ It takes over 30 minutes to create the Amazon VPC infrastructure, Amazon S3 buck
    aws s3 ls
    ```
 
-1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\. Substitute the sample value in *YOUR\_S3\_BUCKET\_NAME*\.
+1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\.
 
    ```
    aws s3 ls s3://YOUR_S3_BUCKET_NAME

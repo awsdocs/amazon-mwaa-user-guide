@@ -1,340 +1,517 @@
 # Create the VPC network<a name="vpc-create"></a>
 
-To use Amazon Managed Workflows for Apache Airflow \(MWAA\), you'll need the VPC networking components required by an Amazon MWAA environment\.
+Amazon Managed Workflows for Apache Airflow \(MWAA\) requires an Amazon VPC and specific networking components to support an environment\. This guide describes the different options to create the Amazon VPC network for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
-You can use an existing VPC that meets these requirements, create the VPC and networking components on the Amazon MWAA console, or use the provided AWS CloudFormation template to create the VPC and other required networking components\. This guide describes the required VPC networking components, and the steps to create the VPC network for an Amazon MWAA environment using the Amazon MWAA console, or using an Amazon MWAA AWS CloudFormation template\.
-
-**Topics**
-+ [Private and public network](#vpc-create-how-networking)
-+ [Required VPC networking components](#vpc-create-required)
+**Contents**
 + [Prerequisites](#vpc-create-prereqs)
-+ [How it works](#vpc-create-how)
-+ [Create Amazon MWAA VPC](#vpc-create-onconsole)
-+ [Using an Amazon MWAA AWS CloudFormation template](#vpc-create-template-code)
++ [Before you begin](#vpc-create-how-networking)
++ [Options to create the Amazon VPC network](#vpc-create-options)
+  + [Option one: Creating the VPC network on the Amazon MWAA console](#vpc-create-mwaa-console)
+  + [Option two: Creating a VPC network *with* Internet access](#vpc-create-template-private-or-public)
+  + [Option three: Creating a VPC network *without* Internet access](#vpc-create-template-private-only)
 + [What's next?](#create-vpc-next-up)
-
-## Private and public network<a name="vpc-create-how-networking"></a>
-
-Amazon MWAA provides private and public networking options for your Apache Airflow web server\. 
-+ **Public network**\. A public network allows the Apache Airflow UI to be accessed *over the Internet* by users granted access to the [IAM policy for your environment](access-policies.md)\.
-+ **Private network**\. A private network limits access of the Apache Airflow UI to users *within your Amazon VPC* that have been granted access to the [IAM policy for your environment](access-policies.md)\.
-**Note**  
-Additional setup and configuration is required to use a private network\. To learn more, see [Amazon MWAA network access](configuring-networking.md)\.
-
-## Required VPC networking components<a name="vpc-create-required"></a>
-
-Your Amazon VPC and its networking components must meet the following requirements to support an Amazon MWAA environment:
-
-1. Two private subnets in two different availability zones within the same Region\.
-
-1. You'll also need one of the following:
-
-   1. Two public subnets that are configured to route the private subnet data to the Internet\.
-
-   1. Or [VPC endpoint services \(AWS PrivateLink\)](https://docs.aws.amazon.com/vpc/latest/userguide/endpoint-service.html) access to the AWS services used by your environment\.
-
-**Note**  
-If you are unable to provide Internet routing for your two private subnets, [VPC endpoint services \(AWS PrivateLink\)](https://docs.aws.amazon.com/vpc/latest/userguide/endpoint-service.html) access to the AWS services used by your environment \(Amazon CloudWatch, CloudWatch Logs, Amazon ECR, Amazon S3, Amazon SQS, AWS Key Management Service\) is required\.
 
 ## Prerequisites<a name="vpc-create-prereqs"></a>
 
-The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps in this section, you need the following:
+The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
 + [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 + [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
-## How it works<a name="vpc-create-how"></a>
+## Before you begin<a name="vpc-create-how-networking"></a>
++ The [VPC network](#vpc-create) you specify for your environment can't be changed after the environment is created\.
++ You can use private or public routing for your Amazon VPC and Apache Airflow *Web server*\. To view a list of options, see [Example use cases for an Amazon VPC and Apache Airflow access mode](networking-about.md#networking-about-network-usecase)\.
 
-This section describes the public and private network options, and the architecture of an Amazon MWAA environment\.
+## Options to create the Amazon VPC network<a name="vpc-create-options"></a>
 
-### Environment architecture<a name="configuring-networking-infra"></a>
+The following section describes the options available to create the Amazon VPC network for an environment\. 
 
-The following image shows the architecture of a Amazon MWAA environment\.
+### Option one: Creating the VPC network on the Amazon MWAA console<a name="vpc-create-mwaa-console"></a>
 
-![\[This image shows the architecture of a Amazon MWAA environment.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-architecture.png)
-+ When you create an environment, Amazon MWAA creates an AWS\-managed Amazon Aurora PostgreSQL metadata database and an Fargate container in each of your two private subnets in different availability zones\. For example, a metadata database and container in `us-east-1a` and a metadata database and container in `us-east-1b` availability zones for the `us-east-1` region\.
-+ The environment class you choose for your Amazon MWAA environment determines the size of the AWS\-managed AWS Fargate containers where the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/stable/executor/celery.html) runs, and the AWS\-managed Amazon Aurora PostgreSQL metadata database where the Apache Airflow scheduler creates task instances\.
-+ The Apache Airflow workers on an Amazon MWAA environment use the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/stable/executor/celery.html) to queue and distribute tasks to multiple Celery workers from an Apache Airflow platform\. The Celery Executor runs in an AWS Fargate container\. If a Fargate container in one availability zone fails, Amazon MWAA switches to the other container in a different availability zone to run the Celery Executor, and the Apache Airflow scheduler creates a new task instance in the Amazon Aurora PostgreSQL metadata database\.
+The following section shows how to create an Amazon VPC network on the Amazon MWAA console\. This option uses [Public routing over the Internet](networking-about.md#networking-about-overview-public)\. It can be used for an Apache Airflow *Web server* with the **Private network** or **Public network** access modes\.
 
-## Create Amazon MWAA VPC<a name="vpc-create-onconsole"></a>
-
-You can use the Amazon MWAA console to create the VPC network needed for an Amazon MWAA environment\. The following image shows where you can find the **Create MWAA VPC** button on the Amazon MWAA console\.
+The following image shows where you can find the **Create MWAA VPC** button on the Amazon MWAA console\. 
 
 ![\[This image shows where you can find the Create MWAA VPC on the MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-create-vpc.png)
 
+### Option two: Creating a VPC network *with* Internet access<a name="vpc-create-template-private-or-public"></a>
+
+The following AWS CloudFormation template creates an Amazon VPC network *with Internet access* in your default AWS Region\. This option uses [Public routing over the Internet](networking-about.md#networking-about-overview-public)\. This template can be used for an Apache Airflow *Web server* with the **Private network** or **Public network** access modes\. 
+
+1. Copy the contents of the following template and save locally as `cfn-vpc-public-private.yaml`\. You can also [download the template](./samples/cfn-vpc-public-private.zip)\.
+
+   ```
+   Description:  This template deploys a VPC, with a pair of public and private subnets spread
+     across two Availability Zones. It deploys an internet gateway, with a default
+     route on the public subnets. It deploys a pair of NAT gateways (one in each AZ),
+     and default routes for them in the private subnets.
+   
+   Parameters:
+     EnvironmentName:
+       Description: An environment name that is prefixed to resource names
+       Type: String
+       Default: mwaa-
+   
+     VpcCIDR:
+       Description: Please enter the IP range (CIDR notation) for this VPC
+       Type: String
+       Default: 10.192.0.0/16
+   
+     PublicSubnet1CIDR:
+       Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+       Type: String
+       Default: 10.192.10.0/24
+   
+     PublicSubnet2CIDR:
+       Description: Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone
+       Type: String
+       Default: 10.192.11.0/24
+   
+     PrivateSubnet1CIDR:
+       Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
+       Type: String
+       Default: 10.192.20.0/24
+   
+     PrivateSubnet2CIDR:
+       Description: Please enter the IP range (CIDR notation) for the private subnet in the second Availability Zone
+       Type: String
+       Default: 10.192.21.0/24
+   
+   Resources:
+     VPC:
+       Type: AWS::EC2::VPC
+       Properties:
+         CidrBlock: !Ref VpcCIDR
+         EnableDnsSupport: true
+         EnableDnsHostnames: true
+         Tags:
+           - Key: Name
+             Value: !Ref EnvironmentName
+   
+     InternetGateway:
+       Type: AWS::EC2::InternetGateway
+       Properties:
+         Tags:
+           - Key: Name
+             Value: !Ref EnvironmentName
+   
+     InternetGatewayAttachment:
+       Type: AWS::EC2::VPCGatewayAttachment
+       Properties:
+         InternetGatewayId: !Ref InternetGateway
+         VpcId: !Ref VPC
+   
+     PublicSubnet1:
+       Type: AWS::EC2::Subnet
+       Properties:
+         VpcId: !Ref VPC
+         AvailabilityZone: !Select [ 0, !GetAZs '' ]
+         CidrBlock: !Ref PublicSubnet1CIDR
+         MapPublicIpOnLaunch: true
+         Tags:
+           - Key: Name
+             Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+   
+     PublicSubnet2:
+       Type: AWS::EC2::Subnet
+       Properties:
+         VpcId: !Ref VPC
+         AvailabilityZone: !Select [ 1, !GetAZs  '' ]
+         CidrBlock: !Ref PublicSubnet2CIDR
+         MapPublicIpOnLaunch: true
+         Tags:
+           - Key: Name
+             Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
+   
+     PrivateSubnet1:
+       Type: AWS::EC2::Subnet
+       Properties:
+         VpcId: !Ref VPC
+         AvailabilityZone: !Select [ 0, !GetAZs  '' ]
+         CidrBlock: !Ref PrivateSubnet1CIDR
+         MapPublicIpOnLaunch: false
+         Tags:
+           - Key: Name
+             Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
+   
+     PrivateSubnet2:
+       Type: AWS::EC2::Subnet
+       Properties:
+         VpcId: !Ref VPC
+         AvailabilityZone: !Select [ 1, !GetAZs  '' ]
+         CidrBlock: !Ref PrivateSubnet2CIDR
+         MapPublicIpOnLaunch: false
+         Tags:
+           - Key: Name
+             Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
+   
+     NatGateway1EIP:
+       Type: AWS::EC2::EIP
+       DependsOn: InternetGatewayAttachment
+       Properties:
+         Domain: vpc
+   
+     NatGateway2EIP:
+       Type: AWS::EC2::EIP
+       DependsOn: InternetGatewayAttachment
+       Properties:
+         Domain: vpc
+   
+     NatGateway1:
+       Type: AWS::EC2::NatGateway
+       Properties:
+         AllocationId: !GetAtt NatGateway1EIP.AllocationId
+         SubnetId: !Ref PublicSubnet1
+   
+     NatGateway2:
+       Type: AWS::EC2::NatGateway
+       Properties:
+         AllocationId: !GetAtt NatGateway2EIP.AllocationId
+         SubnetId: !Ref PublicSubnet2
+   
+     PublicRouteTable:
+       Type: AWS::EC2::RouteTable
+       Properties:
+         VpcId: !Ref VPC
+         Tags:
+           - Key: Name
+             Value: !Sub ${EnvironmentName} Public Routes
+   
+     DefaultPublicRoute:
+       Type: AWS::EC2::Route
+       DependsOn: InternetGatewayAttachment
+       Properties:
+         RouteTableId: !Ref PublicRouteTable
+         DestinationCidrBlock: 0.0.0.0/0
+         GatewayId: !Ref InternetGateway
+   
+     PublicSubnet1RouteTableAssociation:
+       Type: AWS::EC2::SubnetRouteTableAssociation
+       Properties:
+         RouteTableId: !Ref PublicRouteTable
+         SubnetId: !Ref PublicSubnet1
+   
+     PublicSubnet2RouteTableAssociation:
+       Type: AWS::EC2::SubnetRouteTableAssociation
+       Properties:
+         RouteTableId: !Ref PublicRouteTable
+         SubnetId: !Ref PublicSubnet2
+   
+   
+     PrivateRouteTable1:
+       Type: AWS::EC2::RouteTable
+       Properties:
+         VpcId: !Ref VPC
+         Tags:
+           - Key: Name
+             Value: !Sub ${EnvironmentName} Private Routes (AZ1)
+   
+     DefaultPrivateRoute1:
+       Type: AWS::EC2::Route
+       Properties:
+         RouteTableId: !Ref PrivateRouteTable1
+         DestinationCidrBlock: 0.0.0.0/0
+         NatGatewayId: !Ref NatGateway1
+   
+     PrivateSubnet1RouteTableAssociation:
+       Type: AWS::EC2::SubnetRouteTableAssociation
+       Properties:
+         RouteTableId: !Ref PrivateRouteTable1
+         SubnetId: !Ref PrivateSubnet1
+   
+     PrivateRouteTable2:
+       Type: AWS::EC2::RouteTable
+       Properties:
+         VpcId: !Ref VPC
+         Tags:
+           - Key: Name
+             Value: !Sub ${EnvironmentName} Private Routes (AZ2)
+   
+     DefaultPrivateRoute2:
+       Type: AWS::EC2::Route
+       Properties:
+         RouteTableId: !Ref PrivateRouteTable2
+         DestinationCidrBlock: 0.0.0.0/0
+         NatGatewayId: !Ref NatGateway2
+   
+     PrivateSubnet2RouteTableAssociation:
+       Type: AWS::EC2::SubnetRouteTableAssociation
+       Properties:
+         RouteTableId: !Ref PrivateRouteTable2
+         SubnetId: !Ref PrivateSubnet2
+   
+     NoIngressSecurityGroup:
+       Type: AWS::EC2::SecurityGroup
+       Properties:
+         GroupName: "no-ingress-sg"
+         GroupDescription: "Security group with no ingress rule"
+         VpcId: !Ref VPC
+   
+   Outputs:
+     VPC:
+       Description: A reference to the created VPC
+       Value: !Ref VPC
+   
+     PublicSubnets:
+       Description: A list of the public subnets
+       Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2 ]]
+   
+     PrivateSubnets:
+       Description: A list of the private subnets
+       Value: !Join [ ",", [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]]
+   
+     PublicSubnet1:
+       Description: A reference to the public subnet in the 1st Availability Zone
+       Value: !Ref PublicSubnet1
+   
+     PublicSubnet2:
+       Description: A reference to the public subnet in the 2nd Availability Zone
+       Value: !Ref PublicSubnet2
+   
+     PrivateSubnet1:
+       Description: A reference to the private subnet in the 1st Availability Zone
+       Value: !Ref PrivateSubnet1
+   
+     PrivateSubnet2:
+       Description: A reference to the private subnet in the 2nd Availability Zone
+       Value: !Ref PrivateSubnet2
+   
+     NoIngressSecurityGroup:
+       Description: Security group with no ingress rule
+       Value: !Ref NoIngressSecurityGroup
+   ```
+
+1. In your command prompt, navigate to the directory where `cfn-vpc-public-private.yaml` is stored\. For example:
+
+   ```
+   cd mwaaproject
+   ```
+
+1. Use the [aws cloudformation create\-stack](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html) command to create the stack using the AWS CLI\.
+
+   ```
+   aws cloudformation create-stack --stack-name mwaa-environment --template-body file://cfn-vpc-public-private.yaml
+   ```
 **Note**  
-This creates a VPC and the required networking components for an environment\. You need to create and configure additional resources for a private network\. It can take several minutes to create the VPC network\.
+It takes about 30 minutes to create the Amazon VPC infrastructure\.
 
-## Using an Amazon MWAA AWS CloudFormation template<a name="vpc-create-template-code"></a>
+### Option three: Creating a VPC network *without* Internet access<a name="vpc-create-template-private-only"></a>
 
-AWS CloudFormation allows you to create AWS resources using a template that describes the AWS resources you want you want to create\. The following section describes how to use an Amazon MWAA AWS CloudFormation template to create the VPC network in your default region\.
+The following AWS CloudFormation template creates an Amazon VPC network *without Internet access* in your default AWS Region\. This option uses [Private routing without Internet access](networking-about.md#networking-about-overview-private)\. This template can be used for an Apache Airflow *Web server* with the **Private network** access mode only\. It provides [VPC endpoints and access to the AWS services used by an environment](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-attach-services)\.
 
-### AWS CloudFormation VPC stack specifications<a name="vpc-create-template-components"></a>
+**Note**  
+If you choose this option, you'll need to [create and attach the VPC endpoints needed for Apache Airflow](vpc-vpe-create-access.md)\.
 
-The following Amazon MWAA AWS CloudFormation template creates a VPC network in your default region with the following specifications\.
-+ a VPC with a `10.192.0.0/16` CIDR rule
-+ a VPC security group that directs all inbound traffic to your Amazon MWAA environment and all outbound traffic to `0.0.0.0/0`
-+ one public subnet with a `10.192.10.0/24` CIDR rule in your region's first availability zone
-+ one public subnet with a `10.192.11.0/24` CIDR rule in your region's second availability zone
-+ one private subnet with a `10.192.20.0/24` CIDR rule in your region's first availability zone
-+ one private subnet with a `10.192.21.0/24` CIDR rule in your region's second availability zone
-+ creates and attaches an Internet gateway to the public subets
-+ creates and attaches two NAT gateways to the private subnets
-+ creates and attaches two elastic IP addresses \(EIPs\) to the NAT gateways
-+ creates and attaches two public route tables to the public subnets
-+ creates and attaches two private route tables to the private subnets
+1. Copy the contents of the following template and save locally as `cfn-vpc-private.yaml`\. You can also [download the template](./samples/cfn-vpc-private.zip)\.
 
-### Create the AWS CloudFormation VPC template<a name="vpc-create-template-components"></a>
+   ```
+   AWSTemplateFormatVersion: "2010-09-09"
+        
+   Parameters:
+      VpcCIDR:
+        Description: The IP range (CIDR notation) for this VPC
+        Type: String
+        Default: 10.192.0.0/16
+        
+      PrivateSubnet1CIDR:
+        Description: The IP range (CIDR notation) for the private subnet in the first Availability Zone
+        Type: String
+        Default: 10.192.10.0/24
+        
+      PrivateSubnet2CIDR:
+        Description: The IP range (CIDR notation) for the private subnet in the second Availability Zone
+        Type: String
+        Default: 10.192.11.0/24
+        
+   Resources:
+      VPC:
+        Type: AWS::EC2::VPC
+        Properties:
+          CidrBlock: !Ref VpcCIDR
+          EnableDnsSupport: true
+          EnableDnsHostnames: true
+          Tags:
+           - Key: Name
+             Value: !Ref AWS::StackName
+        
+      RouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties:
+          VpcId: !Ref VPC
+          Tags:
+           - Key: Name
+             Value: !Sub "${AWS::StackName}-route-table"
+        
+      PrivateSubnet1:
+        Type: AWS::EC2::Subnet
+        Properties:
+          VpcId: !Ref VPC
+          AvailabilityZone: !Select [ 0, !GetAZs  '' ]
+          CidrBlock: !Ref PrivateSubnet1CIDR
+          MapPublicIpOnLaunch: false
+          Tags:
+           - Key: Name
+             Value: !Sub "${AWS::StackName} Private Subnet (AZ1)"
+        
+      PrivateSubnet2:
+        Type: AWS::EC2::Subnet
+        Properties:
+          VpcId: !Ref VPC
+          AvailabilityZone: !Select [ 1, !GetAZs  '' ]
+          CidrBlock: !Ref PrivateSubnet2CIDR
+          MapPublicIpOnLaunch: false
+          Tags:
+           - Key: Name
+             Value: !Sub "${AWS::StackName} Private Subnet (AZ2)"
+        
+      PrivateSubnet1RouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+          RouteTableId: !Ref RouteTable
+          SubnetId: !Ref PrivateSubnet1
+        
+      PrivateSubnet2RouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+          RouteTableId: !Ref RouteTable
+          SubnetId: !Ref PrivateSubnet2
+        
+      S3VpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.s3"
+          VpcEndpointType: Gateway
+          VpcId: !Ref VPC
+          RouteTableIds:
+           - !Ref RouteTable
+        
+      SecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+          VpcId: !Ref VPC
+          GroupDescription: Security Group for Amazon MWAA Environments to access VPC endpoints
+          GroupName: !Sub "${AWS::StackName}-mwaa-vpc-endpoints"
+      
+      SecurityGroupIngress:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+          GroupId: !Ref SecurityGroup
+          IpProtocol: "-1"
+          SourceSecurityGroupId: !Ref SecurityGroup
+      
+      SqsVpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.sqs"
+          VpcEndpointType: Interface
+          VpcId: !Ref VPC
+          PrivateDnsEnabled: true
+          SubnetIds:
+           - !Ref PrivateSubnet1
+           - !Ref PrivateSubnet2
+          SecurityGroupIds:
+           - !Ref SecurityGroup
+        
+      CloudWatchLogsVpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.logs"
+          VpcEndpointType: Interface
+          VpcId: !Ref VPC
+          PrivateDnsEnabled: true
+          SubnetIds:
+           - !Ref PrivateSubnet1
+           - !Ref PrivateSubnet2
+          SecurityGroupIds:
+           - !Ref SecurityGroup
+        
+      CloudWatchMonitoringVpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.monitoring"
+          VpcEndpointType: Interface
+          VpcId: !Ref VPC
+          PrivateDnsEnabled: true
+          SubnetIds:
+           - !Ref PrivateSubnet1
+           - !Ref PrivateSubnet2
+          SecurityGroupIds:
+           - !Ref SecurityGroup
+        
+      KmsVpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.kms"
+          VpcEndpointType: Interface
+          VpcId: !Ref VPC
+          PrivateDnsEnabled: true
+          SubnetIds:
+           - !Ref PrivateSubnet1
+           - !Ref PrivateSubnet2
+          SecurityGroupIds:
+           - !Ref SecurityGroup
+        
+      EcrApiVpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.ecr.api"
+          VpcEndpointType: Interface
+          VpcId: !Ref VPC
+          PrivateDnsEnabled: true
+          SubnetIds:
+           - !Ref PrivateSubnet1
+           - !Ref PrivateSubnet2
+          SecurityGroupIds:
+           - !Ref SecurityGroup
+        
+      EcrDkrVpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.ecr.dkr"
+          VpcEndpointType: Interface
+          VpcId: !Ref VPC
+          PrivateDnsEnabled: true
+          SubnetIds:
+           - !Ref PrivateSubnet1
+           - !Ref PrivateSubnet2
+          SecurityGroupIds:
+           - !Ref SecurityGroup
+        
+   Outputs:
+      VPC:
+        Description: A reference to the created VPC
+        Value: !Ref VPC
+        
+      MwaaSecurityGroupId:
+        Description: Associates the Security Group to the environment to allow access to the VPC endpoints 
+        Value: !Ref SecurityGroup
+        
+      PrivateSubnets:
+        Description: A list of the private subnets
+        Value: !Join [ ",", [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]]
+        
+      PrivateSubnet1:
+        Description: A reference to the private subnet in the 1st Availability Zone
+        Value: !Ref PrivateSubnet1
+        
+      PrivateSubnet2:
+        Description: A reference to the private subnet in the 2nd Availability Zone
+        Value: !Ref PrivateSubnet2
+   ```
 
-Copy the template and paste it to a new file, then save it as `vpctemplate.yaml` in preparation for the next step\. You can also [download the template](./samples/mwaa-vpc-cfn.zip)\.
+1. In your command prompt, navigate to the directory where `cfn-vpc-private.yml` is stored\. For example:
 
-```
-Description:  This template deploys a VPC, with a pair of public and private subnets spread
-  across two Availability Zones. It deploys an internet gateway, with a default
-  route on the public subnets. It deploys a pair of NAT gateways (one in each AZ),
-  and default routes for them in the private subnets.
+   ```
+   cd mwaaproject
+   ```
 
-Parameters:
-  EnvironmentName:
-    Description: An environment name that is prefixed to resource names
-    Type: String
-    Default: mwaa-
+1. Use the [aws cloudformation create\-stack](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html) command to create the stack using the AWS CLI\.
 
-  VpcCIDR:
-    Description: Please enter the IP range (CIDR notation) for this VPC
-    Type: String
-    Default: 10.192.0.0/16
-
-  PublicSubnet1CIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
-    Type: String
-    Default: 10.192.10.0/24
-
-  PublicSubnet2CIDR:
-    Description: Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone
-    Type: String
-    Default: 10.192.11.0/24
-
-  PrivateSubnet1CIDR:
-    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
-    Type: String
-    Default: 10.192.20.0/24
-
-  PrivateSubnet2CIDR:
-    Description: Please enter the IP range (CIDR notation) for the private subnet in the second Availability Zone
-    Type: String
-    Default: 10.192.21.0/24
-
-Resources:
-  VPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: !Ref VpcCIDR
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
-      Tags:
-        - Key: Name
-          Value: !Ref EnvironmentName
-
-  InternetGateway:
-    Type: AWS::EC2::InternetGateway
-    Properties:
-      Tags:
-        - Key: Name
-          Value: !Ref EnvironmentName
-
-  InternetGatewayAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref VPC
-
-  PublicSubnet1:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: !Ref PublicSubnet1CIDR
-      MapPublicIpOnLaunch: true
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
-
-  PublicSubnet2:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      AvailabilityZone: !Select [ 1, !GetAZs  '' ]
-      CidrBlock: !Ref PublicSubnet2CIDR
-      MapPublicIpOnLaunch: true
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
-
-  PrivateSubnet1:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      AvailabilityZone: !Select [ 0, !GetAZs  '' ]
-      CidrBlock: !Ref PrivateSubnet1CIDR
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
-
-  PrivateSubnet2:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      AvailabilityZone: !Select [ 1, !GetAZs  '' ]
-      CidrBlock: !Ref PrivateSubnet2CIDR
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
-
-  NatGateway1EIP:
-    Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
-    Properties:
-      Domain: vpc
-
-  NatGateway2EIP:
-    Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
-    Properties:
-      Domain: vpc
-
-  NatGateway1:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId: !GetAtt NatGateway1EIP.AllocationId
-      SubnetId: !Ref PublicSubnet1
-
-  NatGateway2:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId: !GetAtt NatGateway2EIP.AllocationId
-      SubnetId: !Ref PublicSubnet2
-
-  PublicRouteTable:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref VPC
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Public Routes
-
-  DefaultPublicRoute:
-    Type: AWS::EC2::Route
-    DependsOn: InternetGatewayAttachment
-    Properties:
-      RouteTableId: !Ref PublicRouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
-
-  PublicSubnet1RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref PublicRouteTable
-      SubnetId: !Ref PublicSubnet1
-
-  PublicSubnet2RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref PublicRouteTable
-      SubnetId: !Ref PublicSubnet2
-
-
-  PrivateRouteTable1:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref VPC
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Private Routes (AZ1)
-
-  DefaultPrivateRoute1:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable1
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGateway1
-
-  PrivateSubnet1RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable1
-      SubnetId: !Ref PrivateSubnet1
-
-  PrivateRouteTable2:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref VPC
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} Private Routes (AZ2)
-
-  DefaultPrivateRoute2:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable2
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGateway2
-
-  PrivateSubnet2RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable2
-      SubnetId: !Ref PrivateSubnet2
-
-  NoIngressSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: "no-ingress-sg"
-      GroupDescription: "Security group with no ingress rule"
-      VpcId: !Ref VPC
-
-Outputs:
-  VPC:
-    Description: A reference to the created VPC
-    Value: !Ref VPC
-
-  PublicSubnets:
-    Description: A list of the public subnets
-    Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2 ]]
-
-  PrivateSubnets:
-    Description: A list of the private subnets
-    Value: !Join [ ",", [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]]
-
-  PublicSubnet1:
-    Description: A reference to the public subnet in the 1st Availability Zone
-    Value: !Ref PublicSubnet1
-
-  PublicSubnet2:
-    Description: A reference to the public subnet in the 2nd Availability Zone
-    Value: !Ref PublicSubnet2
-
-  PrivateSubnet1:
-    Description: A reference to the private subnet in the 1st Availability Zone
-    Value: !Ref PrivateSubnet1
-
-  PrivateSubnet2:
-    Description: A reference to the private subnet in the 2nd Availability Zone
-    Value: !Ref PrivateSubnet2
-
-  NoIngressSecurityGroup:
-    Description: Security group with no ingress rule
-    Value: !Ref NoIngressSecurityGroup
-```
-
-### Creating the VPC stack using the AWS CLI<a name="vpc-create-the-stack"></a>
-
-Use the [aws cloudformation create\-stack](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html) command to create the VPC stack with the Amazon MWAA AWS CloudFormation template using the AWS CLI\.
-
-```
-aws cloudformation create-stack --stack-name mwaaenvironment --template-body file://vpctemplate.yaml
-```
+   ```
+   aws cloudformation create-stack --stack-name mwaa-private-environment --template-body file://cfn-vpc-private.yml
+   ```
+**Note**  
+It takes about 30 minutes to create the Amazon VPC infrastructure\.
 
 ## What's next?<a name="create-vpc-next-up"></a>
 + Learn how to create an Amazon MWAA environment in [Create an Amazon MWAA environment](create-environment.md)\.
++ Learn how to create a VPN tunnel from your computer to your Amazon VPC with private routing in [Tutorial: Configuring private network access using an AWS Client VPN](tutorials-private-network-vpn-client.md)\.

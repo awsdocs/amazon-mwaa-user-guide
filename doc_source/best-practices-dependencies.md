@@ -1,6 +1,6 @@
 # Managing Python dependencies in requirements\.txt<a name="best-practices-dependencies"></a>
 
-This page describes the best practices we recommend to install and manage Python dependencies in a `requirements.txt` for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
+This page describes the best practices we recommend to install and manage Python dependencies in a `requirements.txt` file for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
 **Contents**
 + [Installing Python dependencies using PyPi\.org Requirements File Format](#best-practices-dependencies-different-ways)
@@ -20,38 +20,65 @@ The following section describes the different ways to install Python dependencie
 
 ### Option one: Python dependencies from the Python Package Index<a name="best-practices-dependencies-pip-extras"></a>
 
-The current version of Apache Airflow on Amazon MWAA is Apache Airflow v1\.10\.12 \([https://pypi.org/project/apache-airflow/1.10.12/](https://pypi.org/project/apache-airflow/1.10.12/)\)\. On a self\-managed Airflow pipeline, you install Apache Airflow with extras using a constraints file\. For example:
+On a self\-managed Airflow pipeline, you install Apache Airflow with extras using a constraints file\. For example:
 
 ```
 pip3 install apache-airflow[extras1,extras2]==1.10.12 
 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
 ```
 
-On Amazon MWAA, you install Python dependencies in your `requirements.txt`\. Amazon MWAA installs extras and their dependencies using the [Apache Airflow constraints file for Apache Airflow v1\.10\.12](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)\. For example:
+On Amazon MWAA, you install Python dependencies in your `requirements.txt`\. Amazon MWAA installs extras and their dependencies using the Apache Airflow constraints file, such as the [Apache Airflow constraints file for Apache Airflow v1\.10\.12](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)\. For example:
 
 ```
 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt" 
 apache-airflow[crypto,celery,statsd,extras1,extras2]==1.10.12
 ```
 
-We recommend the following practices to install Python dependencies for [Apache Airflow v1\.10\.12](https://airflow.apache.org/docs/apache-airflow/1.10.12/installation.html) in your `requirements.txt`\.
-+ **Specify a version**\. Specify either a specific version \(`==`\) or a maximum version \(`>=`\) for the [Apache Airflow v1\.10\.12 Extras](https://airflow.apache.org/docs/apache-airflow/1.10.12/installation.html#extra-packages) and their dependencies in your `requirements.txt` file\. 
+------
+#### [ Airflow v1\.10\.12 ]
 
-  If a package is specified without a version, Amazon MWAA installs the latest version of the package from [PyPi\.org](https://pypi.org)\. This version may conflict with other packages in your `requirements.txt`\. This also helps to prevent a future breaking update from [PyPi\.org](https://pypi.org) from being automatically applied\. 
+The following section describes how to specify Python dependencies from the [Python Package Index](https://pypi.org/) for Apache Airflow v1\.10\.12\.
 
-**Example Apache Hive**  
-The following example shows how to specify the [Apache Hive](https://airflow.apache.org/docs/apache-airflow-providers-apache-hive/stable/index.html) extra and its required dependencies:  
+1. **Specify a constraints file**\. Add the constraints file for Apache Airflow v1\.10\.12 to the top of your `requirements.txt` file to improve library compatibility\.  
+**Example Apache Airflow v1\.10\.12 constraints**  
 
-```
-apache-airflow-providers-apache-hive[amazon]>=1.0.1
-hmsclient>=0.1.0
-pyhive[hive]>=0.6.0
-thrift>=0.9.2
-```
+   ```
+   --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
+   ```
+
+1. **Apache Airflow packages**\. Specify the [Airflow package](https://airflow.apache.org/docs/apache-airflow/1.10.12/installation.html#extra-packages) and the Apache Airflow v1\.10\.12 version\.
+
+   ```
+   apache-airflow[package]==1.10.12
+   ```  
+**Example Secure Shell \(SSH\)**  
+
+   The following example `requirements.txt` file installs SSH for Apache Airflow v1\.10\.12\. 
+
+   ```
+   apache-airflow[ssh]==1.10.12
+   ```
+
+1. **Python libraries**\. Specify the version \(`==`\) in your `requirements.txt` file\. This helps to prevent a future breaking update from [PyPi\.org](https://pypi.org) from being automatically applied\.
+
+   ```
+   library == version
+   ```  
+**Example Boto3**  
+
+   The following example `requirements.txt` file installs the Boto3 library for Apache Airflow v1\.10\.12\.
+
+   ```
+   boto3 == 1.17.4
+   ```
+
+   If a package is specified without a version, Amazon MWAA installs the latest version of the package from [PyPi\.org](https://pypi.org)\. This version may conflict with other packages in your `requirements.txt`\.
+
+------
 
 ### Option two: Python wheels \(\.whl\)<a name="best-practices-dependencies-python-wheels"></a>
 
-A Python wheel is a package format designed to ship libraries with compiled artifacts\. We recommend the following practices to install Python dependencies from a Python wheel archive \(`.whl`\) for [Apache Airflow v1\.10\.12](https://airflow.apache.org/docs/apache-airflow/1.10.12/installation.html) in your `requirements.txt`\.
+A Python wheel is a package format designed to ship libraries with compiled artifacts\. We recommend the following practices to install Python dependencies from a Python wheel archive \(`.whl`\) in your `requirements.txt`\.
 
 #### In the `plugins.zip` file on an Amazon S3 bucket<a name="best-practices-dependencies-python-wheels-s3"></a>
 
@@ -93,13 +120,15 @@ The following section describes how to install an extra that's hosted on a priva
   For example, if your `requirements.txt` consists of the following:
 
   ```
-  --index-url=https://${AIRFLOW__FOO_USER}:${AIRFLOW__FOO_PASS}@my.privatepypi.com
+  --index-url=https://${AIRFLOW__FOO__USER}:${AIRFLOW__FOO__PASS}@my.privatepypi.com
   private-package==1.2.3
   ```
 
   You would add the following key\-value pairs as an [Apache Airflow configuration option](configuring-env-variables.md):
-  + `FOO_USER` : `YOUR_USER_NAME`
-  + `FOO_PASS` : `YOUR_PASSWORD`
+  + `foo.user` : `YOUR_USER_NAME`
+  + `foo.pass` : `YOUR_PASSWORD`
+
+  To learn more, see [Apache Airflow configuration options](configuring-env-variables.md)\.
 
 ## Enabling logs on the Amazon MWAA console<a name="best-practices-dependencies-troubleshooting-enable"></a>
 

@@ -1,25 +1,14 @@
 # Amazon MWAA automatic scaling<a name="mwaa-autoscaling"></a>
 
-The autoscaling mechanism automatically increases the number of Apache Airflow workers in response to queued tasks on your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment and disposes of extra workers when there are no more tasks queued or executing\. This page describes how you can configure autoscaling by specifying the maximum number of workers that run on your environment using the Amazon MWAA console\.
+The autoscaling mechanism automatically increases the number of Apache Airflow workers in response to queued tasks on your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment and disposes of extra workers when there are no more tasks queued or executing\. This page describes how you can configure autoscaling by specifying the maximum number of Apache Airflow workers that run on your environment using the Amazon MWAA console\.
 
 **Topics**
-+ [Prerequisites](#mwaa-autoscaling-prereqs)
 + [Maximum worker count](#mwaa-autoscaling-onconsole)
 + [How it works](#mwaa-autoscaling-how)
 + [Using the Amazon MWAA console](#mwaa-autoscaling-console)
 + [Example high performance use case](#mwaa-autoscaling-high-volume)
 + [Troubleshooting tasks stuck in the running state](#mwaa-autoscaling-stranded)
 + [What's next?](#mwaa-autoscaling-next-up)
-
-## Prerequisites<a name="mwaa-autoscaling-prereqs"></a>
-
-**To use the steps on this page, you'll need:**
-
-1. The required AWS resources configured for your environment as defined in [Get started with Amazon Managed Workflows for Apache Airflow \(MWAA\)](get-started.md)\.
-
-1. An execution role with a permissions policy that grants Amazon MWAA access to the AWS resources used by your environment as defined in [Amazon MWAA Execution role](mwaa-create-role.md)\.
-
-1. An AWS account with access in AWS Identity and Access Management \(IAM\) to the Amazon S3 console, or the AWS Command Line Interface \(AWS CLI\) as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
 
 ## Maximum worker count<a name="mwaa-autoscaling-onconsole"></a>
 
@@ -62,9 +51,9 @@ The following section describes the type of configurations you can use to enable
 ### On\-premise Apache Airflow<a name="mwaa-autoscaling-high-volume-aa"></a>
 
 Typically, in an on\-premise Apache Airflow platform, you would configure task parallelism, autoscaling, and concurrency settings in your `airflow.cfg` file:
-+ `core.parallelism` – The maximum number of task instances that can run simultaneously across the entire environment in parallel \([parallelism](https://airflow.apache.org/docs/stable/configurations-ref.html#parallelism)\)\.
-+ `core.dag_concurrency` – The maximum concurrency for DAGs \(not workers\) in [core\.dag\_concurrency](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#dag-concurrency)\.
-+ `celery.worker_autoscale` – The maximum and minimum number of tasks that can run concurrently on any worker using the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/stable/executor/celery.html) in [worker\_autoscale](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#worker-autoscale)\. Value must be comma\-separated in the following order: `max_concurrency,min_concurrency`\. 
++ `core.parallelism` – The maximum number of task instances that can run simultaneously across the entire environment in parallel\.
++ `core.dag_concurrency` – The maximum concurrency for DAGs \(not workers\)\.
++ `celery.worker_autoscale` – The maximum and minimum number of tasks that can run concurrently on any worker\.
 
 For example, if `core.parallelism` was set to `100` and `core.dag_concurrency` was set to `7`, you would still only be able to run a total of `14` tasks concurrently if you had 2 DAGs\. Given, each DAG is set to run only seven tasks concurrently \(in `core.dag_concurrency`\), even though overall parallelism is set to `100` \(in `core.parallelism`\)\.
 
@@ -90,7 +79,13 @@ This means you can run 50 concurrent tasks in your environment\. Any tasks beyon
 
 1. Increase the **Maximum worker count**\. In this example, increasing maximum workers from `10` to `20` would double the number of concurrent tasks the environment can run\.
 
-**Specify Minimum workers**\. You can also specify the minimum number of Apache Airflow *Workers* that run in your environment using the AWS Command Line Interface \(AWS CLI\)\. To learn more, see the [update\-environment](https://docs.aws.amazon.com/cli/latest/reference/mwaa/update-environment.html) command in the AWS CLI\.
+**Specify Minimum workers**\. You can also specify the minimum number of Apache Airflow *Workers* that run in your environment using the AWS Command Line Interface \(AWS CLI\)\. For example:
+
+```
+aws mwaa update-environment --max-workers 10 --min-workers 10 --name YOUR_ENVIRONMENT_NAME
+```
+
+To learn more, see the [update\-environment](https://docs.aws.amazon.com/cli/latest/reference/mwaa/update-environment.html) command in the AWS CLI\.
 
 ## Troubleshooting tasks stuck in the running state<a name="mwaa-autoscaling-stranded"></a>
 

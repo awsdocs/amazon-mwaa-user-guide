@@ -1,24 +1,19 @@
 # Configuring an Apache Airflow connection using a Secrets Manager secret key<a name="connections-secrets-manager"></a>
 
-AWS Secrets Manager is a supported alternative Apache Airflow backend on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. This guide shows how to use Secrets Manager to securely store secrets for Apache Airflow variables and an AWS connection for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. 
+AWS Secrets Manager is a supported alternative Apache Airflow backend on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. This guide shows how to use AWS Secrets Manager to securely store secrets for Apache Airflow variables and an Apache Airflow connection on Amazon Managed Workflows for Apache Airflow \(MWAA\)\. 
 
 **Note**  
 [AWS Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) Parameter Store is not a supported backend at this time on Amazon MWAA\.
 
 **Contents**
-+ [Prerequisites](#connections-sm-prereqs)
 + [Step one: Permit access of the secret keys to Amazon MWAA](#connections-sm-policy)
 + [Step two: Create the Secrets Manager backend as an Apache Airflow configuration option](#connections-sm-aa-configuration)
 + [Step three: Generate an Apache Airflow AWS connection URI string](#connections-sm-aa-uri)
 + [Step four: Add the variables in Secrets Manager](#connections-sm-createsecret-variables)
 + [Step five: Add the connection in Secrets Manager](#connections-sm-createsecret-connection)
++ [Sample code](#connections-sm-samples)
 + [Using AWS blogs and tutorials](#connections-sm-blogs)
 + [What's next?](#connections-sm-next-up)
-
-## Prerequisites<a name="connections-sm-prereqs"></a>
-
-**To use the steps on this page, you'll need:**
-+ The required AWS resources configured for your environment as defined in [Get started with Amazon Managed Workflows for Apache Airflow \(MWAA\)](get-started.md)\.
 
 ## Step one: Permit access of the secret keys to Amazon MWAA<a name="connections-sm-policy"></a>
 
@@ -282,12 +277,8 @@ The following section describes how to create the secret for your connection str
 
 1. Choose **Next**, **Next**, **Store**\.
 
-**Note**  
-If the name of your secret key for the connection is `airflow/connections/mysecret`, you'll use the connection in your DAG as:  
-
-```
-conn_id="mysecret", ...)
-```
+## Sample code<a name="connections-sm-samples"></a>
++ Learn how to use the secret key \(`myconn`\) on this page using the sample code at [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)\.
 
 ## Using AWS blogs and tutorials<a name="connections-sm-blogs"></a>
 + Use a Python script to migrate a large volume of Apache Airflow variables and connections to Secrets Manager in [Move your Apache Airflow connections and variables to AWS Secrets Manager](https://aws.amazon.com/blogs/opensource/move-apache-airflow-connections-variables-aws-secrets-manager/)\.

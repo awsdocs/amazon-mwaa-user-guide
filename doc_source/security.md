@@ -17,5 +17,5 @@ This documentation helps you understand how to apply the shared responsibility m
 + [Compliance Validation](compliance-validation.md)
 + [Resilience](disaster-recovery-resiliency.md)
 + [Infrastructure Security](infrastructure-security.md)
-+ [Configuration and Vulnerability Analysis in Amazon MWAA](w457aac31c32.md)
++ [Configuration and Vulnerability Analysis in Amazon MWAA](w445aac33c32.md)
 + [Best practices](security-best-practices.md)

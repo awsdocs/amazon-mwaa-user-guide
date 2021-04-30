@@ -1,27 +1,32 @@
 # Installing Python dependencies<a name="working-dags-dependencies"></a>
 
-An "extra" is a Python subpackage that is not included in the Apache Airflow base install \([https://pypi.org/project/apache-airflow/1.10.12/](https://pypi.org/project/apache-airflow/1.10.12/)\) on your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. It is referred to throughout this page as a Python dependency\. This page describes the steps to install Apache Airflow Python dependencies on your Amazon MWAA environment using a `requirements.txt` file\.
+A Python dependency is any package or distribution that is not included in the Apache Airflow base install for your Apache Airflow version on your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. This page describes the steps to install Apache Airflow Python dependencies on your Amazon MWAA environment using a `requirements.txt` file in your Amazon S3 bucket\.
 
-**Topics**
+**Contents**
 + [Prerequisites](#working-dags-dependencies-prereqs)
 + [How it works](#working-dags-dependencies-how)
-+ [Creating a `requirements.txt`](#working-dags-dependencies-syntax-create)
-+ [Example requirements\.txt for Apache Hive](#working-dags-dependencies-example-install)
++ [Python dependencies overview](#working-dags-dependencies-overview)
+  + [Python dependencies location and size limits](#working-dags-dependencies-quota)
+  + [Testing Python dependencies using the Amazon MWAA CLI utility](#working-dags-dependencies-cli-utility)
+  + [Creating a `requirements.txt`](#working-dags-dependencies-syntax-create)
 + [Uploading `requirements.txt` to Amazon S3](#configuring-dag-dependencies-upload)
-+ [Specifying the path to `requirements.txt` on the Amazon MWAA console \(the first time\)](#configuring-dag-dependencies-first)
-+ [Specifying the `requirements.txt` version on the Amazon MWAA console](#working-dags-dependencies-mwaaconsole-version)
+  + [Using the AWS CLI](#configuring-dag-dependencies-upload-cli)
+  + [Using the Amazon S3 console](#configuring-dag-dependencies-upload-console)
++ [Installing Python dependencies on your environment](#configuring-dag-dependencies-installing)
+  + [Specifying the path to `requirements.txt` on the Amazon MWAA console \(the first time\)](#configuring-dag-dependencies-first)
+  + [Specifying the `requirements.txt` version on the Amazon MWAA console](#working-dags-dependencies-mwaaconsole-version)
 + [Viewing logs for your `requirements.txt`](#working-dags-dependencies-logs)
-+ [Viewing changes on your Apache Airflow UI](#configuring-dag-dependencies-mwaaconsole-view)
++ [What's next?](#working-dags-dependencies-next-up)
 
 ## Prerequisites<a name="working-dags-dependencies-prereqs"></a>
 
-**To use the steps on this page, you'll need:**
+You'll need the following before you can complete the steps on this page\.
 
-1. The required AWS resources configured for your environment as defined in [Get started with Amazon Managed Workflows for Apache Airflow \(MWAA\)](get-started.md)\.
+1. An [AWS account with access](access-policies.md) to your environment\.
 
-1. An execution role with a permissions policy that grants Amazon MWAA access to the AWS resources used by your environment as defined in [Amazon MWAA Execution role](mwaa-create-role.md)\.
+1. An [Amazon S3 bucket](mwaa-s3-bucket.md) with *Public Access Blocked* and *Versioning Enabled*\.
 
-1. An AWS account with access in AWS Identity and Access Management \(IAM\) to the Amazon S3 console, or the AWS Command Line Interface \(AWS CLI\) as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
+1. An [execution role](mwaa-create-role.md) that grants Amazon MWAA access to the AWS resources used by your environment\.
 
 ## How it works<a name="working-dags-dependencies-how"></a>
 
@@ -38,52 +43,66 @@ To run Python dependencies on your environment, you must do three things:
 **Note**  
 If this is the first time you're creating and uploading a `requirements.txt` to your Amazon S3 bucket, you'll also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
-## Creating a `requirements.txt`<a name="working-dags-dependencies-syntax-create"></a>
+## Python dependencies overview<a name="working-dags-dependencies-overview"></a>
 
-If your Apache Airflow platform uses [Extra packages](https://airflow.apache.org/docs/stable/installation.html#extra-packages), specify the names of the packages and their required dependencies in your `requirements.txt`\.
+You can install Apache Airflow extras and other Python dependencies from the Python Package Index \(PyPi\.org\), Python wheels \(`.whl`\), or Python dependencies hosted on a private PyPi/PEP\-503 Compliant Repo on your environment\. 
 
-We recommend always specifying either a specific version \(`==`\) or a maximum version \(`>=`\) for the dependencies in your `requirements.txt` file\. This helps to prevent a future breaking update from [PyPi\.org](http://pypi.org/) from being automatically applied\. We also recommend verifying whether you need to add any dependent packages\.
+### Python dependencies location and size limits<a name="working-dags-dependencies-quota"></a>
 
-**To find the package version and its dependencies**
+The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during startup on the AWS\-managed Fargate container for your environment at `/usr/local/airflow/requirements/requirements.txt`\. 
++ **Size limit**\. We recommend a `requirements.txt` file that references libraries whose combined size is less than than 1 GB\. The more libraries Amazon MWAA needs to install, the longer the *startup* time on an environment\. Although Amazon MWAA doesn't limit the size of installed libraries explicitly, if dependencies can't be installed within ten minutes, the Fargate service will time\-out and attempt to rollback the environment to a stable state\.
 
-1. Open the [Documentation page](https://airflow.apache.org/docs/) in the *Apache Airflow reference guide*\.
+**Note**  
+For security reasons, the Apache Airflow *Web server* on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the *Web server*\.
 
-1. Choose an Apache Airflow package\.
+### Testing Python dependencies using the Amazon MWAA CLI utility<a name="working-dags-dependencies-cli-utility"></a>
++ The command line interface \(CLI\) utility replicates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment locally\.
++ The CLI builds a Docker container image locally that’s similar to an Amazon MWAA production image\. This allows you to run a local Apache Airflow environment to develop and test DAGs, custom plugins, and dependencies before deploying to Amazon MWAA\.
++ To run the CLI, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
-1. Add the required dependencies in **Pip requirements** to your `requirements.txt` file\.
+### Creating a `requirements.txt`<a name="working-dags-dependencies-syntax-create"></a>
 
-   For example, if you're using the [apache\-airflow\-providers\-apache\-spark](https://airflow.apache.org/docs/apache-airflow-providers-apache-spark/stable/index.html) package, add the following packages and its required pip dependency with the versions:
+------
+#### [ Airflow v1\.10\.12 ]
+
+The following section describes how to specify Python dependencies from the [Python Package Index](https://pypi.org/) for Apache Airflow v1\.10\.12\.
+
+1. **Specify a constraints file**\. Add the constraints file for Apache Airflow v1\.10\.12 to the top of your `requirements.txt` file to improve library compatibility\.  
+**Example Apache Airflow v1\.10\.12 constraints**  
 
    ```
-   apache-airflow-providers-apache-spark==1.0.1
-   pyspark>=3.1.1
+   --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
    ```
 
-1. Apache Airflow provides a list of packages typically used with the current package in **Cross provider package dependencies**\. Identify any other dependencies from this list that you may want to specify in your `requirements.txt` file\.
+1. **Apache Airflow packages**\. Specify the [Airflow package](https://airflow.apache.org/docs/apache-airflow/1.10.12/installation.html#extra-packages) and the Apache Airflow v1\.10\.12 version\.
 
-## Example requirements\.txt for Apache Hive<a name="working-dags-dependencies-example-install"></a>
+   ```
+   apache-airflow[package]==1.10.12
+   ```  
+**Example Secure Shell \(SSH\)**  
 
-The following example `requirements.txt` file installs [Apache Hive](https://airflow.apache.org/docs/apache-airflow-providers-apache-hive/stable/index.html) and its required dependencies\.
+   The following example `requirements.txt` file installs SSH for Apache Airflow v1\.10\.12\. 
 
-Open the [Apache Hive](https://airflow.apache.org/docs/apache-airflow-providers-apache-hive/stable/index.html) page in the *Apache Airflow reference guide*\. The package lists three required dependencies in **PIP requirements** which we've added to our `requirements.txt` file\.
+   ```
+   apache-airflow[ssh]==1.10.12
+   ```
 
-```
-apache-airflow-providers-apache-hive[amazon]>=1.0.1
-hmsclient>=0.1.0
-pyhive[hive]>=0.6.0
-thrift>=0.9.2
-```
+1. **Python libraries**\. Specify the version \(`==`\) in your `requirements.txt` file\. This helps to prevent a future breaking update from [PyPi\.org](https://pypi.org) from being automatically applied\.
 
-You may want to specify other dependencies listed in **Cross provider package dependencies**\. For example, if you want to use Presto with Apache Hive in your DAGs, you need to add [https://airflow.apache.org/docs/apache-airflow-providers-presto/stable/index.html](https://airflow.apache.org/docs/apache-airflow-providers-presto/stable/index.html) and its required dependencies in the **Pip requirements** list\.
+   ```
+   library == version
+   ```  
+**Example Boto3**  
 
-```
-apache-airflow-providers-apache-hive[amazon]>=1.0.1
-hmsclient>=0.1.0
-pyhive[hive]>=0.6.0
-thrift>=0.9.2
-apache-airflow-providers-presto>=1.0.1
-presto-python-client>=0.7.0
-```
+   The following example `requirements.txt` file installs the Boto3 library for Apache Airflow v1\.10\.12\.
+
+   ```
+   boto3 == 1.17.4
+   ```
+
+   If a package is specified without a version, Amazon MWAA installs the latest version of the package from [PyPi\.org](https://pypi.org)\. This version may conflict with other packages in your `requirements.txt`\.
+
+------
 
 ## Uploading `requirements.txt` to Amazon S3<a name="configuring-dag-dependencies-upload"></a>
 
@@ -91,11 +110,11 @@ You can use the Amazon S3 console or the AWS Command Line Interface \(AWS CLI\) 
 
 ### Using the AWS CLI<a name="configuring-dag-dependencies-upload-cli"></a>
 
-The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps in this section, you need the following:
+The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
 + [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 + [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
-**To upload using the AWS CLI**
+****
 
 1. Use the following command to list all of your Amazon S3 buckets\.
 
@@ -103,7 +122,7 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
    aws s3 ls
    ```
 
-1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\. Substitute the sample value in *YOUR\_S3\_BUCKET\_NAME*\.
+1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\.
 
    ```
    aws s3 ls s3://YOUR_S3_BUCKET_NAME
@@ -112,7 +131,7 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
 1. The following command uploads a `requirements.txt` file to an Amazon S3 bucket\.
 
    ```
-   aws s3 cp requirements.txt s3://your-s3-bucket-any-name/requirements.txt
+   aws s3 cp requirements.txt s3://YOUR_S3_BUCKET_NAME/requirements.txt
    ```
 
 ### Using the Amazon S3 console<a name="configuring-dag-dependencies-upload-console"></a>
@@ -133,7 +152,13 @@ The Amazon S3 console is a web\-based user interface that allows you to create a
 
 1. Select the local copy of your `requirements.txt`, choose **Upload**\.
 
-## Specifying the path to `requirements.txt` on the Amazon MWAA console \(the first time\)<a name="configuring-dag-dependencies-first"></a>
+## Installing Python dependencies on your environment<a name="configuring-dag-dependencies-installing"></a>
+
+This section describes how to install the dependencies you uploaded to your Amazon S3 bucket by specifying the path to the requirements\.txt file, and specifying the version of the requirements\.txt file each time it's updated\.
+
+### Specifying the path to `requirements.txt` on the Amazon MWAA console \(the first time\)<a name="configuring-dag-dependencies-first"></a>
+
+If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you'll also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
 1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
 
@@ -151,7 +176,7 @@ The Amazon S3 console is a web\-based user interface that allows you to create a
 
 You can begin using the new packages immediately after your environment finishes updating\.
 
-## Specifying the `requirements.txt` version on the Amazon MWAA console<a name="working-dags-dependencies-mwaaconsole-version"></a>
+### Specifying the `requirements.txt` version on the Amazon MWAA console<a name="working-dags-dependencies-mwaaconsole-version"></a>
 
 You need to specify the version of your `requirements.txt` file on the Amazon MWAA console each time you upload a new version of your `requirements.txt` in your Amazon S3 bucket\. 
 
@@ -197,15 +222,5 @@ You can view Apache Airflow logs for the *Scheduler* scheduling your workflows a
    No matching distribution found for LibraryName==1.0.0 (from -r /usr/local/airflow/requirements/requirements.txt (line 4))
    ```
 
-## Viewing changes on your Apache Airflow UI<a name="configuring-dag-dependencies-mwaaconsole-view"></a>
-
-**To access your Apache Airflow UI**
-
-1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
-
-1. Choose an environment\.
-
-1. Choose **Open Airflow UI**\.
-
-**Note**  
-You may need to ask your account administrator to add `AmazonMWAAWebServerAccess` permissions for your account to view your Apache Airflow UI\. For more information, see [Managing access](https://docs.aws.amazon.com/mwaa/latest/userguide/manage-access.html)\.
+## What's next?<a name="working-dags-dependencies-next-up"></a>
++ Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.

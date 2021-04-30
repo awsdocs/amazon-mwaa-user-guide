@@ -92,24 +92,6 @@ with DAG(
     )
 ```
 
-**To create the Lambda function**
-
-1. Open the [Functions page](https://console.aws.amazon.com/lambda/home#/functions) of the Lambda console\.
-
-1. Choose **Create function**\.
-
-1. Enter a name in **Function name** \(such as `MyMWAAFunction`\)\.
-
-1. Choose **Python 3\.8** in the **Runtime** dropdown list\.
-
-1. Choose **Create function**\.
-
-1. Open the `lambda_function.py` file\.
-
-1. Paste the code\.
-
-1. Choose **Deploy**\.
-
 ## What's next?<a name="samples-trigger-dag-envab.xml-next-up"></a>
 + Learn how to upload code to a DAGs folder in [Adding or updating DAGs](configuring-dag-folder.md)\.
 + Learn how to upload a `requirements.txt` file in [Installing Python dependencies](working-dags-dependencies.md)\.

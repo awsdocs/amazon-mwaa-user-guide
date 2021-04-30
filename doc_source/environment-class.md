@@ -3,20 +3,10 @@
 The environment class you choose for your Amazon MWAA environment determines the size of the AWS\-managed AWS Fargate containers where the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/stable/executor/celery.html) runs, and the AWS\-managed Amazon Aurora PostgreSQL metadata database where the Apache Airflow scheduler creates task instances\. This page describes each Amazon MWAA environment class, and steps to update the environment class on the Amazon MWAA console\.
 
 **Topics**
-+ [Prerequisites](#environment-class-prereqs)
 + [Environment class](#environment-class-onconsole)
 + [Environment capabilities](#environment-class-sizes)
-+ [Using the Amazon MWAA console](#environment-class-config)
-
-## Prerequisites<a name="environment-class-prereqs"></a>
-
-**To use the steps on this page, you'll need:**
-
-1. The required AWS resources configured for your environment as defined in [Get started with Amazon Managed Workflows for Apache Airflow \(MWAA\)](get-started.md)\.
-
-1. An execution role with a permissions policy that grants Amazon MWAA access to the AWS resources used by your environment as defined in [Amazon MWAA Execution role](mwaa-create-role.md)\.
-
-1. An AWS account with access in AWS Identity and Access Management \(IAM\) to the Amazon S3 console, or the AWS Command Line Interface \(AWS CLI\) as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
++ [Updating the environment class on the Amazon MWAA console](#environment-class-config)
++ [Troubleshooting environment updates](#environment-class-troubleshooting)
 
 ## Environment class<a name="environment-class-onconsole"></a>
 
@@ -50,7 +40,7 @@ The environment class you choose for your Amazon MWAA environment determines the
 
 You can use `celery.worker_autoscale` to increase tasks per worker\. To learn more, see the [Example high performance use case](mwaa-autoscaling.md#mwaa-autoscaling-high-volume)\.
 
-## Using the Amazon MWAA console<a name="environment-class-config"></a>
+## Updating the environment class on the Amazon MWAA console<a name="environment-class-config"></a>
 
 You can update your environment class on the Amazon MWAA console at any time\.
 
@@ -70,3 +60,6 @@ You can update your environment class on the Amazon MWAA console at any time\.
 
 **Note**  
 It can take up to 30 minutes for changes to take effect\.
+
+## Troubleshooting environment updates<a name="environment-class-troubleshooting"></a>
++ If you update your environment to a different environment class \(such as changing an `mw1.medium` to an `mw1.small`\), and the request to update your environment failed, the environment status goes into an `UPDATE_FAILED` state and the environment is rolled back to, and is billed according to, the previous stable version of an environment\. To learn more, see [I tried changing the environment class but the update failed](troubleshooting.md#t-rollback-billing-failure)\.

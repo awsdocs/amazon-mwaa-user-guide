@@ -1,25 +1,34 @@
 # Installing custom plugins<a name="configuring-dag-import-plugins"></a>
 
-Amazon Managed Workflows for Apache Airflow \(MWAA\) supports Apache Airflow's built\-in plugin manager, allowing you to use custom Apache Airflow operators, hooks, sensors, or interfaces\. This page describes the steps to install Apache Airflow [custom plugins](https://airflow.incubator.apache.org/plugins.html) on your Amazon MWAA environment using a `plugins.zip` file\.
+Amazon Managed Workflows for Apache Airflow \(MWAA\) supports Apache Airflow's built\-in plugin manager, allowing you to use custom Apache Airflow operators, hooks, sensors, or interfaces\. This page describes the steps to install [Apache Airflow custom plugins](https://airflow.incubator.apache.org/plugins.html) on your Amazon MWAA environment using a `plugins.zip` file\.
 
-**Topics**
+**Contents**
 + [Prerequisites](#configuring-dag-plugins-prereqs)
 + [How it works](#configuring-dag-plugins-how)
-+ [Creating a plugins\.zip file](#configuring-dag-plugins-zip)
++ [Custom plugins overview](#configuring-dag-plugins-overview)
+  + [Custom plugins directory and size limits](#configuring-dag-plugins-quota)
+  + [Example using a flat directory structure in plugins\.zip](#configuring-dag-plugins-overview-simple)
+  + [Example using a nested directory structure in plugins\.zip](#configuring-dag-plugins-overview-complex)
+  + [Testing custom plugins using the Amazon MWAA CLI utility](#configuring-dag-plugins-cli-utility)
+  + [Creating a plugins\.zip file](#configuring-dag-plugins-zip)
 + [Uploading `plugins.zip` to Amazon S3](#configuring-dag-plugins-upload)
-+ [Specifying the path to `plugins.zip` on the Amazon MWAA console \(the first time\)](#configuring-dag-plugins-mwaa-first)
-+ [Specifying the `plugins.zip` version on the Amazon MWAA console](#configuring-dag-plugins-s3-mwaaconsole)
-+ [Viewing changes on your Apache Airflow UI](#configuring-dag-plugins-s3-mwaaconsole-view)
+  + [Using the AWS CLI](#configuring-dag-plugins-upload-cli)
+  + [Using the Amazon S3 console](#configuring-dag-plugins-upload-console)
++ [Installing custom plugins on your environment](#configuring-dag-plugins-mwaa-installing)
+  + [Specifying the path to `plugins.zip` on the Amazon MWAA console \(the first time\)](#configuring-dag-plugins-mwaa-first)
+  + [Specifying the `plugins.zip` version on the Amazon MWAA console](#configuring-dag-plugins-s3-mwaaconsole)
++ [Example use cases for plugins\.zip](#configuring-dag-plugins-examples)
++ [What's next?](#configuring-dag-plugins-next-up)
 
 ## Prerequisites<a name="configuring-dag-plugins-prereqs"></a>
 
-**To use the steps on this page, you'll need:**
+You'll need the following before you can complete the steps on this page\.
 
-1. The required AWS resources configured for your environment as defined in [Get started with Amazon Managed Workflows for Apache Airflow \(MWAA\)](get-started.md)\.
+1. An [AWS account with access](access-policies.md) to your environment\.
 
-1. An execution role with a permissions policy that grants Amazon MWAA access to the AWS resources used by your environment as defined in [Amazon MWAA Execution role](mwaa-create-role.md)\.
+1. An [Amazon S3 bucket](mwaa-s3-bucket.md) with *Public Access Blocked* and *Versioning Enabled*\.
 
-1. An AWS account with access in AWS Identity and Access Management \(IAM\) to the Amazon S3 console, or the AWS Command Line Interface \(AWS CLI\) as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
+1. An [execution role](mwaa-create-role.md) that grants Amazon MWAA access to the AWS resources used by your environment\.
 
 ## How it works<a name="configuring-dag-plugins-how"></a>
 
@@ -27,16 +36,90 @@ To run custom plugins on your environment, you must do three things:
 
 1. Create a `plugins.zip` file locally\.
 
-1. Upload the local `plugins.zip` file to your Amazon S3 storage bucket\.
+1. Upload the local `plugins.zip` file to your Amazon S3 bucket\.
 
 1. Specify the version of this file in the **Plugins file** field on the Amazon MWAA console\.
 
 **Note**  
 If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you'll also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
-Apache Airflow's built\-in plugin manager can integrate external features to its core by simply dropping files in an `$AIRFLOW_HOME/plugins` folder\. It allows you to use custom Apache Airflow operators, hooks, sensors, or interfaces\.
+## Custom plugins overview<a name="configuring-dag-plugins-overview"></a>
 
-Amazon MWAA automatically detects and syncs changes from your Amazon S3 bucket to Apache Airflow every 30 seconds\. To run an Apache Airflow platform that uses custom plugins on an Amazon MWAA environment, you need to create and copy a `plugins.zip` file to your Amazon S3 storage bucket\. For example, the contents of the `plugins.zip` file in your storage bucket may look like this:
+Apache Airflow's built\-in plugin manager can integrate external features to its core by simply dropping files in an `$AIRFLOW_HOME/plugins` folder\. It allows you to use custom Apache Airflow operators, hooks, sensors, or interfaces\. The following section provides an example of flat and nested directory structures in a local development environment and the resulting import statements, which determines the directory structure within a plugins\.zip\.
+
+### Custom plugins directory and size limits<a name="configuring-dag-plugins-quota"></a>
+
+The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during startup on the AWS\-managed Fargate container for your environment at `/usr/local/airflow/plugins/*`\.
++ **Directory structure**\. The directory structure \(at `/*`\) is based on the contents of your `plugins.zip` file\. For example, if your `plugins.zip` contains the `operators` directory as a top\-level directory, then the directory will be extracted to `/usr/local/airflow/plugins/operators` on your environment\.
++ **Size limit**\. We recommend a `plugins.zip` file less than than 1 GB\. The larger the size of a `plugins.zip` file, the longer the startup time on an environment\. Although Amazon MWAA doesn't limit the size of a `plugins.zip` file explicitly, if dependencies can't be installed within ten minutes, the Fargate service will time\-out and attempt to rollback the environment to a stable state\. 
+
+**Note**  
+For security reasons, the Apache Airflow *Web server* on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the *Web server*\.
+
+The following section uses sample code in the *Apache Airflow reference guide* to show how to structure your local development environment\.
+
+### Example using a flat directory structure in plugins\.zip<a name="configuring-dag-plugins-overview-simple"></a>
+
+------
+#### [ Airflow v1\.10\.12 ]
+
+The following example shows custom plugin files in a flat directory structure, and how to change the code to use a nested directory structure for Apache Airflow v1\.10\.12\.
+
+**Example Oracle plugins\.zip**  
+The following example shows the top\-level tree of a plugins\.zip file for the custom Oracle plugin in [Creating a custom plugin with Oracle](samples-oracle.md)\.   
+
+```
+├── env_var_plugin_oracle.py
+└── instantclient_18_5/
+```
+
+**Example dags/oracle\.py**  
+The following example shows the import statements in the DAG \([DAGs folder](https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-dag-folder.html#configuring-dag-folder-how)\) that uses the custom plugin\.  
+
+```
+from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
+from airflow.utils.dates import days_ago
+import os
+import cx_Oracle
+...
+```
+
+**Example plugins/boto\_plugin\.py**  
+If you want to use a nested directory structure, you can also create a custom plugin at the top\-level of your plugins\.zip file \(saved locally at the root in the `plugins/` directory\) that uses the custom Oracle plugin in [Creating a custom plugin with Oracle](samples-oracle.md)\.  
+
+```
+from airflow.plugins_manager import AirflowPlugin
+from airflow.hooks.base_hook import BaseHook
+
+import boto3
+
+class BotoHook(BaseHook):
+    def get_version(self):
+        return boto3.__version__                 
+
+class BotoPlugin(AirflowPlugin):                
+    name = 'boto_plugin'          
+    hooks = [BotoHook]
+```
+
+**Example dags/oracle\.py**  
+The following example shows the import statements in the DAG \([DAGs folder](https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-dag-folder.html#configuring-dag-folder-how)\) that uses the custom plugin\.  
+
+```
+from airflow import DAG
+from boto_plugin import BotoHook
+...
+```
+
+------
+
+### Example using a nested directory structure in plugins\.zip<a name="configuring-dag-plugins-overview-complex"></a>
+
+------
+#### [ Airflow v1\.10\.12 ]
+
+The following example shows custom plugin files in separate directories in the `hooks`, `operators`, and `sensors` directory for Apache Airflow v1\.10\.12\.
 
 **Example plugins\.zip**  
 
@@ -49,25 +132,56 @@ hooks/
 operators/
     |-- __init__.py
     |-- my_airflow_operator.py
+    |-- hello_operator.py
 sensors/
     |-- __init__.py
     |-- my_airflow_sensor.py
 ```
 
-This assumes that your DAG definition in `dag_def.py` of your [DAG folder](https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-dag-folder.html#configuring-dag-folder-how) uses an import statement for each file\. For example:
+The following example shows the import statements in the DAG \([DAGs folder](https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-dag-folder.html#configuring-dag-folder-how)\) that uses the custom plugins\.
 
-**Example dag\_def\.py**  
+**Example dags/your\_dag\.py**  
 
 ```
-from airflow.operators.my_airflow_operator import MyOperator
-from airflow.sensors.my_airflow_sensor import MySensor
-from airflow.hooks.my_airflow_hook import MyHook
-...
+from airflow import DAG
+from datetime import datetime, timedelta
+from operators.my_operator import MyOperator
+from sensors.my_sensor import MySensor
+from operators.hello_operator import HelloOperator
+
+default_args = {
+	'owner': 'airflow',
+	'depends_on_past': False,
+	'start_date': datetime(2018, 1, 1),
+	'email_on_failure': False,
+	'email_on_retry': False,
+	'retries': 1,
+	'retry_delay': timedelta(minutes=5),
+}
+
+
+with DAG('customdag',
+		 max_active_runs=3,
+		 schedule_interval='@once',
+		 default_args=default_args) as dag:
+
+	sens = MySensor(
+		task_id='taskA'
+	)
+
+	op = MyOperator(
+		task_id='taskB',
+		my_field='some text'
+	)
+
+	hello_task = HelloOperator(task_id='sample-task', name='foo_bar')
+
+
+
+	sens >> op >> hello_task
 ```
 
-It also assumes that `my_airflow_plugin.py` uses the `AirflowPlugin` class:
-
-**Example my\_airflow\_plugin\.py**  
+**Example plugins/my\_airflow\_plugin\.py**  
 
 ```
 from airflow.plugins_manager import AirflowPlugin
@@ -82,42 +196,94 @@ class PluginName(AirflowPlugin):
     hooks = [MyHook]
     operators = [MyOperator]
     sensors = [MySensor]
-    ...
 ```
 
-To refer to a given plugin from your DAG, import into your Python file\. For example, the Python code for these files may look like this:
+The following examples show each of the import statements needed in the custom plugin files\.
 
-**Example my\_airflow\_hook\.py**  
-
-```
-from hooks.my_airflow_hook import BaseHook
-
-    class MyHook(BaseHook):
-        ...
-```
-
-**Example my\_airflow\_sensor\.py**  
+**Example hooks/my\_airflow\_hook\.py**  
 
 ```
-from sensors.my_airflow_sensor import BaseSensorOperator
+from airflow.hooks.base_hook import BaseHook
+
+
+class MyHook(BaseHook):
+
+    def my_method(self):
+        print("Hello World")
+```
+
+**Example sensors/my\_airflow\_sensor\.py**  
+
+```
+from airflow.sensors.base_sensor_operator import BaseSensorOperator
 from airflow.utils.decorators import apply_defaults
-            
-    class MySensor(BaseSensorOperator):
-        ...
+
+
+class MySensor(BaseSensorOperator):
+
+    @apply_defaults
+    def __init__(self,
+                 *args,
+                 **kwargs):
+        super(MySensor, self).__init__(*args, **kwargs)
+
+    def poke(self, context):
+        return True
 ```
 
-**Example my\_airflow\_operator\.py**  
+**Example operators/my\_airflow\_operator\.py**  
 
 ```
 from airflow.operators.bash_operator import BaseOperator
 from airflow.utils.decorators import apply_defaults
-from hooks.my_airflow_hook import MyHook
-        
-    class MyOperator(BaseOperator):
-        ...
+from hooks.my_hook import MyHook
+
+
+class MyOperator(BaseOperator):
+
+    @apply_defaults
+    def __init__(self,
+                 my_field,
+                 *args,
+                 **kwargs):
+        super(MyOperator, self).__init__(*args, **kwargs)
+        self.my_field = my_field
+
+    def execute(self, context):
+        hook = MyHook('my_conn')
+        hook.my_method()
 ```
 
-## Creating a plugins\.zip file<a name="configuring-dag-plugins-zip"></a>
+**Example operators/hello\_operator\.py**  
+
+```
+from airflow.models.baseoperator import BaseOperator
+from airflow.utils.decorators import apply_defaults
+
+class HelloOperator(BaseOperator):
+
+    @apply_defaults
+    def __init__(
+            self,
+            name: str,
+            **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.name = name
+
+    def execute(self, context):
+        message = "Hello {}".format(self.name)
+        print(message)
+        return message
+```
+
+------
+
+### Testing custom plugins using the Amazon MWAA CLI utility<a name="configuring-dag-plugins-cli-utility"></a>
++ The command line interface \(CLI\) utility replicates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment locally\.
++ The CLI builds a Docker container image locally that’s similar to an Amazon MWAA production image\. This allows you to run a local Apache Airflow environment to develop and test DAGs, custom plugins, and dependencies before deploying to Amazon MWAA\.
++ To run the CLI, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+
+### Creating a plugins\.zip file<a name="configuring-dag-plugins-zip"></a>
 
 You can use a built\-in ZIP archive utility, or any other ZIP utility \(such as [7zip](https://www.7-zip.org/download.html)\) to create a \.zip file\.
 
@@ -142,33 +308,23 @@ The built\-in zip utility for Windows OS may add subfolders when you create a \.
    $AIRFLOW_HOME/plugins$ zip -r plugins.zip .
    ```
 
-1. The directory structure of your `plugins.zip` may look like this:
-
-   ```
-   __init__.py
-   my_airflow_plugin.py
-   hooks/
-       |-- __init__.py
-       |-- my_airflow_hook.py
-   operators/
-       |-- __init__.py
-       |-- my_airflow_operator.py
-   sensors/
-       |-- __init__.py
-       |-- my_airflow_sensor.py
-   ```
-
 ## Uploading `plugins.zip` to Amazon S3<a name="configuring-dag-plugins-upload"></a>
 
 You can use the Amazon S3 console or the AWS Command Line Interface \(AWS CLI\) to upload a `plugins.zip` file to your Amazon S3 bucket\.
 
 ### Using the AWS CLI<a name="configuring-dag-plugins-upload-cli"></a>
 
-The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps in this section, you need the following:
+The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
 + [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 + [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
 **To upload using the AWS CLI**
+
+1. In your command prompt, navigate to the directory where your `plugins.zip` file is stored\. For example:
+
+   ```
+   cd plugins
+   ```
 
 1. Use the following command to list all of your Amazon S3 buckets\.
 
@@ -176,16 +332,16 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
    aws s3 ls
    ```
 
-1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\. Substitute the sample value in *YOUR\_S3\_BUCKET\_NAME*\.
+1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\.
 
    ```
    aws s3 ls s3://YOUR_S3_BUCKET_NAME
    ```
 
-1. The following command uploads a `plugins.zip` file to an Amazon S3 bucket\.
+1. Use the following command to upload the `plugins.zip` file to the Amazon S3 bucket for your environment\.
 
    ```
-   aws s3 cp plugins.zip s3://your-s3-bucket-any-name/plugins.zip
+   aws s3 cp plugins.zip s3://YOUR_S3_BUCKET_NAME/plugins.zip
    ```
 
 ### Using the Amazon S3 console<a name="configuring-dag-plugins-upload-console"></a>
@@ -206,7 +362,11 @@ The Amazon S3 console is a web\-based user interface that allows you to create a
 
 1. Select the local copy of your `plugins.zip`, choose **Upload**\.
 
-## Specifying the path to `plugins.zip` on the Amazon MWAA console \(the first time\)<a name="configuring-dag-plugins-mwaa-first"></a>
+## Installing custom plugins on your environment<a name="configuring-dag-plugins-mwaa-installing"></a>
+
+This section describes how to install the custom plugins you uploaded to your Amazon S3 bucket by specifying the path to the plugins\.zip file, and specifying the version of the plugins\.zip file each time the zip file is updated\.
+
+### Specifying the path to `plugins.zip` on the Amazon MWAA console \(the first time\)<a name="configuring-dag-plugins-mwaa-first"></a>
 
 If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you'll also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
@@ -224,9 +384,7 @@ If this is the first time you're uploading a `plugins.zip` to your Amazon S3 buc
 
 1. Choose **Next**, **Update environment**\.
 
-You can begin running the DAG where the custom plugins are located immediately after your environment finishes updating\.
-
-## Specifying the `plugins.zip` version on the Amazon MWAA console<a name="configuring-dag-plugins-s3-mwaaconsole"></a>
+### Specifying the `plugins.zip` version on the Amazon MWAA console<a name="configuring-dag-plugins-s3-mwaaconsole"></a>
 
 You need to specify the version of your `plugins.zip` file on the Amazon MWAA console each time you upload a new version of your `plugins.zip` in your Amazon S3 bucket\. 
 
@@ -240,17 +398,10 @@ You need to specify the version of your `plugins.zip` file on the Amazon MWAA co
 
 1. Choose **Next**, **Update environment**\.
 
-You can begin running the DAG where the custom plugins are located immediately after your environment finishes updating\.
+## Example use cases for plugins\.zip<a name="configuring-dag-plugins-examples"></a>
++ Learn how to create a custom plugin in [Custom plugin with Apache Hive and Hadoop](samples-hive.md)\.
++ Learn how to create a custom plugin in [Custom plugin to patch PythonVirtualenvOperator ](samples-virtualenv.md)\.
++ Learn how to create a custom plugin in [Custom plugin with Oracle](samples-oracle.md)\.
 
-## Viewing changes on your Apache Airflow UI<a name="configuring-dag-plugins-s3-mwaaconsole-view"></a>
-
-**To access your Apache Airflow UI**
-
-1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
-
-1. Choose an environment\.
-
-1. Choose **Open Airflow UI**\.
-
-**Note**  
-You may need to ask your account administrator to add `AmazonMWAAWebServerAccess` permissions for your account to view your Apache Airflow UI\. For more information, see [Managing access](https://docs.aws.amazon.com/mwaa/latest/userguide/manage-access.html)\.
+## What's next?<a name="configuring-dag-plugins-next-up"></a>
++ Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.

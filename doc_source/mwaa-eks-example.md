@@ -1,6 +1,6 @@
 # Using Amazon MWAA with Amazon EKS<a name="mwaa-eks-example"></a>
 
-The following code samples demonstrates how to use Amazon Managed Workflows for Apache Airflow \(MWAA\) with Amazon EKS\.
+The following sample demonstrates how to use Amazon Managed Workflows for Apache Airflow \(MWAA\) with Amazon EKS\.
 
 **Topics**
 + [Version](#mwaa-eks-example-version)
@@ -371,7 +371,7 @@ podRun = KubernetesPodOperator(
 
 ## Add the DAG and kube\_config\.yaml to the S3 bucket<a name="eksctl-dag-bucket"></a>
 
-Put the DAG you created and the kube\_config\.yaml file into the S3 bucket for the Amazon MWAA environment\. You can put the files into the bucket using either the S3 console or the AWS CLI\.
+Put the DAG you created and the kube\_config\.yaml file into the S3 bucket for the Amazon MWAA environment\. You can put the files into the bucket using either the S3 console or the AWS Command Line Interface\.
 
 ## Enable and trigger the example<a name="eksctl-trigger-pod"></a>
 

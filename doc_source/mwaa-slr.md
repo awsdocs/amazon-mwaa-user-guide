@@ -15,9 +15,9 @@ Amazon MWAA creates a service\-linked role in your account to allow Amazon MWAA 
 + Amazon Elastic Compute Cloud \(Amazon EC2\) – to create the following resources:
   + An Amazon VPC endpoint in your VPC for an AWS\-managed Amazon Aurora PostgreSQL database cluster to be used by the Apache Airflow *Scheduler* and *Worker*\.
   + An additional Amazon VPC endpoint to enable network access to the *Web server* if you choose the [private network](configuring-networking.md) option for your Apache Airflow *Web server*\.
-  + [Elastic Network Interfaces \(ENIs\)](https://docs.aws.amazon.com/https://docs.aws.amazon.com/vpc/latest/userguide/VPC_ElasticNetworkInterfaces.html) in your Amazon VPC to enable network access to AWS resources hosted in your Amazon VPC\.
+  + [Elastic Network Interfaces \(ENIs\)](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_ElasticNetworkInterfaces.html) in your Amazon VPC to enable network access to AWS resources hosted in your Amazon VPC\.
 
-The **Private network** option for an Apache Airflow *Web server* requires additional setup to use an environment and the Apache Airflow UI\. To learn more, see [Amazon MWAA network access](configuring-networking.md)\.
+The **Private network** option for an Apache Airflow *Web server* requires additional setup to use an environment and the Apache Airflow UI\. To learn more, see [Apache Airflow access modes](configuring-networking.md)\.
 
 ## Viewing the permissions policy<a name="mwaa-slr-iam-policy"></a>
 

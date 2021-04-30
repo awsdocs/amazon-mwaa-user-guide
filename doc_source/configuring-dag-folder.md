@@ -1,23 +1,25 @@
 # Adding or updating DAGs<a name="configuring-dag-folder"></a>
 
-Directed Acyclic Graphs \(DAGs\) are defined within a Python file that defines the DAG's structure as code\. You can use the AWS CLI, or the Amazon S3 console to upload DAGs to your environment\. This page describes the steps to add or update Apache Airflow DAGs on your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment using a `dags` folder\.
+Directed Acyclic Graphs \(DAGs\) are defined within a Python file that defines the DAG's structure as code\. You can use the AWS CLI, or the Amazon S3 console to upload DAGs to your environment\. This page describes the steps to add or update Apache Airflow DAGs on your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment using the `dags` folder in your Amazon S3 bucket\.
 
 **Topics**
 + [Prerequisites](#configuring-dag-folder-prereqs)
 + [How it works](#configuring-dag-folder-how)
++ [Testing DAGs using the Amazon MWAA CLI utility](#working-dag-folder-cli-utility)
 + [Uploading DAG code to Amazon S3](#configuring-dag-folder-uploading)
 + [Specifying the path to your DAGs folder on the Amazon MWAA console \(the first time\)](#configuring-dag-folder-mwaaconsole)
 + [Viewing changes on your Apache Airflow UI](#configuring-dag-folder-mwaaconsole-view)
++ [What's next?](#configuring-dag-folder-next-up)
 
 ## Prerequisites<a name="configuring-dag-folder-prereqs"></a>
 
-**To use the steps on this page, you'll need:**
+You'll need the following before you can complete the steps on this page\.
 
-1. The required AWS resources configured for your environment as defined in [Get started with Amazon Managed Workflows for Apache Airflow \(MWAA\)](get-started.md)\.
+1. An [AWS account with access](access-policies.md) to your environment\.
 
-1. An execution role with a permissions policy that grants Amazon MWAA access to the AWS resources used by your environment as defined in [Amazon MWAA Execution role](mwaa-create-role.md)\.
+1. An [Amazon S3 bucket](mwaa-s3-bucket.md) with *Public Access Blocked* and *Versioning Enabled*\.
 
-1. An AWS account with access in AWS Identity and Access Management \(IAM\) to the Amazon S3 console, or the AWS Command Line Interface \(AWS CLI\) as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
+1. An [execution role](mwaa-create-role.md) that grants Amazon MWAA access to the AWS resources used by your environment\.
 
 ## How it works<a name="configuring-dag-folder-how"></a>
 
@@ -38,7 +40,12 @@ dags/
 If this is the first time you're adding the folder to your Amazon S3 bucket, you'll also need to specify the path to the folder on the Amazon MWAA console\. You only need to complete this step once\.
 
 **Note**  
-You do not need to include the `airflow.cfg` configuration file in your DAG folder\. You can override the default Apache Airflow configurations from the Amazon MWAA console\. For more information, see [Amazon MWAA Apache Airflow configuration options](configuring-env-variables.md)\.
+You do not need to include the `airflow.cfg` configuration file in your DAG folder\. You can override the default Apache Airflow configurations from the Amazon MWAA console\. For more information, see [Apache Airflow configuration options](configuring-env-variables.md)\.
+
+## Testing DAGs using the Amazon MWAA CLI utility<a name="working-dag-folder-cli-utility"></a>
++ The command line interface \(CLI\) utility replicates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment locally\.
++ The CLI builds a Docker container image locally that’s similar to an Amazon MWAA production image\. This allows you to run a local Apache Airflow environment to develop and test DAGs, custom plugins, and dependencies before deploying to Amazon MWAA\.
++ To run the CLI, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 ## Uploading DAG code to Amazon S3<a name="configuring-dag-folder-uploading"></a>
 
@@ -46,7 +53,7 @@ You can use the Amazon S3 console or the AWS Command Line Interface \(AWS CLI\) 
 
 ### Using the AWS CLI<a name="configuring-dag-folder-cli"></a>
 
-The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps in this section, you need the following:
+The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
 + [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 + [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
@@ -58,7 +65,7 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
    aws s3 ls
    ```
 
-1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\. Substitute the sample value in *YOUR\_S3\_BUCKET\_NAME*\.
+1. Use the following command to list the files and folders in the Amazon S3 bucket for your environment\.
 
    ```
    aws s3 ls s3://YOUR_S3_BUCKET_NAME
@@ -126,3 +133,6 @@ You can begin using the new DAG immediately after your environment finishes upda
 
 **Note**  
 You may need to ask your account administrator to add `AmazonMWAAWebServerAccess` permissions for your account to view your Apache Airflow UI\. For more information, see [Managing access](https://docs.aws.amazon.com/mwaa/latest/userguide/manage-access.html)\.
+
+## What's next?<a name="configuring-dag-folder-next-up"></a>
++ Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.

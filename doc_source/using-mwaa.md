@@ -5,5 +5,5 @@ The Amazon Managed Workflows for Apache Airflow \(MWAA\) console contains built\
 **Topics**
 + [Amazon MWAA automatic scaling](mwaa-autoscaling.md)
 + [Amazon MWAA environment class](environment-class.md)
-+ [Amazon MWAA Apache Airflow configuration options](configuring-env-variables.md)
-+ [Amazon MWAA network access](configuring-networking.md)
++ [Apache Airflow configuration options](configuring-env-variables.md)
++ [Apache Airflow access modes](configuring-networking.md)

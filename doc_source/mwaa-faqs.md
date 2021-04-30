@@ -14,6 +14,7 @@ This page describes common questions you may encounter when using Amazon Managed
   + [Does Amazon MWAA support SPOT instances?](#spot-instances)
   + [Does Amazon MWAA support a custom domain?](#custom-dns)
   + [Can I remove a `plugins.zip` or `requirements.txt` from an environment?](#remove-plugins-reqs)
+  + [Why is a self\-referencing rule required on the VPC security group?](#remove-sg-rule)
 + [DAGs](#q-dags)
   + [Can I use the `PythonVirtualenvOperator`?](#virtual-env-dags)
   + [How long does it take Amazon MWAA to recognize a new DAG file?](#recog-dag)
@@ -30,7 +31,7 @@ We are only supporting the latest \(as of launch\) version 1\.10\.12 due to secu
 
 ### What Python version should I use?<a name="python-version"></a>
 
-We recommend using Python 3\.7\.
+Amazon MWAA only supports Python 3\.7\.
 
 ## Environment specifications<a name="q-supported-features"></a>
 
@@ -62,11 +63,15 @@ Yes\. You can use a custom domain for your Apache Airflow host name using [Amazo
 
 Currently, there is no way to remove a `plugins.zip` or `requirements.txt` from an environment once they’ve been added, but we're working on the issue\. In the interim, a workaround is to point to an empty text or zip file, respectively\.
 
+### Why is a self\-referencing rule required on the VPC security group?<a name="remove-sg-rule"></a>
+
+By creating a self\-referencing rule, you can restrict the source to the same security group in the VPC, and it's not open to all networks\.
+
 ## DAGs<a name="q-dags"></a>
 
 ### Can I use the `PythonVirtualenvOperator`?<a name="virtual-env-dags"></a>
 
-The `PythonVirtualenvOperator` is not currently supported on Amazon MWAA, and though we're working to include it, we recommend using external containers to run custom workloads\. For sample code, see [Using Amazon MWAA with Amazon EKS](mwaa-eks-example.md)\.
+The `PythonVirtualenvOperator` is not explicitly supported on Amazon MWAA, but you can create a custom plugin that uses the `PythonVirtualenvOperator`\. For sample code, see [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)\.
 
 ### How long does it take Amazon MWAA to recognize a new DAG file?<a name="recog-dag"></a>
 
