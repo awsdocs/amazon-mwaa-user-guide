@@ -292,7 +292,106 @@ The following AWS CloudFormation template creates an Amazon VPC network *with In
    aws cloudformation create-stack --stack-name mwaa-environment --template-body file://cfn-vpc-public-private.yaml
    ```
 **Note**  
+<<<<<<< HEAD
 It takes about 30 minutes to create the Amazon VPC infrastructure\.
+=======
+This creates a VPC and the required networking components for an environment\. You need to create and configure additional resources for a private network\. It can take several minutes to create the VPC network\.
+
+## Using an Amazon MWAA AWS CloudFormation template<a name="vpc-create-template-code"></a>
+
+AWS CloudFormation allows you to create AWS resources using a template that describes the AWS resources you want to create\. The following section describes how to use an Amazon MWAA AWS CloudFormation template to create the VPC network in your default region\.
+
+### AWS CloudFormation VPC stack specifications<a name="vpc-create-template-components"></a>
+
+The following Amazon MWAA AWS CloudFormation template creates a VPC network in your default region with the following specifications\.
++ a VPC with a `10.192.0.0/16` CIDR rule
++ a VPC security group that directs all inbound traffic to your Amazon MWAA environment and all outbound traffic to `0.0.0.0/0`
++ one public subnet with a `10.192.10.0/24` CIDR rule in your region's first availability zone
++ one public subnet with a `10.192.11.0/24` CIDR rule in your region's second availability zone
++ one private subnet with a `10.192.20.0/24` CIDR rule in your region's first availability zone
++ one private subnet with a `10.192.21.0/24` CIDR rule in your region's second availability zone
++ creates and attaches an Internet gateway to the public subets
++ creates and attaches two NAT gateways to the private subnets
++ creates and attaches two elastic IP addresses \(EIPs\) to the NAT gateways
++ creates and attaches two public route tables to the public subnets
++ creates and attaches two private route tables to the private subnets
+
+### Create the AWS CloudFormation VPC template<a name="vpc-create-template-components"></a>
+
+Copy the template and paste it to a new file, then save it as `vpctemplate.yaml` in preparation for the next step\. You can also [download the template](./samples/mwaa-vpc-cfn.zip)\.
+
+```
+Description:  This template deploys a VPC, with a pair of public and private subnets spread
+  across two Availability Zones. It deploys an internet gateway, with a default
+  route on the public subnets. It deploys a pair of NAT gateways (one in each AZ),
+  and default routes for them in the private subnets.
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+    Default: mwaa-
+
+  VpcCIDR:
+    Description: Please enter the IP range (CIDR notation) for this VPC
+    Type: String
+    Default: 10.192.0.0/16
+
+  PublicSubnet1CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Type: String
+    Default: 10.192.10.0/24
+
+  PublicSubnet2CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone
+    Type: String
+    Default: 10.192.11.0/24
+
+  PrivateSubnet1CIDR:
+    Description: Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone
+    Type: String
+    Default: 10.192.20.0/24
+
+  PrivateSubnet2CIDR:
+    Description: Please enter the IP range (CIDR notation) for the private subnet in the second Availability Zone
+    Type: String
+    Default: 10.192.21.0/24
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PublicSubnet1CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+>>>>>>> 906b85b0bec4f8990947f921be5ceb33846a3259
 
 ### Option three: Creating a VPC network *without* Internet access<a name="vpc-create-template-private-only"></a>
 
@@ -514,4 +613,7 @@ It takes about 30 minutes to create the Amazon VPC infrastructure\.
 
 ## What's next?<a name="create-vpc-next-up"></a>
 + Learn how to create an Amazon MWAA environment in [Create an Amazon MWAA environment](create-environment.md)\.
+<<<<<<< HEAD
 + Learn how to create a VPN tunnel from your computer to your Amazon VPC with private routing in [Tutorial: Configuring private network access using an AWS Client VPN](tutorials-private-network-vpn-client.md)\.
+=======
+>>>>>>> 906b85b0bec4f8990947f921be5ceb33846a3259
