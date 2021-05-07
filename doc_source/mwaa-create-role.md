@@ -2,16 +2,21 @@
 
 An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon Managed Workflows for Apache Airflow \(MWAA\) permission to invoke the resources of other AWS services on your behalf\. This can include resources such as your Amazon S3 bucket, [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), and CloudWatch Logs\. Amazon MWAA environments need one execution role per environment\. This page describes how to use and configure the execution role for your environment to allow Amazon MWAA to access other AWS services\.
 
-**Topics**
-+ [How it works](#mwaa-create-role-how)
+**Contents**
++ [Execution role overview](#mwaa-create-role-how)
+  + [Permissions attached by default](#mwaa-create-role-how-create-role)
+  + [How to add permission to use other AWS services](#mwaa-create-role-how-adding)
+  + [How to associate a new execution role](#mwaa-create-role-how-associating)
 + [Create a new role](#mwaa-create-role-mwaa-onconsole)
 + [Viewing and updating an execution role policy](#mwaa-create-role-update)
-+ [Attaching a JSON policy to use other AWS services](#mwaa-create-role-attach-json-policy)
+  + [Attaching a JSON policy to use other AWS services](#mwaa-create-role-attach-json-policy)
 + [Using Apache Airflow connections](#mwaa-create-role-airflow-connections)
 + [Sample JSON policies for an execution role](#mwaa-create-role-json)
+  + [Sample policy for a customer managed CMK](#mwaa-create-role-cmk)
+  + [Sample policy for an AWS owned CMK](#mwaa-create-role-aocmk)
 + [What's next?](#mwaa-create-role-next-up)
 
-## How it works<a name="mwaa-create-role-how"></a>
+## Execution role overview<a name="mwaa-create-role-how"></a>
 
 Permission for Amazon MWAA to use other AWS services used by your environment are obtained from the execution role\. An Amazon MWAA execution role needs permission to the following AWS services used by an environment:
 + Amazon CloudWatch \(CloudWatch\) – to send Apache Airflow metrics and logs\.
@@ -72,7 +77,7 @@ You can view the execution role for your environment on the Amazon MWAA console,
 
 1. Choose **Save changes**\.
 
-## Attaching a JSON policy to use other AWS services<a name="mwaa-create-role-attach-json-policy"></a>
+### Attaching a JSON policy to use other AWS services<a name="mwaa-create-role-attach-json-policy"></a>
 
 You can create a JSON policy for an AWS service and attach it to your execution role\. For example, you can attach the following JSON policy to grant read\-only access to all resources in AWS Secrets Manager\.
 

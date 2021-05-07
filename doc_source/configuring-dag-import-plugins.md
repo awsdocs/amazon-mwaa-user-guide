@@ -41,7 +41,7 @@ To run custom plugins on your environment, you must do three things:
 1. Specify the version of this file in the **Plugins file** field on the Amazon MWAA console\.
 
 **Note**  
-If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you'll also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
+If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
 ## Custom plugins overview<a name="configuring-dag-plugins-overview"></a>
 
@@ -368,7 +368,7 @@ This section describes how to install the custom plugins you uploaded to your Am
 
 ### Specifying the path to `plugins.zip` on the Amazon MWAA console \(the first time\)<a name="configuring-dag-plugins-mwaa-first"></a>
 
-If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you'll also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
+If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
 1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
 

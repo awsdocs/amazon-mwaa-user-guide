@@ -15,7 +15,7 @@ The following sample walks you through the steps to create a custom plugin using
 + [What's next?](#samples-oracle-next-up)
 
 ## Version<a name="samples-oracle-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12**\.
++ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-oracle-prereqs"></a>
 

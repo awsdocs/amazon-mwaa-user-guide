@@ -1,6 +1,6 @@
-# Amazon Managed Workflows for Apache Airflow service quotas<a name="mwaa-quotas"></a>
+# Amazon Managed Workflows for Apache Airflow \(MWAA\) service quotas<a name="mwaa-quotas"></a>
 
-Amazon Managed Workflows for Apache Airflow has the following service quotas\. You can request an increase to an adjustable quota by submitting a [quota increase request](https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/)\.
+Amazon Managed Workflows for Apache Airflow \(MWAA\) has the following service quotas\. You can request an increase to an adjustable quota by submitting a [quota increase request](https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/)\.
 
 
 | Quota name | Description | Default quota | Adjustable | 

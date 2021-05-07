@@ -30,7 +30,7 @@ You'll need the following before you can complete the steps on this page\.
 
 ## How it works<a name="working-dags-dependencies-how"></a>
 
-Amazon MWAA runs `pip3 install -r requirements.txt` on the requirements file that you specify for your environment for each of the Apache Airflow Scheduler and Workers\.
+On Amazon MWAA, you install all Python dependencies by uploading a `requirements.txt` file to your Amazon S3 bucket, then specifying the version of the file on the Amazon MWAA console each time you update the file\. Amazon MWAA runs `pip3 install -r requirements.txt` to install the Python dependencies on the Apache Airflow scheduler and each of the workers\.
 
 To run Python dependencies on your environment, you must do three things:
 
@@ -41,7 +41,7 @@ To run Python dependencies on your environment, you must do three things:
 1. Specify the version of this file in the **Requirements file** field on the Amazon MWAA console\.
 
 **Note**  
-If this is the first time you're creating and uploading a `requirements.txt` to your Amazon S3 bucket, you'll also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
+If this is the first time you're creating and uploading a `requirements.txt` to your Amazon S3 bucket, you also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
 ## Python dependencies overview<a name="working-dags-dependencies-overview"></a>
 
@@ -64,8 +64,6 @@ For security reasons, the Apache Airflow *Web server* on Amazon MWAA has limited
 
 ------
 #### [ Airflow v1\.10\.12 ]
-
-The following section describes how to specify Python dependencies from the [Python Package Index](https://pypi.org/) for Apache Airflow v1\.10\.12\.
 
 1. **Specify a constraints file**\. Add the constraints file for Apache Airflow v1\.10\.12 to the top of your `requirements.txt` file to improve library compatibility\.  
 **Example Apache Airflow v1\.10\.12 constraints**  
@@ -114,7 +112,7 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
 + [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 + [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
-****
+**To upload using the AWS CLI**
 
 1. Use the following command to list all of your Amazon S3 buckets\.
 
@@ -158,7 +156,7 @@ This section describes how to install the dependencies you uploaded to your Amaz
 
 ### Specifying the path to `requirements.txt` on the Amazon MWAA console \(the first time\)<a name="configuring-dag-dependencies-first"></a>
 
-If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you'll also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
+If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
 1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
 

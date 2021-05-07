@@ -7,7 +7,7 @@ The following code sample demonstrates how to enable an integration using Amazon
 + [Code sample](#samples-emr-code)
 
 ## Version<a name="samples-emr-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12**\.
++ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Code sample<a name="samples-emr-code"></a>
 

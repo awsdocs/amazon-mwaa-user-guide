@@ -13,7 +13,7 @@ The following sample shows how to patch the Apache Airflow PythonVirtualenvOpera
 + [What's next?](#samples-virtualenv-next-up)
 
 ## Version<a name="samples-virtualenv-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12**\.
++ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-virtualenv-prereqs"></a>
 

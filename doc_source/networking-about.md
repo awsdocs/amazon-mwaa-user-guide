@@ -32,19 +32,21 @@ This section describes the Amazon VPC infrastructure of an environment with publ
 + **One VPC security group**\. A VPC security group acts as a virtual firewall to control ingress \(inbound\) and egress \(outbound\) network traffic on an instance\.
   + Up to 5 security groups can be specified\.
   + The security group must specify a self\-referencing inbound rule to itself\.
-  + The security group must allow all traffic in the self\-referencing rule, or specify the port range for HTTPS port range 443 and a TCP port range 5432\.
   + The security group must specify an outbound rule for all traffic \(`0.0.0.0/0`\)\.
+  + The security group must allow all traffic in the self\-referencing rule\. For example, [\(Recommended\) Example security group all access](vpc-security.md#vpc-security-sg-example)\. 
+  + The security group can *optionally* restrict traffic further by specifying the port range for HTTPS port range `443` and a TCP port range `5432`\. For example, [\(Optional\) Example security group that restricts inbound access to port 5432](vpc-security.md#vpc-security-sg-example-port5432) and [\(Optional\) Example security group that restricts inbound access to port 443](vpc-security.md#vpc-security-sg-example-port443)\.
 + **Two public subnets**\. A public subnet is a subnet that's associated with a route table that has a route to an Internet gateway\.
   + The subnets must be in different Availability Zones\. For example, `us-east-1a`, `us-east-1b`\.
   + The subnets must route to a NAT gateway \(or NAT instance\) with an Elastic IP Address \(EIP\)\.
   + The subnets must have a route table that directs internet\-bound traffic to an Internet gateway\.
 + **Two private subnets**\. A private subnet is a subnet that's **not** associated with a route table that has a route to an Internet gateway\.
-  + The subnets must be in different Availability Zones\. For example, `us-east-1a`, `us-east-1b`\.
-  + The subnets must have a route table to the VPC endpoints you create\.
-  + The subnets must *not* route to a NAT device, nor an Internet gateway\.
+  + The subnets must be in different Availability Zones\. For example, `us-east-1a`, `us-east-1b`\. 
+  + The subnets *must* have a route table to a NAT device \(gateway or instance\)\.
+  + The subnets **must not** route to an Internet gateway\. 
 + **A network access control list \(ACL\)**\. An NACL manages \(by allow or deny rules\) inbound and outbound traffic at the subnet level\.
   + The NACL must have an inbound rule that allows all traffic \(`0.0.0.0/0`\)\.
-  + The NACL must have an outbound role that denies all traffic \(`0.0.0.0/0`\)\.
+  + The NACL must have an outbound rule that denies all traffic \(`0.0.0.0/0`\)\.
+  + For example, [\(Recommended\) Example ACLs](vpc-security.md#vpc-security-acl-example)\.
 + **Two NAT gateways \(or NAT instances\)**\. A NAT device forwards traffic from the instances in the private subnet to the Internet or other AWS services, and then routes the response back to the instances\.
   + The NAT device must be attached to a public subnet\. \(One NAT device per public subnet\.\)
   + The NAT device must have an Elastic IPv4 Address \(EIP\) attached to each public subnet\.
@@ -57,24 +59,27 @@ This section describes the Amazon VPC infrastructure of an environment with *pri
 + **One VPC security group**\. A VPC security group acts as a virtual firewall to control ingress \(inbound\) and egress \(outbound\) network traffic on an instance\.
   + Up to 5 security groups can be specified\.
   + The security group must specify a self\-referencing inbound rule to itself\.
-  + The security group must allow all traffic in the self\-referencing rule, or specify the port range for HTTPS port range 443 and a TCP port range 5432\.
   + The security group must specify an outbound rule for all traffic \(`0.0.0.0/0`\)\.
+  + The security group must allow all traffic in the self\-referencing rule\. For example, [\(Recommended\) Example security group all access](vpc-security.md#vpc-security-sg-example)\. 
+  + The security group can *optionally* restrict traffic further by specifying the port range for HTTPS port range `443` and a TCP port range `5432`\. For example, [\(Optional\) Example security group that restricts inbound access to port 5432](vpc-security.md#vpc-security-sg-example-port5432) and [\(Optional\) Example security group that restricts inbound access to port 443](vpc-security.md#vpc-security-sg-example-port443)\.
 + **Two private subnets**\. A private subnet is a subnet that's **not** associated with a route table that has a route to an Internet gateway\.
   + The subnets must be in different Availability Zones\. For example, `us-east-1a`, `us-east-1b`\.
-  + The subnets must have a route table with a route to a NAT device\.
-  + The subnets must *not* route to a NAT device, nor an Internet gateway\.
+  + The subnets must have a route table to your VPC endpoints\.
+  + The subnets **must not** have a route table to a NAT device \(gateway or instance\), **nor** an Internet gateway\.
 + **A network access control list \(ACL\)**\. An NACL manages \(by allow or deny rules\) inbound and outbound traffic at the subnet level\.
   + The NACL must have an inbound rule that allows all traffic \(`0.0.0.0/0`\)\.
-  + The NACL must have an outbound role that denies all traffic \(`0.0.0.0/0`\)\.
+  + The NACL must have an outbound rule that denies all traffic \(`0.0.0.0/0`\)\.
+  + For example, [\(Recommended\) Example ACLs](vpc-security.md#vpc-security-acl-example)\.
 + **A local route table**\. A local route table is a default route for communication within the VPC\.
   + The local route table must be associated to your private subnets\.
   + The local route table must enable instances in your VPC to communicate with your own network\. For example, if you're using an AWS Client VPN to access the VPC interface endpoint for your Apache Airflow *Web server*, the route table must route to the VPC endpoint\.
-+ **VPC endpoints for each AWS service used** by your environment\. One VPC endpoint for each AWS service used by your environment in the same AWS Region and Amazon VPC as your Amazon MWAA environment\.
-  + A VPC endpoint for each AWS service used by the environment and VPC endpoints for Apache Airflow\.
++ **VPC endpoints** for each AWS service used by your environment, and Apache Airflow VPC endpoints in the same AWS Region and Amazon VPC as your Amazon MWAA environment\.
+  + A VPC endpoint for each AWS service used by the environment and VPC endpoints for Apache Airflow\. For example, [\(Required\) Example VPC endpoints](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-examples)\.
   + The VPC endpoints must have private DNS enabled\.
   + The VPC endpoints must be associated to your environment's two private subnets\.
   + The VPC endpoints must be associated to your environment's security group\.
-  + The VPC endpoint policy for each endpoint should be configured to allow access to AWS services used by the environment\.
+  + The VPC endpoint policy for each endpoint should be configured to allow access to AWS services used by the environment\. For example, [\(Recommended\) Example VPC endpoint policy to allow all access](vpc-security.md#vpc-external-vpce-policies-all)\.
+  + A VPC endpoint policy for Amazon S3 should be configured to allow bucket access\. For example, [\(Recommended\) Example Amazon S3 gateway endpoint policy to allow bucket access](vpc-security.md#vpc-external-vpce-policies-s3)\.
 
 ## Example use cases for an Amazon VPC and Apache Airflow access mode<a name="networking-about-network-usecase"></a>
 

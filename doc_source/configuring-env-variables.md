@@ -77,7 +77,9 @@ The following section contains the list of available Apache Airflow configuratio
 
 ### Email configurations<a name="configuring-env-variables-email"></a>
 
-The following list shows the Airflow email notification configuration options available on the Amazon MWAA console\. 
+The following list shows the Airflow email notification configuration options available on Amazon MWAA\. 
+
+We recommend using port 587 for SMTP traffic\. By default, AWS blocks outbound SMTP traffic on port 25 of all Amazon EC2 instances\. If you want to send outbound traffic on port 25, you can [request for this restriction to be removed](https://docs.aws.amazon.com/https://aws.amazon.com/premiumsupport/knowledge-center/ec2-port-25-throttle/)\.
 
 ------
 #### [ Airflow v1\.10\.12 ]
@@ -89,14 +91,14 @@ The following list shows the Airflow email notification configuration options av
 |  v1\.10\.12  |  smtp\.smtp\_host  |  The name of the outbound server used for the email address in [smtp\_host](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-host)\.  |  localhost  | 
 |  v1\.10\.12  |  smtp\.smtp\_starttls  |  Transport Layer Security \(TLS\) is used to encrypt the email over the Internet in [smtp\_starttls](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-starttls)\.  |  False  | 
 |  v1\.10\.12  |  smtp\.smtp\_ssl  |  Secure Sockets Layer \(SSL\) is used to connect the server and email client in [smtp\_ssl](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-ssl)\.  |  True  | 
-|  v1\.10\.12  |  smtp\.smtp\_port  |  The Transmission Control Protocol \(TCP\) port designated to the server in [smtp\_port](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-port)\.  |  25  | 
+|  v1\.10\.12  |  smtp\.smtp\_port  |  The Transmission Control Protocol \(TCP\) port designated to the server in [smtp\_port](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-port)\.  |  587  | 
 |  v1\.10\.12  |  smtp\.smtp\_mail\_from  |  The outbound email address in [smtp\_mail\_from](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-mail-from)\.  |  myemail@domain\.com  | 
 
 ------
 
 ### Task configurations<a name="configuring-env-variables-tasks"></a>
 
-The following list shows the configurations available in the dropdown list for Airflow tasks on the Amazon MWAA console\. 
+The following list shows the configurations available in the dropdown list for Airflow tasks on Amazon MWAA\. 
 
 ------
 #### [ Airflow v1\.10\.12 ]
@@ -111,7 +113,7 @@ The following list shows the configurations available in the dropdown list for A
 
 ### Scheduler configurations<a name="configuring-env-variables-scheduler"></a>
 
-The following list shows the Airflow scheduler configurations available in the dropdown list on the Amazon MWAA console\. 
+The following list shows the Airflow scheduler configurations available in the dropdown list on Amazon MWAA\. 
 
 ------
 #### [ Airflow v1\.10\.12 ]
@@ -126,7 +128,7 @@ The following list shows the Airflow scheduler configurations available in the d
 
 ### Worker configurations<a name="configuring-env-variables-workers"></a>
 
-The following list shows the Airflow worker configurations available in the dropdown list on the Amazon MWAA console\. 
+The following list shows the Airflow worker configurations available in the dropdown list on Amazon MWAA\. 
 
 ------
 #### [ Airflow v1\.10\.12 ]
@@ -140,7 +142,7 @@ The following list shows the Airflow worker configurations available in the drop
 
 ### Web server configurations<a name="configuring-env-variables-webserver"></a>
 
-The following list shows the Airflow web server configurations available in the dropdown list on the Amazon MWAA console\. 
+The following list shows the Airflow web server configurations available in the dropdown list on Amazon MWAA\. 
 
 ------
 #### [ Airflow v1\.10\.12 ]

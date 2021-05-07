@@ -12,7 +12,7 @@ The following sample walks you through the steps to create a custom plugin that 
 + [What's next?](#samples-env-variables-next-up)
 
 ## Version<a name="samples-env-variables-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12**\.
++ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-env-variables-prereqs"></a>
 

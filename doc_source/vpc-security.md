@@ -28,7 +28,7 @@ An Amazon VPC network **without** access to the Internet\.
 Security groups and access control lists \(ACLs\) provide ways to control the network traffic across the subnets and instances in your Amazon VPC using rules you specify\.
 + Network traffic to and from a subnet can be controlled by Access Control Lists \(ACLs\)\. You only need one ACL, and the same ACL can be used on multiple environments\.
 + Network traffic to and from an instance can be controlled by an Amazon VPC security group\. You can use between one to five security groups per environment\.
-+ Network traffic to and from an instance can also be controlled by VPC endpoint policies\. If Internet access within your Amazon VPC is not allowed by your organization and you're using an Amazon VPC network with private routing, a VPC endpoint policy is required for each of the VPC endpoints you created for each AWS service used by your environment\.
++ Network traffic to and from an instance can also be controlled by VPC endpoint policies\. If Internet access within your Amazon VPC is not allowed by your organization and you're using an Amazon VPC network with private routing, a VPC endpoint policy is required for the [AWS VPC endpoints and Apache Airflow VPC endpoints](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-examples)\.
 
 ## Network access control lists \(ACLs\)<a name="vpc-security-acl"></a>
 

@@ -1,6 +1,6 @@
 # Amazon MWAA API actions and resources<a name="mwaa-actions-resources"></a>
 
-The Amazon Managed Workflows for Apache Airflow API includes the following `airflow` actions\. For more information about the Amazon MWAA API, see the AWS SDK, or type `aws mwaa help` in the AWS CLI\.
+The Amazon Managed Workflows for Apache Airflow \(MWAA\) API includes the following `airflow` actions\. For more information about the Amazon MWAA API, see the AWS SDK, or type `aws mwaa help` in the AWS CLI\.
 
  `CreateEnvironment`   
 Creates an Amazon MWAA environment\.

@@ -3,6 +3,7 @@
 This page describes the best practices we recommend to install and manage Python dependencies in a `requirements.txt` file for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
 **Contents**
++ [Testing DAGs using the Amazon MWAA CLI utility](#best-practices-dependencies-cli-utility)
 + [Installing Python dependencies using PyPi\.org Requirements File Format](#best-practices-dependencies-different-ways)
   + [Option one: Python dependencies from the Python Package Index](#best-practices-dependencies-pip-extras)
   + [Option two: Python wheels \(\.whl\)](#best-practices-dependencies-python-wheels)
@@ -12,7 +13,13 @@ This page describes the best practices we recommend to install and manage Python
 + [Enabling logs on the Amazon MWAA console](#best-practices-dependencies-troubleshooting-enable)
 + [Viewing logs on the CloudWatch Logs console](#best-practices-dependencies-troubleshooting-view)
 + [Viewing errors in the Apache Airflow UI](#best-practices-dependencies-troubleshooting-aa)
+  + [Logging into Apache Airflow](#airflow-access-and-login)
 + [Example `requirements.txt` scenarios](#best-practices-dependencies-ex-mix-match)
+
+## Testing DAGs using the Amazon MWAA CLI utility<a name="best-practices-dependencies-cli-utility"></a>
++ The command line interface \(CLI\) utility replicates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment locally\.
++ The CLI builds a Docker container image locally that’s similar to an Amazon MWAA production image\. This allows you to run a local Apache Airflow environment to develop and test DAGs, custom plugins, and dependencies before deploying to Amazon MWAA\.
++ To run the CLI, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 ## Installing Python dependencies using PyPi\.org Requirements File Format<a name="best-practices-dependencies-different-ways"></a>
 
@@ -20,24 +27,10 @@ The following section describes the different ways to install Python dependencie
 
 ### Option one: Python dependencies from the Python Package Index<a name="best-practices-dependencies-pip-extras"></a>
 
-On a self\-managed Airflow pipeline, you install Apache Airflow with extras using a constraints file\. For example:
-
-```
-pip3 install apache-airflow[extras1,extras2]==1.10.12 
---constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
-```
-
-On Amazon MWAA, you install Python dependencies in your `requirements.txt`\. Amazon MWAA installs extras and their dependencies using the Apache Airflow constraints file, such as the [Apache Airflow constraints file for Apache Airflow v1\.10\.12](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)\. For example:
-
-```
---constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt" 
-apache-airflow[crypto,celery,statsd,extras1,extras2]==1.10.12
-```
+The following section describes how to specify Python dependencies from the [Python Package Index](https://pypi.org/)\.
 
 ------
 #### [ Airflow v1\.10\.12 ]
-
-The following section describes how to specify Python dependencies from the [Python Package Index](https://pypi.org/) for Apache Airflow v1\.10\.12\.
 
 1. **Specify a constraints file**\. Add the constraints file for Apache Airflow v1\.10\.12 to the top of your `requirements.txt` file to improve library compatibility\.  
 **Example Apache Airflow v1\.10\.12 constraints**  
@@ -82,42 +75,42 @@ A Python wheel is a package format designed to ship libraries with compiled arti
 
 #### In the `plugins.zip` file on an Amazon S3 bucket<a name="best-practices-dependencies-python-wheels-s3"></a>
 
-When you upload a `plugins.zip`, the contents are extracted to `/usr/local/airflow/plugins` based on the hierarchy defined in the ZIP file\. The contents are installed on the containers for the Apache Airflow *Worker* and the *Scheduler* prior to Amazon MWAA's `pip3 install` for the `requirements.txt`, or the Apache Airflow service startup\. While this location is where Apache Airflow looks for plugins on startup, it can be used for any files that you don't want continuously changed during environment execution, or that you don't to give access to users that write DAGs\. Examples include Python library wheel files, certificate PEM files, and configuration YAML files\.
+The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during startup on the AWS\-managed Fargate container for your environment at `/usr/local/airflow/plugins/*`\. This process begins prior to Amazon MWAA's `pip3 install -r requirements.txt` for Python dependencies and Apache Airflow service startup\. A `plugins.zip` file be used for any files that you don't want continuously changed during environment execution, or that you may not want to grant access to users that write DAGs\. For example, Python library wheel files, certificate PEM files, and configuration YAML files\.
 
 The following section describes how to install a wheel that's in the `plugins.zip` file on your Amazon S3 bucket\. 
 + **Specify the path in your `requirements.txt`\.**\. Specify the `plugins` directory, and the full name of the wheel in your `requirements.txt`\. The format should look like this:
 
   ```
   /usr/local/airflow/plugins/YOUR_WHEEL_NAME.whl
+  ```  
+**Example Wheel in requirements\.txt**  
+
+  The following example assumes you've uploaded the wheel in a `plugins.zip` file at the root of your Amazon S3 bucket\. For example:
+
+  ```
+  /usr/local/airflow/plugins/numpy-1.20.1-cp37-cp37m-manylinux1_x86_64.whl
   ```
 
-**Example Wheel in requirements\.txt**  
-The following example assumes you've uploaded the wheel in a `plugins.zip` file at the root of your Amazon S3 bucket\. For example:  
-
-```
-/usr/local/airflow/plugins/numpy-1.20.1-cp37-cp37m-manylinux1_x86_64.whl
-```
-Amazon MWAA fetches the `numpy-1.20.1-cp37-cp37m-manylinux1_x86_64.whl` wheel from the `plugins` folder and installs on your environment\.
+  Amazon MWAA fetches the `numpy-1.20.1-cp37-cp37m-manylinux1_x86_64.whl` wheel from the `plugins` folder and installs on your environment\.
 
 #### Hosted on a URL<a name="best-practices-dependencies-python-wheels-url"></a>
 
 The following section describes how to install a wheel that's hosted on a URL\. The URL must either be publicly\-accessible, or accessible from within the custom VPC you specified for your Amazon MWAA environment\.
-+ **Specify a URL**\. Specify the URL to a wheel in your `requirements.txt`\. 
-
++ **Specify a URL**\. Specify the URL to a wheel in your `requirements.txt`\.   
 **Example Wheel Archive on a public URL**  
-The following example downloads a wheel from a public site\.  
 
-```
-https://files.pythonhosted.org/packages/nupic-1.0.5-py2-none-any.whl
-```
-Amazon MWAA fetches the wheel from the URL you specified and installs on your environment\.
+  The following example downloads a wheel from a public site\.
+
+  ```
+  https://files.pythonhosted.org/packages/nupic-1.0.5-py2-none-any.whl
+  ```
+
+  Amazon MWAA fetches the wheel from the URL you specified and installs on your environment\.
 
 ### Option three: Python dependencies hosted on a private PyPi/PEP\-503 Compliant Repo<a name="best-practices-dependencies-custom-auth-url"></a>
 
-The following section describes how to install an extra that's hosted on a private URL with authentication\.
-+ Add [Apache Airflow configuration options](configuring-env-variables.md) for each authentication credential\.
-
-  For example, if your `requirements.txt` consists of the following:
+The following section describes how to install an Apache Airflow extra that's hosted on a private URL with authentication\.
++ Add [Apache Airflow configuration options](configuring-env-variables.md) for each authentication credential\. For example, if your `requirements.txt` consists of the following:
 
   ```
   --index-url=https://${AIRFLOW__FOO__USER}:${AIRFLOW__FOO__PASS}@my.privatepypi.com
@@ -178,22 +171,9 @@ Broken DAG: No module named x
 
 If you see this error in your Apache Airflow UI, you're likely missing a required dependency in your `requirements.txt` file\.
 
-**To find the package version and its dependencies**
+### Logging into Apache Airflow<a name="airflow-access-and-login"></a>
 
-1. Open the [Documentation page](https://airflow.apache.org/docs/) in the *Apache Airflow reference guide*\.
-
-1. Choose an Apache Airflow package\.
-
-1. Add the required dependencies in **Pip requirements** to your `requirements.txt` file\.
-
-   For example, if you're using the [apache\-airflow\-providers\-apache\-spark](https://airflow.apache.org/docs/apache-airflow-providers-apache-spark/stable/index.html) package, add the following packages and its required pip dependency with the versions:
-
-   ```
-   apache-airflow-providers-apache-spark==1.0.1
-   pyspark>=3.1.1
-   ```
-
-1. Apache Airflow provides a list of packages typically used with the current package in **Cross provider package dependencies**\. Identify any other dependencies from this list that you may want to specify in your `requirements.txt` file\.
+You need [Apache Airflow UI access policy: AmazonMWAAWebServerAccess](access-policies.md#web-ui-access) permissions for your AWS account in AWS Identity and Access Management \(IAM\) to view your Apache Airflow UI\. 
 
 **To access your Apache Airflow UI**
 
@@ -203,8 +183,10 @@ If you see this error in your Apache Airflow UI, you're likely missing a require
 
 1. Choose **Open Airflow UI**\.
 
-**Note**  
-You may need to ask your account administrator to add `AmazonMWAAWebServerAccess` permissions for your account to view your Apache Airflow UI\. For more information, see [Managing access](https://docs.aws.amazon.com/mwaa/latest/userguide/manage-access.html)\.
+**To log\-in to your Apache Airflow UI**
++ Enter the AWS Identity and Access Management \(IAM\) user name and password for your account\.
+
+![\[This image shows how to log-in to your Apache Airflow UI.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-aa-ui-login.png)
 
 ## Example `requirements.txt` scenarios<a name="best-practices-dependencies-ex-mix-match"></a>
 

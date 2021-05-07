@@ -11,7 +11,7 @@ The following sample code creates an Apache Airflow CLI token, then uses a DAG i
 + [What's next?](#samples-trigger-dag-envab.xml-next-up)
 
 ## Version<a name="samples-trigger-dag-envab.xml-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12**\.
++ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-lambda-prereqs"></a>
 

@@ -1,4 +1,4 @@
-# Security in Amazon Managed Workflows for Apache Airflow<a name="security"></a>
+# Security in Amazon Managed Workflows for Apache Airflow \(MWAA\)<a name="security"></a>
 
 This topic describes how to control access Amazon MWAA and to your environments, security of your data, and Amazon MWAA permission policies\.
 
@@ -17,5 +17,5 @@ This documentation helps you understand how to apply the shared responsibility m
 + [Compliance Validation](compliance-validation.md)
 + [Resilience](disaster-recovery-resiliency.md)
 + [Infrastructure Security](infrastructure-security.md)
-+ [Configuration and Vulnerability Analysis in Amazon MWAA](w445aac33c32.md)
-+ [Best practices](security-best-practices.md)
++ [Configuration and Vulnerability Analysis](configuration-vulnerability-analysis.md)
++ [Best Practices](security-best-practices.md)

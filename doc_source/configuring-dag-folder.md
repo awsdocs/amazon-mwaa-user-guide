@@ -34,10 +34,8 @@ Amazon MWAA automatically detects and syncs changes from your Amazon S3 bucket t
 
 ```
 dags/
-    └ dag_def.py
+└ dag_def.py
 ```
-
-If this is the first time you're adding the folder to your Amazon S3 bucket, you'll also need to specify the path to the folder on the Amazon MWAA console\. You only need to complete this step once\.
 
 **Note**  
 You do not need to include the `airflow.cfg` configuration file in your DAG folder\. You can override the default Apache Airflow configurations from the Amazon MWAA console\. For more information, see [Apache Airflow configuration options](configuring-env-variables.md)\.
@@ -74,10 +72,10 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
 1. The following command uploads a `dag_def.py` file to a `dags` folder\. 
 
    ```
-   aws s3 cp dag_def.py s3://your-s3-bucket-any-name/dags/
+   aws s3 cp dag_def.py s3://YOUR_S3_BUCKET_NAME/dags/
    ```
 
-   If a folder named `dags` does not already exist on your Amazon S3 bucket, this command creates the folder and uploads the file named `dag_def.py` to the folder\.
+   If a folder named `dags` does not already exist on your Amazon S3 bucket, this command creates the `dags` folder and uploads the file named `dag_def.py` to the new folder\.
 
 ### Using the Amazon S3 console<a name="configuring-dag-folder-console"></a>
 
@@ -101,8 +99,6 @@ The Amazon S3 console is a web\-based user interface that allows you to create a
 
 ## Specifying the path to your DAGs folder on the Amazon MWAA console \(the first time\)<a name="configuring-dag-folder-mwaaconsole"></a>
 
-If this is the first time you're adding the folder to your Amazon S3 bucket, you'll also need to specify the path to the folder on the Amazon MWAA console\. You only need to complete this step once\.
-
 The following steps assume you are specifying the path to a folder on your Amazon S3 bucket named `dags`\.
 
 1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
@@ -119,9 +115,11 @@ The following steps assume you are specifying the path to a folder on your Amazo
 
 1. Choose **Next**, **Update environment**\.
 
-You can begin using the new DAG immediately after your environment finishes updating\.
-
 ## Viewing changes on your Apache Airflow UI<a name="configuring-dag-folder-mwaaconsole-view"></a>
+
+### Logging into Apache Airflow<a name="airflow-access-and-login"></a>
+
+You need [Apache Airflow UI access policy: AmazonMWAAWebServerAccess](access-policies.md#web-ui-access) permissions for your AWS account in AWS Identity and Access Management \(IAM\) to view your Apache Airflow UI\. 
 
 **To access your Apache Airflow UI**
 
@@ -131,8 +129,10 @@ You can begin using the new DAG immediately after your environment finishes upda
 
 1. Choose **Open Airflow UI**\.
 
-**Note**  
-You may need to ask your account administrator to add `AmazonMWAAWebServerAccess` permissions for your account to view your Apache Airflow UI\. For more information, see [Managing access](https://docs.aws.amazon.com/mwaa/latest/userguide/manage-access.html)\.
+**To log\-in to your Apache Airflow UI**
++ Enter the AWS Identity and Access Management \(IAM\) user name and password for your account\.
+
+![\[This image shows how to log-in to your Apache Airflow UI.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-aa-ui-login.png)
 
 ## What's next?<a name="configuring-dag-folder-next-up"></a>
 + Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.

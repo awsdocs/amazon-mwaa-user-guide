@@ -5,7 +5,7 @@ An existing Amazon VPC network *without Internet access* needs additional VPC se
 **Contents**
 + [Pricing](#vpc-vpe-create-pricing)
 + [Private network and private routing](#vpc-vpc-create-onconsole)
-+ [Required VPC endpoints](#vpc-vpe-create-view-endpoints-examples)
++ [\(Required\) Example VPC endpoints](#vpc-vpe-create-view-endpoints-examples)
 + [Attaching the VPC endpoints required for AWS services](#vpc-vpe-create-view-endpoints-attach-services)
 + [Attaching the VPC endpoints required for Apache Airflow](#vpc-vpe-create-view-endpoints-attach-aa)
 
@@ -19,7 +19,7 @@ An existing Amazon VPC network *without Internet access* needs additional VPC se
 ![\[This image shows where to find the Private network option on the Amazon MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-private-network.png)
 + **Private routing**\. An [Amazon VPC *without Internet access*](networking-about.md) limits network traffic within the VPC\. This page assumes your Amazon VPC does not have Internet access and requires VPC endpoints for each AWS service used by your environment, and VPC endpoints for Apache Airflow in the same AWS Region and Amazon VPC as your Amazon MWAA environment\.
 
-## Required VPC endpoints<a name="vpc-vpe-create-view-endpoints-examples"></a>
+## \(Required\) Example VPC endpoints<a name="vpc-vpe-create-view-endpoints-examples"></a>
 
 The following section shows the required VPC endpoints needed for an Amazon VPC *without Internet access*\. It lists the VPC endpoints for each AWS service used by Amazon MWAA, including the VPC endpoints needed for Apache Airflow\. 
 

@@ -22,7 +22,7 @@ Amazon MWAA is available in the following AWS Regions\.
 ## Apache Airflow versions<a name="regions-aa-versions"></a>
 
 The following Apache Airflow versions are available on Amazon MWAA\.
-+ [Apache Airflow v1\.10\.12](https://airflow.apache.org/docs/apache-airflow/1.10.12/) is available in Python 3\.7
++ [Apache Airflow v1\.10\.12](https://airflow.apache.org/docs/apache-airflow/1.10.12/) is available in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)
 
 ## Amazon MWAA architecture<a name="architecture-mwaa"></a>
 

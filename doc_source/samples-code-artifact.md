@@ -11,7 +11,7 @@ An AWS CodeArtifact token expires after a maximum expiration limit of twelve hou
 + [What's next?](#samples-code-artifact-next-up)
 
 ## Version<a name="samples-code-artifact-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12**\.
++ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-code-artifact-prereqs"></a>
 

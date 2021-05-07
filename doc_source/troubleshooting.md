@@ -39,6 +39,7 @@ This topic describes common questions and resolutions to some errors and issues 
 + [Logs](#troubleshooting-view-logs)
   + [I can’t see my task logs or I received a remote log error in the Airflow UI](#t-task-logs)
   + [I keep seeing a ResourceAlreadyExistsException error in CloudTrail](#t-cloudtrail)
+  + [I keep seeing an Invalid request error in CloudTrail](#t-cloudtrail-bucket)
 
 ## Common questions<a name="t-common-questions"></a>
 
@@ -189,7 +190,7 @@ We recommend the following steps:
    boto
    ```
 
-1. Explore ways to specify Python dependencies in the `requirements.txt`, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
+1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
 
 ### I received 'Broken DAG: No module named psycopg2' error<a name="missing-postgres-library"></a>
 
@@ -203,7 +204,7 @@ We recommend the following steps:
    apache-airflow[postgres]==1.10.12
    ```
 
-1. Explore ways to specify Python dependencies in the `requirements.txt`, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
+1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
 
 ### I received a 'Broken DAG' error when using the Slack operators<a name="missing-slack"></a>
 
@@ -217,7 +218,7 @@ We recommend the following steps:
    apache-airflow[slack]==1.10.12
    ```
 
-1. Explore ways to specify Python dependencies in the `requirements.txt`, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
+1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
 
 ### I received various errors installing Google/GCP/BigQuery<a name="missing-bigquery-cython"></a>
 
@@ -245,7 +246,7 @@ Amazon MWAA uses Amazon Linux which requires a specific version of Cython and cr
    apache-airflow[gcp]==1.10.12
    ```
 
-1. Explore ways to specify Python dependencies in the `requirements.txt`, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
+1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
 
 ### I received 'Broken DAG: No module named Cython' error<a name="broken-cython"></a>
 
@@ -267,7 +268,7 @@ Amazon MWAA uses Amazon Linux which requires a specific version of Cython\. We r
    awswrangler==2.4.0
    ```
 
-1. Explore ways to specify Python dependencies in the `requirements.txt`, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
+1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
 
 ## Operators<a name="troubleshooting-operators"></a>
 
@@ -303,7 +304,7 @@ We recommend the following steps:
    snowflake-connector-python == 1.7.2
    ```
 
-1. Explore ways to specify Python dependencies in the `requirements.txt`, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
+1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
 
 1. Add the following imports to your DAG:
 
@@ -394,7 +395,7 @@ We recommend the following steps:
 
 1. Check the `requirements.txt`\. Verify the providers package and other libraries are compatible with Apache Airflow v1\.10\.12\.
 
-1. Explore ways to specify Python dependencies in the `requirements.txt`, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
+1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
 
 ## Tasks<a name="troubleshooting-tasks"></a>
 
@@ -427,7 +428,7 @@ If you see blank logs, or the follow error when viewing *Task logs* in the Airfl
 
   1. Verify that your operator has the appropriate Python libraries to load correctly\. You can try eliminating imports until you find the one that is causing the issue\.
 
-  1. Explore ways to specify Python dependencies in the `requirements.txt`, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
+  1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
 
 ### I keep seeing a ResourceAlreadyExistsException error in CloudTrail<a name="t-cloudtrail"></a>
 
@@ -446,3 +447,38 @@ Certain Python requirements such as `apache-airflow-backport-providers-amazon` r
   ```
   watchtower==1.0.6
   ```
+
+### I keep seeing an Invalid request error in CloudTrail<a name="t-cloudtrail-bucket"></a>
+
+```
+Invalid request provided: Provided role does not have sufficient permissions for s3 location airflow-xxx-xxx/dags
+```
+
+If you're creating an Amazon MWAA environment and an Amazon S3 bucket using the same AWS CloudFormation template, you need to add a `DependsOn` section within your AWS CloudFormation template\. The two resources \(*MWAA Environment* and *MWAA Execution Policy*\) have a dependency in AWS CloudFormation\. We recommend the following steps:
++ Add the following **DependsOn** statement to your AWS CloudFormation template\.
+
+  ```
+  ...
+        MaxWorkers: 5
+        NetworkConfiguration:
+          SecurityGroupIds:
+            - !GetAtt SecurityGroup.GroupId
+          SubnetIds: !Ref subnetIds
+        WebserverAccessMode: PUBLIC_ONLY
+      DependsOn: MwaaExecutionPolicy
+  
+      MwaaExecutionPolicy:
+      Type: AWS::IAM::ManagedPolicy
+      Properties:
+        Roles:
+          - !Ref MwaaExecutionRole
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: airflow:PublishMetrics
+              Resource:
+  ...
+  ```
+
+  For an example, see [Quick start tutorial for Amazon Managed Workflows for Apache Airflow \(MWAA\)](quick-start.md)\.

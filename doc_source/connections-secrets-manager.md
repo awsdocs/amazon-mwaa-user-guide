@@ -99,31 +99,31 @@ The following shell session uses your local Airflow CLI to generate a connection
    1. Specify the AWS connection type:
 
       ```
-      ... conn_id='aws'
+      ... conn_id='aws',
       ```
 
    1. Specify the Apache Airflow database option:
 
       ```
-      ... conn_type='mysql'
+      ... conn_type='mysql',
       ```
 
    1. Specify the Apache Airflow UI URL on Amazon MWAA:
 
       ```
-      ... host='288888a0-50a0-888-9a88-1a111aaa0000.a1.us-east-1.airflow.amazonaws.com/home'
+      ... host='288888a0-50a0-888-9a88-1a111aaa0000.a1.us-east-1.airflow.amazonaws.com/home',
       ```
 
    1. Specify the AWS access key ID \(username\) to login to Amazon MWAA:
 
       ```
-      ... login='YOUR_AWS_ACCESS_KEY_ID'
+      ... login='YOUR_AWS_ACCESS_KEY_ID',
       ```
 
    1. Specify the AWS secret access key \(password\) to login to Amazon MWAA:
 
       ```
-      ... password='YOUR_AWS_SECRET_ACCESS_KEY'
+      ... password='YOUR_AWS_SECRET_ACCESS_KEY',
       ```
 
    1. Specify the `extra` shell session variable:
@@ -224,7 +224,7 @@ The following section describes how to create the secret for a variable in Secre
    For example:
 
    ```
-   airflow/variables/max_metadb_storage_days
+   airflow/variables/test-variable
    ```
 
 1. Leave the remaining options blank, or set to their default values\.
@@ -250,14 +250,16 @@ The following section describes how to create the secret for your connection str
 1. Add the connection URI string as **Plaintext** in the following format\.
 
    ```
-   "YOUR_CONNECTION_URI_STRING"
+   YOUR_CONNECTION_URI_STRING
    ```
 
    For example:
 
    ```
-   "mysql://288888a0-50a0-888-9a88-1a111aaa0000.a1.us-east-1.airflow.amazonaws.com%2Fhome?role_arn=arn%3Aaws%3Aiam%3A%3A001122332255%3Arole%2Fservice-role%2FAmazonMWAA-MyAirflowEnvironment-iAaaaA&region_name=us-east-1"
+   mysql://288888a0-50a0-888-9a88-1a111aaa0000.a1.us-east-1.airflow.amazonaws.com%2Fhome?role_arn=arn%3Aaws%3Aiam%3A%3A001122332255%3Arole%2Fservice-role%2FAmazonMWAA-MyAirflowEnvironment-iAaaaA&region_name=us-east-1
    ```
+**Warning**  
+Apache Airflow parses each of the values in the connection string\. You must **not** use single nor double quotes, or it will parse the connection as a single string\.
 
 1. Choose an AWS KMS key option from the dropdown list\.
 
@@ -278,7 +280,8 @@ The following section describes how to create the secret for your connection str
 1. Choose **Next**, **Next**, **Store**\.
 
 ## Sample code<a name="connections-sm-samples"></a>
-+ Learn how to use the secret key \(`myconn`\) on this page using the sample code at [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)\.
++ Learn how to use the secret key for the Apache Airflow connection \(`myconn`\) on this page using the sample code at [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)\.
++ Learn how to use the secret key for the Apache Airflow variable \(`test-variable`\) on this page using the sample code at [Using a secret key in AWS Secrets Manager for an Apache Airflow variable](samples-secrets-manager-var.md)\.
 
 ## Using AWS blogs and tutorials<a name="connections-sm-blogs"></a>
 + Use a Python script to migrate a large volume of Apache Airflow variables and connections to Secrets Manager in [Move your Apache Airflow connections and variables to AWS Secrets Manager](https://aws.amazon.com/blogs/opensource/move-apache-airflow-connections-variables-aws-secrets-manager/)\.

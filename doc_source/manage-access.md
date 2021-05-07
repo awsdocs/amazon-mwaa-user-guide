@@ -6,4 +6,3 @@ Amazon MWAA needs to be permitted to use other AWS services and resources used i
 + [Amazon MWAA Service\-linked role policy](mwaa-slr.md)
 + [Amazon MWAA Execution role](mwaa-create-role.md)
 + [Accessing an Amazon MWAA environment](access-policies.md)
-+ [Accessing the Apache Airflow UI](access-airflow-ui.md)

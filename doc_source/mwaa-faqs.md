@@ -27,11 +27,12 @@ This page describes common questions you may encounter when using Amazon Managed
 
 ### Why are older versions of Apache Airflow not supported?<a name="airflow-version"></a>
 
-We are only supporting the latest \(as of launch\) version 1\.10\.12 due to security concerns with older versions\.
+We are only supporting the latest \(as of launch\) Apache Airflow version Apache Airflow v1\.10\.12 due to security concerns with older versions\.
 
 ### What Python version should I use?<a name="python-version"></a>
 
-Amazon MWAA only supports Python 3\.7\.
+The following Apache Airflow versions are available on Amazon MWAA\.
++ [Apache Airflow v1\.10\.12](https://airflow.apache.org/docs/apache-airflow/1.10.12/) is available in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)
 
 ## Environment specifications<a name="q-supported-features"></a>
 
