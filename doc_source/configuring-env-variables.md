@@ -39,7 +39,7 @@ While we don't expose the `airflow.cfg` in the Apache Airflow UI of an Amazon MW
 ## Configuration options overview<a name="configuring-env-variables-customizing"></a>
 
 When you add a configuration on the Amazon MWAA console, Amazon MWAA writes the configuration as an environment variable\. 
-+ **Listed options**\. You can choose from one of the configuration settings available for your Apache Airflow verion in the dropdown list\. For example, `dag_concurrency` : `16`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__CORE__DAG_CONCURRENCY : 16`
++ **Listed options**\. You can choose from one of the configuration settings available for your Apache Airflow version in the dropdown list\. For example, `dag_concurrency` : `16`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__CORE__DAG_CONCURRENCY : 16`
 + **Custom options**\. You can also specify Airflow configuration options that are not listed for your Apache Airflow verion in the dropdown list\. For example, `foo.user` : `YOUR_USER_NAME`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__FOO__USER : YOUR_USER_NAME`
 
 ### Apache Airflow configuration options<a name="configuring-env-variables-onconsole"></a>
