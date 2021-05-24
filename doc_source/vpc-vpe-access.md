@@ -109,7 +109,7 @@ If you've chosen the **Private network** access mode for your Apache Airflow *We
 
 ## Accessing the VPC endpoint for your Apache Airflow Web server \(private network access\)<a name="vpc-vpe-access-endpoints"></a>
 
-If you've chosen the **Private network** access mode for your Apache Airflow *Web server*, you'll need to create a mechanism to access the VPC interface endpoint for your Apache Airflow *Web server*\. You must the same Amazon VPC, VPC security group, and private subnets as your Amazon MWAA environment for these resources\.
+If you've chosen the **Private network** access mode for your Apache Airflow *Web server*, you'll need to create a mechanism to access the VPC interface endpoint for your Apache Airflow *Web server*\. You must use the same Amazon VPC, VPC security group, and private subnets as your Amazon MWAA environment for these resources\.
 
 ### Using an AWS Client VPN<a name="vpc-vpe-access-vpn"></a>
 
