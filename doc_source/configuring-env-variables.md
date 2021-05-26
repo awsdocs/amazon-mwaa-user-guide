@@ -6,8 +6,8 @@ Apache Airflow configuration options can be attached to your Amazon Managed Work
 + [Prerequisites](#configuring-env-variables-prereqs)
 + [How it works](#configuring-env-variables-how)
 + [Configuration options overview](#configuring-env-variables-customizing)
-  + [Apache Airflow configuration options](#configuring-env-variables-onconsole)
-  + [Apache Airflow reference](#configuring-env-variables-reference)
+  + [Apache Airflow configuration options](#configuring-env-variables-airflow-ref)
+  + [Apache Airflow reference](#configuring-env-variables-reference-options)
   + [Using the Amazon MWAA console](#configuring-env-variables-console-add)
 + [Configuration reference](#configuring-env-variables-reference)
   + [Email configurations](#configuring-env-variables-email)
@@ -24,11 +24,11 @@ Apache Airflow configuration options can be attached to your Amazon Managed Work
 
 You'll need the following before you can complete the steps on this page\.
 
-1. An [AWS account with access](access-policies.md) to your environment\.
+1. **Access**\. Your AWS account must have been granted access by your administrator to the [AmazonMWAAFullConsoleAccess](access-policies.md#console-full-access) access control policy for your environment\.
 
-1. An [Amazon S3 bucket](mwaa-s3-bucket.md) with *Public Access Blocked* and *Versioning Enabled*\.
+1. **Amazon S3 configurations**\. The [Amazon S3 bucket](mwaa-s3-bucket.md) used to store your DAGs, custom plugins in `plugins.zip`, and Python dependencies in `requirements.txt` must be configured with *Public Access Blocked* and *Versioning Enabled*\.
 
-1. An [execution role](mwaa-create-role.md) that grants Amazon MWAA access to the AWS resources used by your environment\.
+1. **Permissions**\. Your Amazon MWAA environment must be permitted by your [execution role](mwaa-create-role.md) to access the AWS resources used by your environment\.
 
 ## How it works<a name="configuring-env-variables-how"></a>
 
@@ -39,19 +39,20 @@ While we don't expose the `airflow.cfg` in the Apache Airflow UI of an Amazon MW
 ## Configuration options overview<a name="configuring-env-variables-customizing"></a>
 
 When you add a configuration on the Amazon MWAA console, Amazon MWAA writes the configuration as an environment variable\. 
-+ **Listed options**\. You can choose from one of the configuration settings available for your Apache Airflow verion in the dropdown list\. For example, `dag_concurrency` : `16`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__CORE__DAG_CONCURRENCY : 16`
-+ **Custom options**\. You can also specify Airflow configuration options that are not listed for your Apache Airflow verion in the dropdown list\. For example, `foo.user` : `YOUR_USER_NAME`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__FOO__USER : YOUR_USER_NAME`
++ **Listed options**\. You can choose from one of the configuration settings available for your Apache Airflow version in the dropdown list\. For example, `dag_concurrency` : `16`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__CORE__DAG_CONCURRENCY : 16`
++ **Custom options**\. You can also specify Airflow configuration options that are not listed for your Apache Airflow version in the dropdown list\. For example, `foo.user` : `YOUR_USER_NAME`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__FOO__USER : YOUR_USER_NAME`
 
-### Apache Airflow configuration options<a name="configuring-env-variables-onconsole"></a>
+### Apache Airflow configuration options<a name="configuring-env-variables-airflow-ref"></a>
 
 The following image shows where you can customize the **Apache Airflow configuration options** on the Amazon MWAA console\.
 
 ![\[This image shows where you can customize the Apache Airflow configuration options on the Amazon MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-airflow-config.png)
 
-### Apache Airflow reference<a name="configuring-env-variables-reference"></a>
+### Apache Airflow reference<a name="configuring-env-variables-reference-options"></a>
 
 The following section contains links to the list of available Apache Airflow configuration options in the *Apache Airflow reference guide*\.
-+ **v1\.10\.12**: [Apache Airflow v1\.10\.12 configuration options](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#)
++ **v2\.0\.2**: [Apache Airflow v2\.0\.2 configuration options](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html)
++ **v1\.10\.12**: [Apache Airflow v1\.10\.12 configuration options](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html)
 
 ### Using the Amazon MWAA console<a name="configuring-env-variables-console-add"></a>
 
@@ -82,6 +83,19 @@ The following list shows the Airflow email notification configuration options av
 We recommend using port 587 for SMTP traffic\. By default, AWS blocks outbound SMTP traffic on port 25 of all Amazon EC2 instances\. If you want to send outbound traffic on port 25, you can [request for this restriction to be removed](https://docs.aws.amazon.com/https://aws.amazon.com/premiumsupport/knowledge-center/ec2-port-25-throttle/)\.
 
 ------
+#### [ Airflow v2\.0\.2 ]
+
+
+| Airflow version | Airflow configuration option | Description | Example value | 
+| --- | --- | --- | --- | 
+|  v2\.0\.2  |  email\.email\_backend  |  The Apache Airflow utility used for email notifications in [email\_backend](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#email-backend)\.  |  airflow\.utils\.email\.send\_email\_smtp  | 
+|  v2\.0\.2  |  smtp\.smtp\_host  |  The name of the outbound server used for the email address in [smtp\_host](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-host)\.  |  localhost  | 
+|  v2\.0\.2  |  smtp\.smtp\_starttls  |  Transport Layer Security \(TLS\) is used to encrypt the email over the Internet in [smtp\_starttls](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-starttls)\.  |  False  | 
+|  v2\.0\.2  |  smtp\.smtp\_ssl  |  Secure Sockets Layer \(SSL\) is used to connect the server and email client in [smtp\_ssl](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-ssl)\.  |  True  | 
+|  v2\.0\.2  |  smtp\.smtp\_port  |  The Transmission Control Protocol \(TCP\) port designated to the server in [smtp\_port](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-port)\.  |  587  | 
+|  v2\.0\.2  |  smtp\.smtp\_mail\_from  |  The outbound email address in [smtp\_mail\_from](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-mail-from)\.  |  myemail@domain\.com  | 
+
+------
 #### [ Airflow v1\.10\.12 ]
 
 
@@ -101,6 +115,15 @@ We recommend using port 587 for SMTP traffic\. By default, AWS blocks outbound S
 The following list shows the configurations available in the dropdown list for Airflow tasks on Amazon MWAA\. 
 
 ------
+#### [ Airflow v2\.0\.2 ]
+
+
+| Airflow version | Airflow configuration option | Description | Example value | 
+| --- | --- | --- | --- | 
+|  v2\.0\.2  |  core\.default\_task\_retries  |  The number of times to retry an Apache Airflow task in [default\_task\_retries](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#default-task-retries)\.  |  3  | 
+|  v2\.0\.2  |  core\.parallelism  |  The maximum number of task instances that can run simultaneously across the entire environment in parallel \([parallelism](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#parallelism)\)\.  |  40  | 
+
+------
 #### [ Airflow v1\.10\.12 ]
 
 
@@ -114,6 +137,15 @@ The following list shows the configurations available in the dropdown list for A
 ### Scheduler configurations<a name="configuring-env-variables-scheduler"></a>
 
 The following list shows the Airflow scheduler configurations available in the dropdown list on Amazon MWAA\. 
+
+------
+#### [ Airflow v2\.0\.2 ]
+
+
+| Airflow version | Airflow configuration option | Description | Example value | 
+| --- | --- | --- | --- | 
+|  v2\.0\.2  |  scheduler\.catchup\_by\_default  |  Tells the scheduler to create a DAG run to "catch up" to the specific time interval in [catchup\_by\_default](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#catchup-by-default)\.  |  False  | 
+|  v2\.0\.2  |  scheduler\.scheduler\_zombie\_task\_threshold  |  Tells the scheduler whether to mark the task instance as failed and reschedule the task in [scheduler\_zombie\_task\_threshold](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#scheduler-zombie-task-threshold)\.  |  300  | 
 
 ------
 #### [ Airflow v1\.10\.12 ]
@@ -131,6 +163,14 @@ The following list shows the Airflow scheduler configurations available in the d
 The following list shows the Airflow worker configurations available in the dropdown list on Amazon MWAA\. 
 
 ------
+#### [ Airflow v2\.0\.2 ]
+
+
+| Airflow version | Airflow configuration option | Description | Example value | 
+| --- | --- | --- | --- | 
+|  v2\.0\.2  |  celery\.worker\_autoscale  |  The maximum and minimum number of tasks that can run concurrently on any worker using the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/2.0.2/executor/celery.html) in [worker\_autoscale](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#worker-autoscale)\. Value must be comma\-separated in the following order: `max_concurrency,min_concurrency`\.  |  16,12  | 
+
+------
 #### [ Airflow v1\.10\.12 ]
 
 
@@ -143,6 +183,14 @@ The following list shows the Airflow worker configurations available in the drop
 ### Web server configurations<a name="configuring-env-variables-webserver"></a>
 
 The following list shows the Airflow web server configurations available in the dropdown list on Amazon MWAA\. 
+
+------
+#### [ Airflow v2\.0\.2 ]
+
+
+| Airflow version | Airflow configuration option | Description | Example value | 
+| --- | --- | --- | --- | 
+|  v2\.0\.2  |  webserver\.default\_ui\_timezone  |  The default Apache Airflow UI datetime setting in [default\_ui\_timezone](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#default-ui-timezone)\.  |  America/New\_York  | 
 
 ------
 #### [ Airflow v1\.10\.12 ]

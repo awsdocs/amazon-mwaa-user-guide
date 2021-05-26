@@ -4,6 +4,9 @@ You can optionally provide a  [Customer managed CMK](https://docs.aws.amazon.com
 
 A  [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) must be created in the same Region as your Amazon MWAA environment instance and your Amazon S3 bucket where your customer data is stored\. If the  [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) that you specify is in a different account from the one that you use to configure an environment, you must specify the key using its ARN\. For more information about creating keys, see [Creating Keys](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html)
 
+**Note**  
+Amazon MWAA does not support an [AWS KMS key alias](https://docs.aws.amazon.com/kms/latest/developerguide/kms-alias.html)\. The key should be provided via its ID or ARN\.
+
 ## Using Grants for Encryption<a name="custom-keys-grants-provide"></a>
 
 This topic describes the grants Amazon MWAA attaches to a  [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) on your behalf for data encryption and decryption\.

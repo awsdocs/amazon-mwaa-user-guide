@@ -59,13 +59,13 @@ For example, if `core.parallelism` was set to `100` and `core.dag_concurrency` w
 
 ### On an Amazon MWAA environment<a name="mwaa-autoscaling-high-volume-mwaa"></a>
 
-On an Amazon MWAA environment, you can configure these settings directly on the Amazon MWAA console using [Apache Airflow configuration options](configuring-env-variables.md), [Amazon MWAA environment class](environment-class.md), and the **Maximum worker count** autoscaling mechanism\. While `core.dag_concurrency` is not available in the dropdown list as an **Apache Airflow configuration option** on the Amazon MWAA console, you can add it as a custom [Apache Airflow configuration option](configuring-env-variables.md)\.
+On an Amazon MWAA environment, you can configure these settings directly on the Amazon MWAA console using [](configuring-env-variables.md), [Amazon MWAA environment class](environment-class.md), and the **Maximum worker count** autoscaling mechanism\. While `core.dag_concurrency` is not available in the dropdown list as an **Apache Airflow configuration option** on the Amazon MWAA console, you can add it as a custom [Apache Airflow configuration option](configuring-env-variables.md)\.
 
 Let's say, when you created your environment, you chose the following settings:
 
 1. The **mw1\.small** [environment class](environment-class.md) which controls the maximum number of concurrent tasks each worker can run by default and the vCPU of containers\.
 
-1. The default setting of `10` workers in **Maximum worker count**\.
+1. The default setting of `10` Workers in **Maximum worker count**\.
 
 1. An [Apache Airflow configuration option](configuring-env-variables.md) for `celery.worker_autoscale` of `5,5` tasks per worker\.
 
@@ -89,7 +89,7 @@ To learn more, see the [update\-environment](https://docs.aws.amazon.com/cli/lat
 
 ## Troubleshooting tasks stuck in the running state<a name="mwaa-autoscaling-stranded"></a>
 
-In rare cases, Apache Airflow may think there are tasks still running\. To resolve this issue, you need to clear the stranded task in your Apache Airflow UI\. For more information, see the [I see my tasks stuck in the running state](troubleshooting.md) troubleshooting topic\.
+In rare cases, Apache Airflow may think there are tasks still running\. To resolve this issue, you need to clear the stranded task in your Apache Airflow UI\. For more information, see the [I see my tasks stuck or not completing](troubleshooting.md) troubleshooting topic\.
 
 ## What's next?<a name="mwaa-autoscaling-next-up"></a>
 + Learn how to increase the size of your environment in [Amazon MWAA environment class](environment-class.md)\.

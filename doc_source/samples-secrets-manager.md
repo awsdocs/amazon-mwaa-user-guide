@@ -12,6 +12,7 @@ The following sample calls AWS Secrets Manager to get a secret key for an Apache
 
 ## Version<a name="samples-secrets-manager-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-secrets-manager-prereqs"></a>
 
@@ -23,11 +24,70 @@ To use the sample code on this page, you'll need the following:
 + Secrets Manager permissions as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
 
 ## Requirements<a name="samples-hive-dependencies"></a>
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the Apache Airflow v1\.10\.12 base install on your environment\.
++ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1\.10\.12 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
++ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2\.0\.2 base install](https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt) on your environment\.
 
 ## Code sample<a name="samples-secrets-manager-code"></a>
 
 The following steps describe how to create the DAG code that calls Secrets Manager to get the secret\.
+
+------
+#### [ Airflow v2\.0\.2 ]
+
+1. In your command prompt, navigate to the directory where your DAG code is stored\. For example:
+
+   ```
+   cd dags
+   ```
+
+1. Copy the contents of the following code sample and save locally as `secrets-manager.py`\.
+
+   ```
+   from airflow import DAG, settings, secrets
+   from airflow.operators.python import PythonOperator
+   from airflow.utils.dates import days_ago
+   from airflow.providers.amazon.aws.hooks.base_aws import AwsBaseHook
+   
+   from datetime import timedelta
+   import os
+   
+   ### The steps to create this secret key can be found at: https://docs.aws.amazon.com/mwaa/latest/userguide/connections-secrets-manager.html
+   sm_secretId_name = 'airflow/connections/myconn'
+   
+   default_args = {
+       'owner': 'airflow',
+       'start_date': days_ago(1),
+       'depends_on_past': False
+   }
+   
+   
+   ### Gets the secret myconn from Secrets Manager
+   def read_from_aws_sm_fn(**kwargs):
+       ### set up Secrets Manager
+       hook = AwsBaseHook(client_type='secretsmanager')
+       client = hook.get_client_type('secretsmanager')
+       response = client.get_secret_value(SecretId=sm_secretId_name)
+       myConnSecretString = response["SecretString"]
+   
+       return myConnSecretString
+   
+   ### 'os.path.basename(__file__).replace(".py", "")' uses the file name secrets-manager.py for a DAG ID of secrets-manager
+   with DAG(
+           dag_id=os.path.basename(__file__).replace(".py", ""),
+           default_args=default_args,
+           dagrun_timeout=timedelta(hours=2),
+           start_date=days_ago(1),
+           schedule_interval=None
+   ) as dag:
+       write_all_to_aws_sm = PythonOperator(
+           task_id="read_from_aws_sm",
+           python_callable=read_from_aws_sm_fn,
+           provide_context=True
+       )
+   ```
+
+------
+#### [ Airflow v1\.10\.12 ]
 
 1. In your command prompt, navigate to the directory where your DAG code is stored\. For example:
 
@@ -80,6 +140,8 @@ The following steps describe how to create the DAG code that calls Secrets Manag
            provide_context=True
        )
    ```
+
+------
 
 ## What's next?<a name="samples-secrets-manager-next-up"></a>
 + Learn how to upload the DAG code in this example to the `dags` folder in your Amazon S3 bucket in [Adding or updating DAGs](configuring-dag-folder.md)\.

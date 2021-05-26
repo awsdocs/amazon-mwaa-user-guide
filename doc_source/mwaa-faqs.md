@@ -6,12 +6,14 @@ This page describes common questions you may encounter when using Amazon Managed
 + [Supported versions](#q-supported-versions)
   + [Why are older versions of Apache Airflow not supported?](#airflow-version)
   + [What Python version should I use?](#python-version)
++ [Common questions](#t-common-questions)
+  + [When should I use AWS Step Functions vs\. Amazon MWAA?](#t-step-functions)
 + [Environment specifications](#q-supported-features)
   + [How much ephemeral storage is available to each environment?](#worker-storage)
   + [What is the default operating system used for Amazon MWAA environments?](#default-os)
   + [Can I use a custom image for my Amazon MWAA environment?](#custom-image)
   + [Is MWAA HIPAA compliant?](#hipaa-compliance)
-  + [Does Amazon MWAA support SPOT instances?](#spot-instances)
+  + [Does Amazon MWAA support Spot Instances?](#spot-instances)
   + [Does Amazon MWAA support a custom domain?](#custom-dns)
   + [Can I remove a `plugins.zip` or `requirements.txt` from an environment?](#remove-plugins-reqs)
   + [Why is a self\-referencing rule required on the VPC security group?](#remove-sg-rule)
@@ -31,8 +33,21 @@ We are only supporting the latest \(as of launch\) Apache Airflow version Apache
 
 ### What Python version should I use?<a name="python-version"></a>
 
-The following Apache Airflow versions are available on Amazon MWAA\.
-+ [Apache Airflow v1\.10\.12](https://airflow.apache.org/docs/apache-airflow/1.10.12/) is available in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)
+The following Apache Airflow versions are supported on Amazon Managed Workflows for Apache Airflow \(MWAA\)\.
+
+
+| Airflow version | Airflow guide | Airflow constraints | Python version | 
+| --- | --- | --- | --- | 
+|  v2\.0\.2  |  [Apache Airflow v2\.0\.2 reference guide](http://airflow.apache.org/docs/apache-airflow/2.0.2/index.html)  |  [https://raw\.githubusercontent\.com/apache/airflow/constraints\-2\.0\.2/constraints\-3\.7\.txt](https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
+|  v1\.10\.12  |  [Apache Airflow v1\.10\.12 reference guide](https://airflow.apache.org/docs/apache-airflow/1.10.12/)  |  [https://raw\.githubusercontent\.com/apache/airflow/constraints\-1\.10\.12/constraints\-3\.7\.txt](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
+
+## Common questions<a name="t-common-questions"></a>
+
+### When should I use AWS Step Functions vs\. Amazon MWAA?<a name="t-step-functions"></a>
+
+1. You can use Step Functions to process individual customer orders, since Step Functions can scale to meet demand for one order or one million orders\.
+
+1. If you’re running an overnight workflow that processes the previous day’s orders, you can use Step Functions or Amazon MWAA\. Amazon MWAA allows you an open source option to abstract the workflow from the AWS resources you're using\.
 
 ## Environment specifications<a name="q-supported-features"></a>
 
@@ -52,9 +67,9 @@ Custom images are not supported\. Amazon MWAA uses images that are built on Amaz
 
 Amazon MWAA is not currently HIPAA compliant\.
 
-### Does Amazon MWAA support SPOT instances?<a name="spot-instances"></a>
+### Does Amazon MWAA support Spot Instances?<a name="spot-instances"></a>
 
-Amazon MWAA does not currently support SPOT instances for managed Apache Airflow\. However, an Amazon MWAA environment can trigger SPOT instances on, for example, Amazon EMR and Amazon EC2\.
+Amazon MWAA does not currently support on\-demand Amazon EC2 Spot Instance types for Apache Airflow\. However, an Amazon MWAA environment can trigger Spot Instances on, for example, Amazon EMR and Amazon EC2\.
 
 ### Does Amazon MWAA support a custom domain?<a name="custom-dns"></a>
 

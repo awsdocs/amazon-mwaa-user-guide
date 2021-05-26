@@ -6,7 +6,7 @@ The following sample shows how to patch the Apache Airflow PythonVirtualenvOpera
 + [Version](#samples-virtualenv-version)
 + [Prerequisites](#samples-virtualenv-prereqs)
 + [Permissions](#samples-virtualenv-permissions)
-+ [Requirements](#samples-hive-dependencies)
++ [Requirements](#samples-virtualenv-dependencies)
 + [Custom plugin sample code](#samples-virtualenv-plugins-code)
 + [Plugins\.zip](#samples-virtualenv-pluginszip)
 + [Code sample](#samples-virtualenv-code)
@@ -14,6 +14,7 @@ The following sample shows how to patch the Apache Airflow PythonVirtualenvOpera
 
 ## Version<a name="samples-virtualenv-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-virtualenv-prereqs"></a>
 
@@ -23,7 +24,7 @@ To use the sample code on this page, you'll need the following:
 ## Permissions<a name="samples-virtualenv-permissions"></a>
 + No additional permissions are required to use the sample code on this page\.
 
-## Requirements<a name="samples-hive-dependencies"></a>
+## Requirements<a name="samples-virtualenv-dependencies"></a>
 
 To use the sample code on this page, add the following dependencies to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
 
@@ -34,6 +35,39 @@ virtualenv
 ## Custom plugin sample code<a name="samples-virtualenv-plugins-code"></a>
 
 Apache Airflow will execute the contents of Python files in the plugins folder at startup\. This plugin will patch the built\-in PythonVirtualenvOperater during that startup process to make it compatible with Amazon MWAA\. The following steps show the sample code for the custom plugin\.
+
+------
+#### [ Airflow v2\.0\.2 ]
+
+1. In your command prompt, navigate to the `plugins` directory above\. For example:
+
+   ```
+   cd plugins
+   ```
+
+1. Copy the contents of the following code sample and save locally as `virtual_python_plugin.py`\.
+
+   ```
+   from airflow.plugins_manager import AirflowPlugin
+   import airflow.utils.python_virtualenv 
+   from typing import List
+   
+   def _generate_virtualenv_cmd(tmp_dir: str, python_bin: str, system_site_packages: bool) -> List[str]:
+       cmd = ['python3','/usr/local/airflow/.local/lib/python3.7/site-packages/virtualenv', tmp_dir]
+       if system_site_packages:
+           cmd.append('--system-site-packages')
+       if python_bin is not None:
+           cmd.append(f'--python={python_bin}')
+       return cmd
+   
+   airflow.utils.python_virtualenv._generate_virtualenv_cmd=_generate_virtualenv_cmd
+   
+   class VirtualPythonPlugin(AirflowPlugin):                
+       name = 'virtual_python_plugin'
+   ```
+
+------
+#### [ Airflow v1\.10\.12 ]
 
 1. In your command prompt, navigate to the `plugins` directory above\. For example:
 
@@ -60,6 +94,8 @@ Apache Airflow will execute the contents of Python files in the plugins folder a
        name = 'virtual_python_plugin'
    ```
 
+------
+
 ## Plugins\.zip<a name="samples-virtualenv-pluginszip"></a>
 
 The following steps show how to create the `plugins.zip`\.
@@ -79,6 +115,39 @@ The following steps show how to create the `plugins.zip`\.
 ## Code sample<a name="samples-virtualenv-code"></a>
 
 The following steps describe how to create the DAG code for the custom plugin\.
+
+------
+#### [ Airflow v2\.0\.2 ]
+
+1. In your command prompt, navigate to the directory where your DAG code is stored\. For example:
+
+   ```
+   cd dags
+   ```
+
+1. Copy the contents of the following code sample and save locally as `virtualenv_test.py`\.
+
+   ```
+   from airflow import DAG
+   from airflow.operators.python import PythonVirtualenvOperator
+   from airflow.utils.dates import days_ago
+   
+   def virtualenv_fn():
+       import boto3
+       print("boto3 version ",boto3.__version__)
+   
+   with DAG(dag_id="virtualenv_test", schedule_interval=None, catchup=False, start_date=days_ago(1)) as dag:
+       virtualenv_task = PythonVirtualenvOperator(
+           task_id="virtualenv_task",
+           python_callable=virtualenv_fn,
+           requirements=["boto3>=1.17.43"],
+           system_site_packages=False,
+           dag=dag,
+       )
+   ```
+
+------
+#### [ Airflow v1\.10\.12 ]
 
 1. In your command prompt, navigate to the directory where your DAG code is stored\. For example:
 
@@ -106,6 +175,8 @@ The following steps describe how to create the DAG code for the custom plugin\.
            dag=dag,
        )
    ```
+
+------
 
 ## What's next?<a name="samples-virtualenv-next-up"></a>
 + Learn how to upload the `requirements.txt` file in this example to your Amazon S3 bucket in [Installing Python dependencies](working-dags-dependencies.md)\.

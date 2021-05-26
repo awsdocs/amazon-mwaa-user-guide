@@ -1,7 +1,7 @@
 # Amazon Managed Workflows for Apache Airflow User Guide
 
 -----
-*****Copyright &copy;  Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
+*****Copyright &copy; Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
 Amazon's trademarks and trade dress may not be used in 
@@ -48,6 +48,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Tutorial: Configuring private network access using an AWS Client VPN](tutorials-private-network-vpn-client.md)
    + [Tutorial: Configuring private network access using a Linux Bastion Host](tutorials-private-network-bastion.md)
 + [Code examples for Amazon Managed Workflows for Apache Airflow (MWAA)](sample-code.md)
+   + [Aurora PostgreSQL database cleanup on an Amazon MWAA environment](samples-database-cleanup.md)
    + [Using a secret key in AWS Secrets Manager for an Apache Airflow variable](samples-secrets-manager-var.md)
    + [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)
    + [Creating a custom plugin with Oracle](samples-oracle.md)
@@ -57,13 +58,14 @@ Amazon's trademarks and trade dress may not be used in
    + [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)
    + [Invoking DAGs with an AWS Lambda function](samples-lambda.md)
    + [Invoking DAGs in different Amazon MWAA environments](samples-trigger-dag-envab.xml.md)
-   + [Aurora PostgreSQL database cleanup on an Amazon MWAA environment](samples-database-cleanup.md)
    + [Using Amazon MWAA with Amazon RDS Microsoft SQL Server](samples-sql-server.md)
    + [Using Amazon MWAA with Amazon EMR](samples-emr.md)
    + [Using Amazon MWAA with Amazon EKS](mwaa-eks-example.md)
 + [Best practices for Amazon Managed Workflows for Apache Airflow (MWAA)](best-practices.md)
    + [Managing Python dependencies in requirements.txt](best-practices-dependencies.md)
-+ [Amazon MWAA metrics](cw-metrics.md)
++ [Amazon MWAA performance metrics in Amazon CloudWatch](cw-metrics.md)
+   + [Accessing Apache Airflow v2.0.2 metrics for an Amazon MWAA environment in CloudWatch](access-metrics-cw-220.md)
+   + [Accessing Apache Airflow v1.10.12 metrics for an Amazon MWAA environment in CloudWatch](access-metrics-cw-110.md)
 + [Amazon Managed Workflows for Apache Airflow (MWAA) service quotas](mwaa-quotas.md)
 + [Security in Amazon Managed Workflows for Apache Airflow (MWAA)](security.md)
    + [Data Protection in Amazon Managed Workflows for Apache Airflow (MWAA)](data-protection.md)
@@ -73,7 +75,7 @@ Amazon's trademarks and trade dress may not be used in
    + [AWS Identity and Access Management](security-iam.md)
       + [Troubleshooting Amazon Managed Workflows for Apache Airflow identity and access](security_iam_troubleshoot.md)
       + [How Amazon MWAA works with IAM](security_iam_service-with-iam.md)
-   + [Monitoring](monitoring.md)
+   + [Monitoring Amazon Managed Workflows for Apache Airflow (MWAA)](monitoring.md)
    + [Compliance Validation for Amazon Managed Workflows for Apache Airflow (MWAA)](compliance-validation.md)
    + [Resilience in Amazon Managed Workflows for Apache Airflow (MWAA)](disaster-recovery-resiliency.md)
    + [Infrastructure Security in Amazon MWAA](infrastructure-security.md)
@@ -82,4 +84,9 @@ Amazon's trademarks and trade dress may not be used in
 + [Amazon MWAA API actions and resources](mwaa-actions-resources.md)
 + [Amazon MWAA frequently asked questions](mwaa-faqs.md)
 + [Troubleshooting Amazon Managed Workflows for Apache Airflow (MWAA)](troubleshooting.md)
+   + [Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v2.0.2](t-apache-airflow-202.md)
+   + [Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v1.10.12](t-apache-airflow-11012.md)
+   + [Troubleshooting: Creating and updating an Amazon MWAA environment](t-create-update-environment.md)
+   + [Troubleshooting: CloudWatch Logs and CloudTrail errors](t-cloudwatch-cloudtrail-logs.md)
++ [Apache Airflow versions on Amazon Managed Workflows for Apache Airflow (MWAA)](airflow-versions.md)
 + [Amazon MWAA Document History](doc-history.md)

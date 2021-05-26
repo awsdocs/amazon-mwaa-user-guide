@@ -34,5 +34,5 @@ Amazon MWAA is available in the following AWS Regions\.
 + Europe \(Frankfurt\) \- eu\-central\-1
 + Asia Pacific \(Tokyo\) \- ap\-northeast\-1
 + US East \(N\. Virginia\) \- us\-east\-1
-+ US East \(Ohio\) \- us\-east\-1
++ US East \(Ohio\) \- us\-east\-2
 + US West \(Oregon\) \- us\-west\-2

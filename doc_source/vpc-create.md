@@ -298,9 +298,6 @@ It takes about 30 minutes to create the Amazon VPC infrastructure\.
 
 The following AWS CloudFormation template creates an Amazon VPC network *without Internet access* in your default AWS Region\. This option uses [Private routing without Internet access](networking-about.md#networking-about-overview-private)\. This template can be used for an Apache Airflow *Web server* with the **Private network** access mode only\. It provides [VPC endpoints and access to the AWS services used by an environment](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-attach-services)\.
 
-**Note**  
-If you choose this option, you'll need to [create and attach the VPC endpoints needed for Apache Airflow](vpc-vpe-create-access.md)\.
-
 1. Copy the contents of the following template and save locally as `cfn-vpc-private.yaml`\. You can also [download the template](./samples/cfn-vpc-private.zip)\.
 
    ```
@@ -475,7 +472,46 @@ If you choose this option, you'll need to [create and attach the VPC endpoints n
            - !Ref PrivateSubnet2
           SecurityGroupIds:
            - !Ref SecurityGroup
-        
+   
+      AirflowApiVpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.airflow.api"
+          VpcEndpointType: Interface
+          VpcId: !Ref VPC
+          PrivateDnsEnabled: true
+          SubnetIds:
+           - !Ref PrivateSubnet1
+           - !Ref PrivateSubnet2
+          SecurityGroupIds:
+           - !Ref SecurityGroup  
+           
+      AirflowEnvVpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.airflow.env"
+          VpcEndpointType: Interface
+          VpcId: !Ref VPC
+          PrivateDnsEnabled: true
+          SubnetIds:
+           - !Ref PrivateSubnet1
+           - !Ref PrivateSubnet2
+          SecurityGroupIds:
+           - !Ref SecurityGroup   
+                                            
+      AirflowOpsVpcEndoint:
+        Type: AWS::EC2::VPCEndpoint
+        Properties:
+          ServiceName: !Sub "com.amazonaws.${AWS::Region}.airflow.ops"
+          VpcEndpointType: Interface
+          VpcId: !Ref VPC
+          PrivateDnsEnabled: true
+          SubnetIds:
+           - !Ref PrivateSubnet1
+           - !Ref PrivateSubnet2
+          SecurityGroupIds:
+           - !Ref SecurityGroup
+   
    Outputs:
       VPC:
         Description: A reference to the created VPC
@@ -511,6 +547,8 @@ If you choose this option, you'll need to [create and attach the VPC endpoints n
    ```
 **Note**  
 It takes about 30 minutes to create the Amazon VPC infrastructure\.
+
+1. You'll need to create a mechanism to access these VPC endpoints from your computer\. To learn more, see [Managing access to VPC endpoints on Amazon MWAA](vpc-vpe-access.md)\.
 
 ## What's next?<a name="create-vpc-next-up"></a>
 + Learn how to create an Amazon MWAA environment in [Create an Amazon MWAA environment](create-environment.md)\.

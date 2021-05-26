@@ -34,17 +34,23 @@ Avoid including sensitive information, such as account numbers, in the bucket na
 
 1. Choose an AWS Region in **Region**\. This must be the same AWS Region as your Amazon MWAA environment\. 
 
-   We recommend choosing a region close to you to minimize latency and costs and address regulatory requirements\. 
+   1. We recommend choosing a region close to you to minimize latency and costs and address regulatory requirements\. 
 
 1. Choose **Block all public access**\.
 
 1. Choose **Enable** in **Bucket Versioning**\.
 
-1. **Optional**\. Add tags to identify your Amazon S3 bucket in **Tags**\. 
+1. **Optional** \- *Tags*\. Add key\-value tag pairs to identify your Amazon S3 bucket in **Tags**\. For example, `Bucket` : `Staging`\.
 
-1. **Optional**\. Choose **Enable** in **Server\-side encryption** to enable server\-side encryption for the bucket\. 
+1. **Optional** \- *Server\-side encryption*\. You can optionally **Enable** one of the following encryption options on your Amazon S3 bucket\.
 
-   If you choose to enable server\-side encryption, you must use the same encryption key for your Amazon S3 bucket and Amazon MWAA environment\.
+   1. Choose **Amazon S3 key \(SSE\-S3\)** in **Server\-side encryption** to enable server\-side encryption for the bucket\.
+
+   1. Choose **AWS Key Management Service key \(SSE\-KMS\)** to use an AWS KMS key for encryption on your Amazon S3 bucket:
+
+      1. **AWS managed key \(aws/s3\)** \- If you choose this option, you can either use an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) managed by Amazon MWAA, or specify a [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) for encryption of your Amazon MWAA environment\.
+
+      1. **Choose from your AWS KMS keys** or **Enter AWS KMS key ARN** \- If you choose to specify a [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) in this step, you must specify an AWS KMS key or ARN, and not an AWS KMS alias\. An AWS KMS alias is not supported by Amazon MWAA, and this AWS KMS key or ARN must also be used for encryption on your Amazon MWAA environment\. 
 
 1. **Optional** \- *Advanced settings*\. If you want to enable Amazon S3 Object Lock:
 

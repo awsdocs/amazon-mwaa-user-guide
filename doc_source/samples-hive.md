@@ -15,6 +15,7 @@ Amazon MWAA extracts the contents of a `plugins.zip` to `/usr/local/airflow/plug
 
 ## Version<a name="samples-hive-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-hive-prereqs"></a>
 
@@ -28,9 +29,22 @@ To use the sample code on this page, you'll need the following:
 
 To use the sample code on this page, add the following dependencies to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
 
+------
+#### [ Airflow v2\.0\.2 ]
+
+```
+-c https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt
+apache-airflow-providers-amazon[apache.hive]
+```
+
+------
+#### [ Airflow v1\.10\.12 ]
+
 ```
 apache-airflow[hive]==1.10.12
 ```
+
+------
 
 ## Download dependencies<a name="samples-hive-install"></a>
 
@@ -87,7 +101,7 @@ Apache Airflow will execute the contents of Python files in the plugins folder a
    ```
    from airflow.plugins_manager import AirflowPlugin
    import os
-   os.environ["JAVA_HOME"]="/usr/lib/jvm/jre-1.8.0-openjdk-1.8.0.272.b10-1.amzn2.0.1.x86_64"
+   os.environ["JAVA_HOME"]="/usr/lib/jvm/jre"
    os.environ["HADOOP_HOME"]='/usr/local/airflow/plugins/hadoop-3.3.0'
    os.environ["HADOOP_CONF_DIR"]='/usr/local/airflow/plugins/hadoop-3.3.0/etc/hadoop'
    os.environ["HIVE_HOME"]='/usr/local/airflow/plugins/apache-hive-3.1.2-bin'

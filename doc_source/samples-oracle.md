@@ -16,6 +16,7 @@ The following sample walks you through the steps to create a custom plugin using
 
 ## Version<a name="samples-oracle-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-oracle-prereqs"></a>
 
@@ -29,10 +30,24 @@ To use the sample code on this page, you'll need the following:
 
 To use the sample code on this page, add the following dependencies to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
 
+------
+#### [ Airflow v2\.0\.2 ]
+
+```
+-c https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt
+cx_Oracle
+apache-airflow-providers-oracle
+```
+
+------
+#### [ Airflow v1\.10\.12 ]
+
 ```
 cx_Oracle==8.1.0
 apache-airflow[oracle]==1.10.12
 ```
+
+------
 
 ## Code sample<a name="samples-oracle-code"></a>
 

@@ -15,11 +15,11 @@ Directed Acyclic Graphs \(DAGs\) are defined within a Python file that defines t
 
 You'll need the following before you can complete the steps on this page\.
 
-1. An [AWS account with access](access-policies.md) to your environment\.
+1. **Access**\. Your AWS account must have been granted access by your administrator to the [AmazonMWAAFullConsoleAccess](access-policies.md#console-full-access) access control policy for your environment\.
 
-1. An [Amazon S3 bucket](mwaa-s3-bucket.md) with *Public Access Blocked* and *Versioning Enabled*\.
+1. **Amazon S3 configurations**\. The [Amazon S3 bucket](mwaa-s3-bucket.md) used to store your DAGs, custom plugins in `plugins.zip`, and Python dependencies in `requirements.txt` must be configured with *Public Access Blocked* and *Versioning Enabled*\.
 
-1. An [execution role](mwaa-create-role.md) that grants Amazon MWAA access to the AWS resources used by your environment\.
+1. **Permissions**\. Your Amazon MWAA environment must be permitted by your [execution role](mwaa-create-role.md) to access the AWS resources used by your environment\.
 
 ## How it works<a name="configuring-dag-folder-how"></a>
 

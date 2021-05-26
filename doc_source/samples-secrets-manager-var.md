@@ -12,6 +12,7 @@ The following sample calls AWS Secrets Manager to get a secret key for an Apache
 
 ## Version<a name="samples-secrets-manager-var-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-secrets-manager-var-prereqs"></a>
 
@@ -23,7 +24,8 @@ To use the sample code on this page, you'll need the following:
 + Secrets Manager permissions as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
 
 ## Requirements<a name="samples-hive-dependencies"></a>
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the Apache Airflow v1\.10\.12 base install on your environment\.
++ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1\.10\.12 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
++ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2\.0\.2 base install](https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt) on your environment\.
 
 ## Code sample<a name="samples-secrets-manager-var-code"></a>
 

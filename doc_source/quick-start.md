@@ -2,6 +2,9 @@
 
 This quick start tutorial uses an AWS CloudFormation template that creates the Amazon VPC infrastructure, an Amazon S3 bucket with a `dags` folder, and an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment at the same time\. It then walks you through three AWS Command Line Interface \(AWS CLI\) commands to upload a DAG to Amazon S3, then run the DAG in Apache Airflow, and view logs in CloudWatch\. It concludes by walking you through the steps to create an IAM policy for an Apache Airflow development team\.
 
+**Note**  
+The AWS CloudFormation template on this page creates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment for the latest version of Apache Airflow available in AWS CloudFormation\. The latest version available in AWS CloudFormation \(as of May 26, 2021\) is Apache Airflow v1\.10\.12\.
+
 **Topics**
 + [In this tutorial](#quick-start-overview)
 + [Prerequisites](#quick-start-before)

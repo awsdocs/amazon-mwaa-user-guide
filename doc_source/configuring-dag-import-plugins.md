@@ -24,11 +24,11 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) supports Apache Airflow's b
 
 You'll need the following before you can complete the steps on this page\.
 
-1. An [AWS account with access](access-policies.md) to your environment\.
+1. **Access**\. Your AWS account must have been granted access by your administrator to the [AmazonMWAAFullConsoleAccess](access-policies.md#console-full-access) access control policy for your environment\.
 
-1. An [Amazon S3 bucket](mwaa-s3-bucket.md) with *Public Access Blocked* and *Versioning Enabled*\.
+1. **Amazon S3 configurations**\. The [Amazon S3 bucket](mwaa-s3-bucket.md) used to store your DAGs, custom plugins in `plugins.zip`, and Python dependencies in `requirements.txt` must be configured with *Public Access Blocked* and *Versioning Enabled*\.
 
-1. An [execution role](mwaa-create-role.md) that grants Amazon MWAA access to the AWS resources used by your environment\.
+1. **Permissions**\. Your Amazon MWAA environment must be permitted by your [execution role](mwaa-create-role.md) to access the AWS resources used by your environment\.
 
 ## How it works<a name="configuring-dag-plugins-how"></a>
 
@@ -61,55 +61,69 @@ The following section uses sample code in the *Apache Airflow reference guide* t
 ### Example using a flat directory structure in plugins\.zip<a name="configuring-dag-plugins-overview-simple"></a>
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Airflow v2\.0\.2 ]
 
-The following example shows custom plugin files in a flat directory structure, and how to change the code to use a nested directory structure for Apache Airflow v1\.10\.12\.
+The following example shows a `plugins.zip` file with a flat directory structure for Apache Airflow v2\.0\.2\.
 
-**Example Oracle plugins\.zip**  
-The following example shows the top\-level tree of a plugins\.zip file for the custom Oracle plugin in [Creating a custom plugin with Oracle](samples-oracle.md)\.   
-
-```
-├── env_var_plugin_oracle.py
-└── instantclient_18_5/
-```
-
-**Example dags/oracle\.py**  
-The following example shows the import statements in the DAG \([DAGs folder](https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-dag-folder.html#configuring-dag-folder-how)\) that uses the custom plugin\.  
+**Example flat directory with PythonVirtualenvOperator plugins\.zip**  
+The following example shows the top\-level tree of a plugins\.zip file for the PythonVirtualenvOperator custom plugin in [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)\.   
 
 ```
-from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
-from airflow.utils.dates import days_ago
-import os
-import cx_Oracle
-...
+├── virtual_python_plugin.py
 ```
 
-**Example plugins/boto\_plugin\.py**  
-If you want to use a nested directory structure, you can also create a custom plugin at the top\-level of your plugins\.zip file \(saved locally at the root in the `plugins/` directory\) that uses the custom Oracle plugin in [Creating a custom plugin with Oracle](samples-oracle.md)\.  
+**Example plugins/virtual\_python\_plugin\.py**  
+The following example shows the PythonVirtualenvOperator custom plugin\.  
 
 ```
 from airflow.plugins_manager import AirflowPlugin
-from airflow.hooks.base_hook import BaseHook
+import airflow.utils.python_virtualenv 
+from typing import List
 
-import boto3
+def _generate_virtualenv_cmd(tmp_dir: str, python_bin: str, system_site_packages: bool) -> List[str]:
+    cmd = ['python3','/usr/local/airflow/.local/lib/python3.7/site-packages/virtualenv', tmp_dir]
+    if system_site_packages:
+        cmd.append('--system-site-packages')
+    if python_bin is not None:
+        cmd.append(f'--python={python_bin}')
+    return cmd
 
-class BotoHook(BaseHook):
-    def get_version(self):
-        return boto3.__version__                 
+airflow.utils.python_virtualenv._generate_virtualenv_cmd=_generate_virtualenv_cmd
 
-class BotoPlugin(AirflowPlugin):                
-    name = 'boto_plugin'          
-    hooks = [BotoHook]
+class VirtualPythonPlugin(AirflowPlugin):                
+    name = 'virtual_python_plugin'
 ```
 
-**Example dags/oracle\.py**  
-The following example shows the import statements in the DAG \([DAGs folder](https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-dag-folder.html#configuring-dag-folder-how)\) that uses the custom plugin\.  
+------
+#### [ Airflow v1\.10\.12 ]
+
+The following example shows a `plugins.zip` file with a flat directory structure for Apache Airflow v1\.10\.12\.
+
+**Example flat directory with PythonVirtualenvOperator plugins\.zip**  
+The following example shows the top\-level tree of a plugins\.zip file for the PythonVirtualenvOperator custom plugin in [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)\.   
 
 ```
-from airflow import DAG
-from boto_plugin import BotoHook
-...
+├── virtual_python_plugin.py
+```
+
+**Example plugins/virtual\_python\_plugin\.py**  
+The following example shows the PythonVirtualenvOperator custom plugin\.  
+
+```
+from airflow.plugins_manager import AirflowPlugin
+from airflow.operators.python_operator import PythonVirtualenvOperator
+
+def _generate_virtualenv_cmd(self, tmp_dir):
+    cmd = ['python3','/usr/local/airflow/.local/lib/python3.7/site-packages/virtualenv', tmp_dir]
+    if self.system_site_packages:
+        cmd.append('--system-site-packages')
+    if self.python_version is not None:
+        cmd.append('--python=python{}'.format(self.python_version))
+    return cmd
+PythonVirtualenvOperator._generate_virtualenv_cmd=_generate_virtualenv_cmd
+
+class EnvVarPlugin(AirflowPlugin):                
+    name = 'virtual_python_plugin'
 ```
 
 ------
@@ -117,9 +131,168 @@ from boto_plugin import BotoHook
 ### Example using a nested directory structure in plugins\.zip<a name="configuring-dag-plugins-overview-complex"></a>
 
 ------
+#### [ Airflow v2\.0\.2 ]
+
+The following example shows a `plugins.zip` file with separate directories for `hooks`, `operators`, and a `sensors` directory for Apache Airflow v2\.0\.2\.
+
+**Example plugins\.zip**  
+
+```
+__init__.py
+my_airflow_plugin.py
+hooks/
+|-- __init__.py
+|-- my_airflow_hook.py
+operators/
+|-- __init__.py
+|-- my_airflow_operator.py
+|-- hello_operator.py
+sensors/
+|-- __init__.py
+|-- my_airflow_sensor.py
+```
+
+The following example shows the import statements in the DAG \([DAGs folder](https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-dag-folder.html#configuring-dag-folder-how)\) that uses the custom plugins\.
+
+**Example dags/your\_dag\.py**  
+
+```
+from airflow import DAG
+from datetime import datetime, timedelta
+from operators.my_airflow_operator import MyOperator
+from sensors.my_airflow_sensor import MySensor
+from operators.hello_operator import HelloOperator
+
+default_args = {
+	'owner': 'airflow',
+	'depends_on_past': False,
+	'start_date': datetime(2018, 1, 1),
+	'email_on_failure': False,
+	'email_on_retry': False,
+	'retries': 1,
+	'retry_delay': timedelta(minutes=5),
+}
+
+
+with DAG('customdag',
+		 max_active_runs=3,
+		 schedule_interval='@once',
+		 default_args=default_args) as dag:
+
+	sens = MySensor(
+		task_id='taskA'
+	)
+
+	op = MyOperator(
+		task_id='taskB',
+		my_field='some text'
+	)
+
+	hello_task = HelloOperator(task_id='sample-task', name='foo_bar')
+
+
+
+	sens >> op >> hello_task
+```
+
+**Example plugins/my\_airflow\_plugin\.py**  
+
+```
+from airflow.plugins_manager import AirflowPlugin
+from hooks.my_airflow_hook import *
+from operators.my_airflow_operator import *
+                    
+class PluginName(AirflowPlugin):
+                    
+    name = 'my_airflow_plugin'
+                    
+    hooks = [MyHook]
+    operators = [MyOperator]
+    sensors = [MySensor]
+```
+
+The following examples show each of the import statements needed in the custom plugin files\.
+
+**Example hooks/my\_airflow\_hook\.py**  
+
+```
+from airflow.hooks.base import BaseHook
+
+
+class MyHook(BaseHook):
+
+    def my_method(self):
+        print("Hello World")
+```
+
+**Example sensors/my\_airflow\_sensor\.py**  
+
+```
+from airflow.sensors.base import BaseSensorOperator
+from airflow.utils.decorators import apply_defaults
+
+
+class MySensor(BaseSensorOperator):
+
+    @apply_defaults
+    def __init__(self,
+                 *args,
+                 **kwargs):
+        super(MySensor, self).__init__(*args, **kwargs)
+
+    def poke(self, context):
+        return True
+```
+
+**Example operators/my\_airflow\_operator\.py**  
+
+```
+from airflow.operators.bash import BaseOperator
+from airflow.utils.decorators import apply_defaults
+from hooks.my_airflow_hook import MyHook
+
+
+class MyOperator(BaseOperator):
+
+    @apply_defaults
+    def __init__(self,
+                 my_field,
+                 *args,
+                 **kwargs):
+        super(MyOperator, self).__init__(*args, **kwargs)
+        self.my_field = my_field
+
+    def execute(self, context):
+        hook = MyHook('my_conn')
+        hook.my_method()
+```
+
+**Example operators/hello\_operator\.py**  
+
+```
+from airflow.models.baseoperator import BaseOperator
+from airflow.utils.decorators import apply_defaults
+
+class HelloOperator(BaseOperator):
+
+    @apply_defaults
+    def __init__(
+            self,
+            name: str,
+            **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.name = name
+
+    def execute(self, context):
+        message = "Hello {}".format(self.name)
+        print(message)
+        return message
+```
+
+------
 #### [ Airflow v1\.10\.12 ]
 
-The following example shows custom plugin files in separate directories in the `hooks`, `operators`, and `sensors` directory for Apache Airflow v1\.10\.12\.
+The following example shows a `plugins.zip` file with separate directories for `hooks`, `operators`, and a `sensors` directory for Apache Airflow v1\.10\.12\.
 
 **Example plugins\.zip**  
 

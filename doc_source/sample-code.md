@@ -3,6 +3,7 @@
 This guide contains code samples, including DAGs and custom plugins, that you can use on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
 **Topics**
++ [Aurora PostgreSQL database cleanup on an Amazon MWAA environment](samples-database-cleanup.md)
 + [Using a secret key in AWS Secrets Manager for an Apache Airflow variable](samples-secrets-manager-var.md)
 + [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)
 + [Creating a custom plugin with Oracle](samples-oracle.md)
@@ -12,7 +13,6 @@ This guide contains code samples, including DAGs and custom plugins, that you ca
 + [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)
 + [Invoking DAGs with an AWS Lambda function](samples-lambda.md)
 + [Invoking DAGs in different Amazon MWAA environments](samples-trigger-dag-envab.xml.md)
-+ [Aurora PostgreSQL database cleanup on an Amazon MWAA environment](samples-database-cleanup.md)
 + [Using Amazon MWAA with Amazon RDS Microsoft SQL Server](samples-sql-server.md)
 + [Using Amazon MWAA with Amazon EMR](samples-emr.md)
 + [Using Amazon MWAA with Amazon EKS](mwaa-eks-example.md)

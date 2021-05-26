@@ -22,11 +22,11 @@ A Python dependency is any package or distribution that is not included in the A
 
 You'll need the following before you can complete the steps on this page\.
 
-1. An [AWS account with access](access-policies.md) to your environment\.
+1. **Access**\. Your AWS account must have been granted access by your administrator to the [AmazonMWAAFullConsoleAccess](access-policies.md#console-full-access) access control policy for your environment\.
 
-1. An [Amazon S3 bucket](mwaa-s3-bucket.md) with *Public Access Blocked* and *Versioning Enabled*\.
+1. **Amazon S3 configurations**\. The [Amazon S3 bucket](mwaa-s3-bucket.md) used to store your DAGs, custom plugins in `plugins.zip`, and Python dependencies in `requirements.txt` must be configured with *Public Access Blocked* and *Versioning Enabled*\.
 
-1. An [execution role](mwaa-create-role.md) that grants Amazon MWAA access to the AWS resources used by your environment\.
+1. **Permissions**\. Your Amazon MWAA environment must be permitted by your [execution role](mwaa-create-role.md) to access the AWS resources used by your environment\.
 
 ## How it works<a name="working-dags-dependencies-how"></a>
 
@@ -62,17 +62,59 @@ For security reasons, the Apache Airflow *Web server* on Amazon MWAA has limited
 
 ### Creating a `requirements.txt`<a name="working-dags-dependencies-syntax-create"></a>
 
+The following section describes how to specify Python dependencies from the [Python Package Index](https://pypi.org/) in a `requirements.txt` file\.
+
+------
+#### [ Airflow v2\.0\.2 ]
+
+1. **Test locally**\. Add additional libraries iteratively to find the right combination of packages and their versions, before creating a `requirements.txt` file\. To run the Amazon MWAA CLI utility, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+
+1. **Review the Airflow base install**\. A large number of Apache Airflow [core extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#core-airflow-extras), [provider extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#providers-extras), [locally installed software extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#locally-installed-software-extras), [external service extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#external-services-extras), ["other" extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#other-extras), [bundle extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#bundle-extras), [doc extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#doc-extras), and [software extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#apache-software-extras) are already installed as part of the Apache Airflow v2\.0\.2 base install on your environment\. To learn more, see the list of packages installed on your environment for Apache Airflow v2\.0\.2 in the [Apache Airflow v2\.0\.2 constraints file](https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt)\.
+
+1. **Add the constraints file**\. Add the constraints file for Apache Airflow v2\.0\.2 to the top of your `requirements.txt` file\. If the constraints file determines that `xyz==1.0` package is not compatible with other packages on your environment, the `pip3 install` will fail to prevent incompatible libraries from being installed to your environment\. 
+
+   ```
+   --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt"
+   ```
+
+1. **Apache Airflow packages**\. Add the [Apache Airflow v2\.0\.2 package extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html) and the version \(`==`\)\. This helps to prevent packages of the same name, but different version, from being installed on your environment\.
+
+   ```
+   apache-airflow[package-extra]==2.0.2
+   ```
+
+1. **Python libraries**\. Add the package name and the version \(`==`\) in your `requirements.txt` file\. This helps to prevent a future breaking update from [PyPi\.org](https://pypi.org) from being automatically applied\.
+
+   ```
+   library == version
+   ```  
+**Example Boto3 and psycopg2\-binary**  
+
+   This example is provided for demonstration purposes\. The boto and psycopg2\-binary libraries are included with the Apache Airflow v2\.0\.2 base install and don't need to be specified in a `requirements.txt` file\.
+
+   ```
+   boto3==1.17.54
+   boto==2.49.0
+   botocore==1.20.54
+   psycopg2-binary==2.8.6
+   ```
+
+   If a package is specified without a version, Amazon MWAA installs the latest version of the package from [PyPi\.org](https://pypi.org)\. This version may conflict with other packages in your `requirements.txt`\.
+
 ------
 #### [ Airflow v1\.10\.12 ]
 
-1. **Specify a constraints file**\. Add the constraints file for Apache Airflow v1\.10\.12 to the top of your `requirements.txt` file to improve library compatibility\.  
-**Example Apache Airflow v1\.10\.12 constraints**  
+1. **Test locally**\. Add additional libraries iteratively to find the right combination of packages and their versions, before creating a `requirements.txt` file\. To run the Amazon MWAA CLI utility, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+
+1. **Review the Airflow base install**\. Review the list of packages installed on your environment for Apache Airflow v1\.10\.12 at [https://raw\.githubusercontent\.com/apache/airflow/constraints\-1\.10\.12/constraints\-3\.7\.txt](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)\.
+
+1. **Add the constraints file**\. Add the constraints file for Apache Airflow v1\.10\.12 to the top of your `requirements.txt` file\. If the constraints file determines that `xyz==1.0` package is not compatible with other packages on your environment, the `pip3 install` will fail to prevent incompatible libraries from being installed to your environment\.
 
    ```
    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
    ```
 
-1. **Apache Airflow packages**\. Specify the [Airflow package](https://airflow.apache.org/docs/apache-airflow/1.10.12/installation.html#extra-packages) and the Apache Airflow v1\.10\.12 version\.
+1. **Apache Airflow v1\.10\.12 packages**\. Add the [Airflow package extras](https://airflow.apache.org/docs/apache-airflow/1.10.12/installation.html#extra-packages) and the Apache Airflow v1\.10\.12 version \(`==`\)\. This helps to prevent packages of the same name, but different version, from being installed on your environment\.
 
    ```
    apache-airflow[package]==1.10.12
@@ -85,7 +127,7 @@ For security reasons, the Apache Airflow *Web server* on Amazon MWAA has limited
    apache-airflow[ssh]==1.10.12
    ```
 
-1. **Python libraries**\. Specify the version \(`==`\) in your `requirements.txt` file\. This helps to prevent a future breaking update from [PyPi\.org](https://pypi.org) from being automatically applied\.
+1. **Python libraries**\. Add the package name and the version \(`==`\) in your `requirements.txt` file\. This helps to prevent a future breaking update from [PyPi\.org](https://pypi.org) from being automatically applied\.
 
    ```
    library == version
