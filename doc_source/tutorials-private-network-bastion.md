@@ -108,7 +108,7 @@ The following steps describe how to create the ssh tunnel to your linux bastion\
 
 1. Choose an instance\.
 
-1. Copy the address in **Public IPv4 DNS**\. For example, `ip-10-192-11-219.ec2.internal`\.
+1. Copy the address in **Public IPv4 DNS**\. For example, `ec2-4-82-142-1.compute-1.amazonaws.com`\.
 
 1. In your command prompt, navigate to the directory where your SSH key is stored\.
 
@@ -127,7 +127,7 @@ The following steps describe how to create the ssh tunnel to your linux bastion\
 
 1. Choose an instance\.
 
-1. Copy the address in **Public IPv4 DNS**\. For example, `ip-10-192-11-219.ec2.internal`\.
+1. Copy the address in **Public IPv4 DNS**\. For example, `ec2-4-82-142-1.compute-1.amazonaws.com`\.
 
 1. Open [PuTTY](https://www.putty.org/), select **Session**\.
 
