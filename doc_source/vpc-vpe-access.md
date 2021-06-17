@@ -129,7 +129,7 @@ The following section shows the configurations you'll need to apply to an [Appli
 
 1. **Target groups**\. You'll need to use target groups that point to the private IP addresses for your Apache Airflow *Web server*, and its VPC interface endpoint\. We recommend specifying both private IP addresses as your registered targets, as using only one can reduce availability\. To identify the private IP addresses, see [Identifying the private IP addresses of your Apache Airflow Web server and its VPC endpoint](#vpc-vpe-hosts) on this page\.
 
-1. **Status codes**\. We recommend using `200` and `302` status codes in your target group settings\. Otherwise, the targets may not be flagged as unhealthy if the VPC endpoint for the Apache Airflow *Web server* responds with a `302 Redirect` error\.
+1. **Status codes**\. We recommend using `200` and `302` status codes in your target group settings\. Otherwise, the targets may be flagged as unhealthy if the VPC endpoint for the Apache Airflow *Web server* responds with a `302 Redirect` error\.
 
 1. **HTTPS Listener**\. You'll need to specify the target port for the Apache Airflow *Web server*\. For example:    
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/mwaa/latest/userguide/vpc-vpe-access.html)
