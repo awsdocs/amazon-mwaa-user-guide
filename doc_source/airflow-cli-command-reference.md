@@ -3,11 +3,29 @@
 This page describes the supported and unsupported Apache Airflow CLI commands on Amazon Managed Workflows for Apache Airflow \(MWAA\)\.
 
 **Contents**
++ [Prerequisites](#access-airflow-ui-prereqs)
+  + [Access](#access-airflow-ui-prereqs-access)
+  + [AWS CLI](#access-airflow-ui-prereqs-cli)
 + [Supported commands](#airflow-cli-commands-supported)
 + [Unsupported commands](#airflow-unsupported-cli-commands)
 + [Using commands that parse DAGs](#parsing-support)
 + [Example code to add a configuration when triggering a DAG](#example-airflow-cli-commands-trigger)
++ [Example to run CLI commands on an SSH tunnel to a bastion host](#example-airflow-cli-commands-private)
 + [Samples in GitHub and AWS tutorials](#airflow-cli-commands-tutorials)
+
+## Prerequisites<a name="access-airflow-ui-prereqs"></a>
+
+The following section describes the preliminary steps required to use the commands and scripts on this page\.
+
+### Access<a name="access-airflow-ui-prereqs-access"></a>
++ AWS account access in AWS Identity and Access Management \(IAM\) to the Amazon MWAA permissions policy in [Apache Airflow UI access policy: AmazonMWAAWebServerAccess](access-policies.md#web-ui-access)\.
++ AWS account access in AWS Identity and Access Management \(IAM\) to the Amazon MWAA permissions policy [Full API and console access policy: AmazonMWAAFullApiAccess](access-policies.md#full-access-policy)\.
+
+### AWS CLI<a name="access-airflow-ui-prereqs-cli"></a>
+
+The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
++ [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
++ [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
 ## Supported commands<a name="airflow-cli-commands-supported"></a>
 
@@ -20,6 +38,8 @@ The following list shows the Apache Airflow CLI commands available on Amazon MWA
 | Airflow version | Supported | Command | 
 | --- | --- | --- | 
 |  v2\.0\.2  |  Yes  |  [cheat\-sheet](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#cheat-sheet)  | 
+|  v2\.0\.2  |  Yes  |  [connections add](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#add)  | 
+|  v2\.0\.2  |  Yes  |  [connections delete](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#delete)  | 
 |  v2\.0\.2  |  Yes  |  [dags delete](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#delete_repeat1)  | 
 |  v2\.0\.2  |  Yes  |  [dags list\-jobs](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list-jobs)  | 
 |  v2\.0\.2  |  Yes  |  [dags list\-runs](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list-runs)  | 
@@ -83,7 +103,6 @@ The following list shows the Apache Airflow CLI commands **not** available on Am
 
 | Airflow version | Supported | Command | 
 | --- | --- | --- | 
-|  v2\.0\.2  |  No  |  [connections](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#connections)  | 
 |  v2\.0\.2  |  \*No \([note](#parsing-support)\)  |  [dags backfill](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#backfill)  | 
 |  v2\.0\.2  |  \*No \([note](#parsing-support)\)  |  [dags list](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list_repeat2)  | 
 |  v2\.0\.2  |  No  |  [dags show **\-\-save**](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#show)  | 
@@ -201,6 +220,24 @@ print(mwaa_response.status_code)
 print(mwaa_std_err_message)
 print(mwaa_std_out_message)
 ```
+
+## Example to run CLI commands on an SSH tunnel to a bastion host<a name="example-airflow-cli-commands-private"></a>
+
+The following example shows how to run Airflow CLI commands using an SSH tunnel proxy to a Linux Bastion Host\.
+
+**Using curl**
+
+1. 
+
+   ```
+   ssh -D 8080 -f -C -q -N YOUR_USER@YOUR_BASTION_HOST
+   ```
+
+1. 
+
+   ```
+   curl -x socks5h://0:8080 --request POST https://YOUR_HOST_NAME/aws_mwaa/cli --header YOUR_HEADERS --data-raw YOUR_CLI_COMMAND
+   ```
 
 ## Samples in GitHub and AWS tutorials<a name="airflow-cli-commands-tutorials"></a>
 + [Interacting with Apache Airflow v1\.10\.12 on Amazon MWAA via the command line](https://dev.to/aws/interacting-with-amazon-managed-workflows-for-apache-airflow-via-the-command-line-4e91)

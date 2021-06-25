@@ -46,7 +46,7 @@ The following section describes the steps to create an Amazon MWAA environment\.
 
    1. Choose the Apache Airflow version in **Airflow version**\. 
 **Note**  
-If no value is specified, defaults to the latest Airflow version\.
+If no value is specified, defaults to the latest Airflow version\. The latest version available \(as of "today"\) is Apache Airflow v2\.0\.2\.
 
 1. Under **DAG code in Amazon S3**:
 

@@ -11,6 +11,7 @@ Amazon MWAA extracts the contents of a `plugins.zip` to `/usr/local/airflow/plug
 + [Custom plugin](#samples-hive-plugins-code)
 + [Plugins\.zip](#samples-hive-pluginszip)
 + [Code sample](#samples-hive-code)
++ [Airflow configuration options](#samples-hive-airflow-config)
 + [What's next?](#samples-hive-next-up)
 
 ## Version<a name="samples-hive-version"></a>
@@ -150,6 +151,10 @@ The following steps describe how to create the DAG code that will test the custo
            bash_command='hive --help'
        )
    ```
+
+## Airflow configuration options<a name="samples-hive-airflow-config"></a>
+
+If you're using Apache Airflow v2\.0\.2, add `core.lazy_load_plugins : False` as an Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2\.0](configuring-env-variables.md#configuring-2.0-airflow-override)\.
 
 ## What's next?<a name="samples-hive-next-up"></a>
 + Learn how to upload the `requirements.txt` file in this example to your Amazon S3 bucket in [Installing Python dependencies](working-dags-dependencies.md)\.

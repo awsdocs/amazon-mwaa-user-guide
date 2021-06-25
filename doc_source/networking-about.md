@@ -74,7 +74,7 @@ This section describes the Amazon VPC infrastructure of an environment with *pri
   + The local route table must be associated to your private subnets\.
   + The local route table must enable instances in your VPC to communicate with your own network\. For example, if you're using an AWS Client VPN to access the VPC interface endpoint for your Apache Airflow *Web server*, the route table must route to the VPC endpoint\.
 + **VPC endpoints** for each AWS service used by your environment, and Apache Airflow VPC endpoints in the same AWS Region and Amazon VPC as your Amazon MWAA environment\.
-  + A VPC endpoint for each AWS service used by the environment and VPC endpoints for Apache Airflow\. For example, [\(Required\) Example VPC endpoints](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-examples)\.
+  + A VPC endpoint for each AWS service used by the environment and VPC endpoints for Apache Airflow\. For example, [\(Required\) VPC endpoints](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-examples)\.
   + The VPC endpoints must have private DNS enabled\.
   + The VPC endpoints must be associated to your environment's two private subnets\.
   + The VPC endpoints must be associated to your environment's security group\.

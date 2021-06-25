@@ -5,6 +5,7 @@ Apache Airflow configuration options can be attached to your Amazon Managed Work
 **Contents**
 + [Prerequisites](#configuring-env-variables-prereqs)
 + [How it works](#configuring-env-variables-how)
++ [Using configuration options to load plugins in 2\.0](#configuring-2.0-airflow-override)
 + [Configuration options overview](#configuring-env-variables-customizing)
   + [Apache Airflow configuration options](#configuring-env-variables-airflow-ref)
   + [Apache Airflow reference](#configuring-env-variables-reference-options)
@@ -32,19 +33,19 @@ You'll need the following before you can complete the steps on this page\.
 
 ## How it works<a name="configuring-env-variables-how"></a>
 
-When you create an environment, Amazon MWAA attaches the configuration settings you specify on the Amazon MWAA console in **Airflow configuration options** as environment variables to the AWS Fargate container for your environment\. If you are using a setting of the same name in `airflow.cfg`, the options you specify on the Amazon MWAA console override the values in `airflow.cfg`\.
+When you create an environment, Amazon MWAA attaches the configuration settings you specify on the Amazon MWAA console in **Airflow configuration options** as environment variables to the AWS Fargate container for your environment\. If you're using a setting of the same name in `airflow.cfg`, the options you specify on the Amazon MWAA console override the values in `airflow.cfg`\.
 
 While we don't expose the `airflow.cfg` in the Apache Airflow UI of an Amazon MWAA environment, you can change the Apache Airflow configuration options directly on the Amazon MWAA console and continue using all other settings in `airflow.cfg`\.
+
+## Using configuration options to load plugins in 2\.0<a name="configuring-2.0-airflow-override"></a>
+
+By default in Apache Airflow 2\.0, plugins are configured to be "lazily" loaded using the `core.lazy_load_plugins : True` setting\. If you're using custom plugins in Apache Airflow v2\.0\.2, you must add `core.lazy_load_plugins : False` as an Airflow configuration option to load plugins at the start of each Airflow process to override the default setting\.
 
 ## Configuration options overview<a name="configuring-env-variables-customizing"></a>
 
 When you add a configuration on the Amazon MWAA console, Amazon MWAA writes the configuration as an environment variable\. 
 + **Listed options**\. You can choose from one of the configuration settings available for your Apache Airflow version in the dropdown list\. For example, `dag_concurrency` : `16`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__CORE__DAG_CONCURRENCY : 16`
-<<<<<<< HEAD
 + **Custom options**\. You can also specify Airflow configuration options that are not listed for your Apache Airflow version in the dropdown list\. For example, `foo.user` : `YOUR_USER_NAME`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__FOO__USER : YOUR_USER_NAME`
-=======
-+ **Custom options**\. You can also specify Airflow configuration options that are not listed for your Apache Airflow verion in the dropdown list\. For example, `foo.user` : `YOUR_USER_NAME`\. The configuration setting is translated to your environment's Fargate container as `AIRFLOW__FOO__USER : YOUR_USER_NAME`
->>>>>>> b4c5d5d05ba3199e488d8220d3168547b4f50d4f
 
 ### Apache Airflow configuration options<a name="configuring-env-variables-airflow-ref"></a>
 
@@ -59,6 +60,8 @@ The following section contains links to the list of available Apache Airflow con
 + **v1\.10\.12**: [Apache Airflow v1\.10\.12 configuration options](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html)
 
 ### Using the Amazon MWAA console<a name="configuring-env-variables-console-add"></a>
+
+The following procedure walks you through the steps of adding an Airflow configuration option to your environment\.
 
 1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
 
@@ -84,7 +87,7 @@ The following section contains the list of available Apache Airflow configuratio
 
 The following list shows the Airflow email notification configuration options available on Amazon MWAA\. 
 
-We recommend using port 587 for SMTP traffic\. By default, AWS blocks outbound SMTP traffic on port 25 of all Amazon EC2 instances\. If you want to send outbound traffic on port 25, you can [request for this restriction to be removed](https://docs.aws.amazon.com/https://aws.amazon.com/premiumsupport/knowledge-center/ec2-port-25-throttle/)\.
+We recommend using port 587 for SMTP traffic\. By default, AWS blocks outbound SMTP traffic on port 25 of all Amazon EC2 instances\. If you want to send outbound traffic on port 25, you can [request for this restriction to be removed](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-port-25-throttle/)\.
 
 ------
 #### [ Airflow v2\.0\.2 ]

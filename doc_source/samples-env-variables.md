@@ -9,6 +9,7 @@ The following sample walks you through the steps to create a custom plugin that 
 + [Requirements](#samples-env-variables-dependencies)
 + [Custom plugin](#samples-env-variables-plugins-code)
 + [Plugins\.zip](#samples-env-variables-pluginszip)
++ [Airflow configuration options](#samples-env-variables-airflow-config)
 + [What's next?](#samples-env-variables-next-up)
 
 ## Version<a name="samples-env-variables-version"></a>
@@ -63,6 +64,10 @@ The following steps show how to create `plugins.zip`\. The contents of this exam
    ```
    zip -r ../plugins.zip ./
    ```
+
+## Airflow configuration options<a name="samples-env-variables-airflow-config"></a>
+
+If you're using Apache Airflow v2\.0\.2, add `core.lazy_load_plugins : False` as an Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2\.0](configuring-env-variables.md#configuring-2.0-airflow-override)\.
 
 ## What's next?<a name="samples-env-variables-next-up"></a>
 + Learn how to upload the `requirements.txt` file in this example to your Amazon S3 bucket in [Installing Python dependencies](working-dags-dependencies.md)\.

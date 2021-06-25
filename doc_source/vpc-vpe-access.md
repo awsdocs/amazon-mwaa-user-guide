@@ -7,9 +7,10 @@ A VPC endpoint \(AWS PrivateLink\) enables you to privately connect your VPC to 
 + [VPC endpoint overview](#vpc-vpe-about)
   + [Public network access mode](#vpc-vpe-about-public)
   + [Private network access mode](#vpc-vpe-about-private)
-+ [Viewing VPC endpoints on the Amazon VPC console](#vpc-vpe-view-endpoints)
-+ [Identifying the private IP addresses of your Apache Airflow Web server and its VPC endpoint](#vpc-vpe-hosts)
 + [Permission to use other AWS services](#vpc-vpe-permission)
++ [Viewing VPC endpoints](#vpc-vpe-view-all)
+  + [Viewing VPC endpoints on the Amazon VPC console](#vpc-vpe-view-endpoints)
+  + [Identifying the private IP addresses of your Apache Airflow Web server and its VPC endpoint](#vpc-vpe-hosts)
 + [Accessing the VPC endpoint for your Apache Airflow Web server \(private network access\)](#vpc-vpe-access-endpoints)
   + [Using an AWS Client VPN](#vpc-vpe-access-vpn)
   + [Using a Linux Bastion Host](#vpc-vpe-access-bastion)
@@ -34,7 +35,17 @@ If you chose the **Public network** access mode for your Apache Airflow *Web ser
 + Amazon MWAA creates a VPC interface endpoint for your Apache Airflow *Web server*, and an interface endpoint for your Amazon Aurora PostgreSQL metadata database\. The endpoints are created in the Availability Zones mapped to your private subnets and is independent from other AWS accounts\. 
 + Amazon MWAA then binds an IP address from your private subnets to the interface endpoints\. This is designed to support the best practice of binding a single IP from each Availability Zone of the Amazon VPC\.
 
-## Viewing VPC endpoints on the Amazon VPC console<a name="vpc-vpe-view-endpoints"></a>
+## Permission to use other AWS services<a name="vpc-vpe-permission"></a>
+
+The interface endpoints use the execution role for your environment in AWS Identity and Access Management \(IAM\) to manage permission to AWS resources used by your environment\. As more AWS services are enabled for an environment, each service will require you to configure permission using your environment's execution role\. To add permissions, see [Amazon MWAA Execution role](mwaa-create-role.md)\.
+
+If you've chosen the **Private network** access mode for your Apache Airflow *Web server*, you must also allow permission in the VPC endpoint policy for each endpoint\. To learn more, see [VPC endpoint policies \(private routing only\)](vpc-security.md#vpc-external-vpce-policies)\.
+
+## Viewing VPC endpoints<a name="vpc-vpe-view-all"></a>
+
+This section describes how to view the VPC endpoints created by Amazon MWAA, and how to identify the private IP addresses for your Apache Airflow VPC endpoint\.
+
+### Viewing VPC endpoints on the Amazon VPC console<a name="vpc-vpe-view-endpoints"></a>
 
 The following section shows the steps to view the VPC endpoint\(s\) created by Amazon MWAA, and any VPC endpoints you may have created if you're using *private routing* for your Amazon VPC\.
 
@@ -48,7 +59,7 @@ The following section shows the steps to view the VPC endpoint\(s\) created by A
 
 To learn more about the VPC service endpoints that are required for an Amazon VPC with *private routing*, see [Creating the required VPC service endpoints in an Amazon VPC with private routing](vpc-vpe-create-access.md)\.
 
-## Identifying the private IP addresses of your Apache Airflow Web server and its VPC endpoint<a name="vpc-vpe-hosts"></a>
+### Identifying the private IP addresses of your Apache Airflow Web server and its VPC endpoint<a name="vpc-vpe-hosts"></a>
 
 The following steps describe how to retrieve the host name of your Apache Airflow Web server and its VPC interface endpoint, and their private IP addresses\.
 
@@ -98,14 +109,8 @@ The following steps describe how to retrieve the host name of your Apache Airflo
 
    ```
    10.199.11.111
-   10.999.11.33
+     10.999.11.33
    ```
-
-## Permission to use other AWS services<a name="vpc-vpe-permission"></a>
-
-The interface endpoints use the execution role for your environment in AWS Identity and Access Management \(IAM\) to manage permission to AWS resources used by your environment\. As more AWS services are enabled for an environment, each service will require you to configure permission using your environment's execution role\. To add permissions, see [Amazon MWAA Execution role](mwaa-create-role.md)\.
-
-If you've chosen the **Private network** access mode for your Apache Airflow *Web server*, you must also allow permission in the VPC endpoint policy for each endpoint\. To learn more, see [VPC endpoint policies \(private routing only\)](vpc-security.md#vpc-external-vpce-policies)\.
 
 ## Accessing the VPC endpoint for your Apache Airflow Web server \(private network access\)<a name="vpc-vpe-access-endpoints"></a>
 
@@ -129,7 +134,7 @@ The following section shows the configurations you'll need to apply to an [Appli
 
 1. **Target groups**\. You'll need to use target groups that point to the private IP addresses for your Apache Airflow *Web server*, and its VPC interface endpoint\. We recommend specifying both private IP addresses as your registered targets, as using only one can reduce availability\. To identify the private IP addresses, see [Identifying the private IP addresses of your Apache Airflow Web server and its VPC endpoint](#vpc-vpe-hosts) on this page\.
 
-1. **Status codes**\. We recommend using `200` and `302` status codes in your target group settings\. Otherwise, the targets may not be flagged as unhealthy if the VPC endpoint for the Apache Airflow *Web server* responds with a `302 Redirect` error\.
+1. **Status codes**\. We recommend using `200` and `302` status codes in your target group settings\. Otherwise, the targets may be flagged as unhealthy if the VPC endpoint for the Apache Airflow *Web server* responds with a `302 Redirect` error\.
 
 1. **HTTPS Listener**\. You'll need to specify the target port for the Apache Airflow *Web server*\. For example:    
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/mwaa/latest/userguide/vpc-vpe-access.html)

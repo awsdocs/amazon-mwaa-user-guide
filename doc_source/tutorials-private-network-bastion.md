@@ -13,7 +13,7 @@ This tutorial walks you through the steps to create an SSH tunnel from your comp
 + [Step four: Copy the Apache Airflow URL](#private-network-lb-view-env)
 + [Step five: Configure proxy settings](#private-network-lb-browser-extension)
 + [Step six: Open the Apache Airflow UI](#private-network-lb-open)
-+ [What's next?](#create-vpc-next-up)
++ [What's next?](#bastion-next-up)
 
 ## Private network<a name="private-network-lb-onconsole"></a>
 
@@ -108,7 +108,7 @@ The following steps describe how to create the ssh tunnel to your linux bastion\
 
 1. Choose an instance\.
 
-1. Copy the address in **Public IPv4 DNS**\. For example, `ip-10-192-11-219.ec2.internal`\.
+1. Copy the address in **Public IPv4 DNS**\. For example, `ec2-4-82-142-1.compute-1.amazonaws.com`\.
 
 1. In your command prompt, navigate to the directory where your SSH key is stored\.
 
@@ -127,7 +127,7 @@ The following steps describe how to create the ssh tunnel to your linux bastion\
 
 1. Choose an instance\.
 
-1. Copy the address in **Public IPv4 DNS**\. For example, `ip-10-192-11-219.ec2.internal`\.
+1. Copy the address in **Public IPv4 DNS**\. For example, `ec2-4-82-142-1.compute-1.amazonaws.com`\.
 
 1. Open [PuTTY](https://www.putty.org/), select **Session**\.
 
@@ -182,9 +182,27 @@ The following steps describe how to open the Amazon MWAA console and copy the UR
 
 ## Step five: Configure proxy settings<a name="private-network-lb-browser-extension"></a>
 
-If you use an SSH tunnel with dynamic port forwarding, you must use a SOCKS proxy management add\-on to control the proxy settings in your browser\. For example, you can use the `--proxy-server` feature of Chromium to kick off a browser session, or use the FoxyProxy extension in the Mozilla FireFox browser\.
+If you use an SSH tunnel with dynamic port forwarding, you must use a SOCKS proxy management add\-on to control the proxy settings in your browser\. For example, you can use the `--proxy-server` feature of Chromium to kick off a browser session, or use the FoxyProxy extension in the Mozilla FireFox browser\. 
 
-### Proxies via command line<a name="private-network-lb-browser-extension-foxyp"></a>
+### Option one: Setup an SSH Tunnel using local port forwarding<a name="private-network-lb-browser-extension-portforwarding"></a>
+
+If you do not wish to use a SOCKS proxy, you can set up an SSH tunnel using local port forwarding\. The following example command accesses the Amazon EC2 *ResourceManager* web interface by forwarding traffic on local port 8157\.
+
+1. Open a new command prompt window\.
+
+1. Type the following command to open an SSH tunnel\.
+
+   ```
+   ssh -i mykeypair.pem -N -L 8157:YOUR_VPC_ENDPOINT_ID-vpce.YOUR_REGION.airflow.amazonaws.com:443 ubuntu@YOUR_PUBLIC_IPV4_DNS.YOUR_REGION.compute.amazonaws.com
+   ```
+
+   `-L` signifies the use of local port forwarding which allows you to specify a local port used to forward data to the identified remote port on the node's local web server\.
+
+1. Type `http://localhost:8157/` in your browser\.
+**Note**  
+You may need to use `https://localhost:8157/`\.
+
+### Option two: Proxies via command line<a name="private-network-lb-browser-extension-foxyp"></a>
 
 Most web browsers allow you to configure proxies via a command line or configuration parameter\. For example, with Chromium you can start the browser with the following command:
 
@@ -195,10 +213,10 @@ chromium --proxy-server="socks5://localhost:8157"
 This starts a browser session which uses the ssh tunnel you created in previous steps to proxy its requests\. You can open your Private Amazon MWAA environment URL \(with *https://*\) as follows:
 
 ```
-https://{unique-id}-vpce.{region}.airflow.amazonaws.com/home.
+https://YOUR_VPC_ENDPOINT_ID-vpce.YOUR_REGION.airflow.amazonaws.com/home.
 ```
 
-### Proxies using FoxyProxy for Mozilla Firefox<a name="private-network-lb-browser-extension-foxyp"></a>
+### Option three: Proxies using FoxyProxy for Mozilla Firefox<a name="private-network-lb-browser-extension-foxyp"></a>
 
  The following example demonstrates a FoxyProxy Standard \(version 7\.5\.1\) configuration for Mozilla Firefox\. FoxyProxy provides a set of proxy management tools\. It lets you use a proxy server for URLs that match patterns corresponding to domains used by the Apache Airflow UI\.
 
@@ -210,7 +228,7 @@ https://{unique-id}-vpce.{region}.airflow.amazonaws.com/home.
 
 1. Choose the FoxyProxy icon in your browser's toolbar, choose **Options**\.
 
-1. Copy the following code and save locally as `mwaa-proxy.json`\. Substitute the sample value with your **Airflow UI** URL in the `pattern` field\.
+1. Copy the following code and save locally as `mwaa-proxy.json`\. Substitute the sample value in *YOUR\_HOST\_NAME* with your **Apache Airflow URL**\.
 
    ```
    {
@@ -227,7 +245,7 @@ https://{unique-id}-vpce.{region}.airflow.amazonaws.com/home.
        "whitePatterns": [
          {
            "title": "airflow-ui",
-           "pattern": "xxxxx-vpce.c5.us-east-1.airflow.amazonaws.com",
+           "pattern": "YOUR_HOST_NAME",
            "type": 1,
            "protocols": 1,
            "active": true
@@ -278,5 +296,6 @@ The following steps describe how to open your Apache Airflow UI\.
 
 1. Choose **Open Airflow UI**\.
 
-## What's next?<a name="create-vpc-next-up"></a>
+## What's next?<a name="bastion-next-up"></a>
++ Learn how to run Airflow CLI commands on an SSH tunnel to a bastion host in [Apache Airflow CLI command reference](airflow-cli-command-reference.md)\.
 + Learn how to upload DAG code to your Amazon S3 bucket in [Adding or updating DAGs](configuring-dag-folder.md)\.

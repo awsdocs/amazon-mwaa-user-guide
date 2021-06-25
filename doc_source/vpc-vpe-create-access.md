@@ -5,9 +5,13 @@ An existing Amazon VPC network *without Internet access* needs additional VPC se
 **Contents**
 + [Pricing](#vpc-vpe-create-pricing)
 + [Private network and private routing](#vpc-vpc-create-onconsole)
-+ [\(Required\) Example VPC endpoints](#vpc-vpe-create-view-endpoints-examples)
-+ [Attaching the VPC endpoints required for AWS services](#vpc-vpe-create-view-endpoints-attach-services)
-+ [Attaching the VPC endpoints required for Apache Airflow](#vpc-vpe-create-view-endpoints-attach-aa)
++ [\(Required\) VPC endpoints](#vpc-vpe-create-view-endpoints-examples)
++ [Attaching the required VPC endpoints](#vpc-vpe-create-view-endpoints-attach-all)
+  + [VPC endpoints required for AWS services](#vpc-vpe-create-view-endpoints-attach-services)
+  + [VPC endpoints required for Apache Airflow](#vpc-vpe-create-view-endpoints-attach-aa)
++ [\(Optional\) Enable private IP addresses for your Amazon S3 VPC interface endpoint](#vpc-vpe-create-view-endpoints-s3-exception)
+  + [Using Route 53](#vpc-vpe-create-view-endpoints-s3-exception-route53)
+  + [VPCs with custom DNS](#vpc-vpe-create-view-endpoints-s3-exception-customdns)
 
 ## Pricing<a name="vpc-vpe-create-pricing"></a>
 + [AWS PrivateLink Pricing](http://aws.amazon.com/privatelink/pricing/)
@@ -19,7 +23,7 @@ An existing Amazon VPC network *without Internet access* needs additional VPC se
 ![\[This image shows where to find the Private network option on the Amazon MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-private-network.png)
 + **Private routing**\. An [Amazon VPC *without Internet access*](networking-about.md) limits network traffic within the VPC\. This page assumes your Amazon VPC does not have Internet access and requires VPC endpoints for each AWS service used by your environment, and VPC endpoints for Apache Airflow in the same AWS Region and Amazon VPC as your Amazon MWAA environment\.
 
-## \(Required\) Example VPC endpoints<a name="vpc-vpe-create-view-endpoints-examples"></a>
+## \(Required\) VPC endpoints<a name="vpc-vpe-create-view-endpoints-examples"></a>
 
 The following section shows the required VPC endpoints needed for an Amazon VPC *without Internet access*\. It lists the VPC endpoints for each AWS service used by Amazon MWAA, including the VPC endpoints needed for Apache Airflow\. 
 
@@ -36,7 +40,11 @@ com.amazonaws.YOUR_REGION.airflow.env
 com.amazonaws.YOUR_REGION.airflow.ops
 ```
 
-## Attaching the VPC endpoints required for AWS services<a name="vpc-vpe-create-view-endpoints-attach-services"></a>
+## Attaching the required VPC endpoints<a name="vpc-vpe-create-view-endpoints-attach-all"></a>
+
+This section describes the steps to attach the required VPC endpoints for an Amazon VPC with private routing\.
+
+### VPC endpoints required for AWS services<a name="vpc-vpe-create-view-endpoints-attach-services"></a>
 
 The following section shows the steps to attach the VPC endpoints for the AWS services used by an environment to an existing Amazon VPC\. 
 
@@ -174,7 +182,7 @@ The following section shows the steps to attach the VPC endpoints for the AWS se
 
    1. Choose **Create endpoint**\.
 
-## Attaching the VPC endpoints required for Apache Airflow<a name="vpc-vpe-create-view-endpoints-attach-aa"></a>
+### VPC endpoints required for Apache Airflow<a name="vpc-vpe-create-view-endpoints-attach-aa"></a>
 
 The following section shows the steps to attach the VPC endpoints for Apache Airflow to an existing Amazon VPC\. 
 
@@ -237,3 +245,27 @@ The following section shows the steps to attach the VPC endpoints for Apache Air
    1. Choose **Full Access** in **Policy**\.
 
    1. Choose **Create endpoint**\.
+
+## \(Optional\) Enable private IP addresses for your Amazon S3 VPC interface endpoint<a name="vpc-vpe-create-view-endpoints-s3-exception"></a>
+
+Amazon S3 **Interface** endpoints don't support private DNS\. The S3 endpoint requests still resolves to a *public* IP address\. To resolve the S3 address to a *private* IP address, you need to add a [private hosted zone in Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-private.html) for the S3 regional endpoint\. 
+
+### Using Route 53<a name="vpc-vpe-create-view-endpoints-s3-exception-route53"></a>
+
+This section describes the steps to enable private IP addresses for an S3 **Interface** endpoint using Route 53\.
+
+1. Create a Private Hosted Zone for your Amazon S3 VPC interface endpoint \(such as, s3\.eu\-west\-1\.amazonaws\.com\) and associate it with your Amazon VPC\.
+
+1. Create an ALIAS A record for your Amazon S3 VPC interface endpoint \(such as, s3\.eu\-west\-1\.amazonaws\.com\) that resolves to your VPC Interface Endpoint DNS name\.
+
+1. Create an ALIAS A wildcard record for your Amazon S3 interface endpoint \(such as, \*\.s3\.eu\-west\-1\.amazonaws\.com\) that resolves to the VPC Interface Endpoint DNS name\.
+
+### VPCs with custom DNS<a name="vpc-vpe-create-view-endpoints-s3-exception-customdns"></a>
+
+If your Amazon VPC uses custom DNS routing, you need to make the changes in your DNS resolver \(not Route 53, typically an EC2 instance running a DNS server\) by creating a CNAME record\. For example:
+
+```
+Name: s3.us-west-2.amazonaws.com
+Type: CNAME
+Value:  *.vpce-0f67d23e37648915c-e2q2e2j3.s3.eu-west-1.vpce.amazonaws.com
+```

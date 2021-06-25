@@ -19,6 +19,7 @@ The following sample demonstrates how to use Amazon Managed Workflows for Apache
 
 ## Version<a name="mwaa-eks-example-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="eksctl-prereqs"></a>
 
@@ -259,18 +260,29 @@ After you create role, edit your Amazon MWAA environment to use the role you cre
   }
   ```
 
-  To learn more, see [How to use trust policies with IAM roles](https://docs.aws.amazon.com/https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/)
+  To learn more, see [How to use trust policies with IAM roles](https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/)\.
 
 ## Create the requirements\.txt file<a name="eksctl-requirements"></a>
 
-The requirements\.txt file includes any additional dependencies necessary for your DAG\. For this example, you need to modify the requirements\.txt in the S3 bucket for your environment to the following:
+To use the sample code in this section, ensure you've added one of the following database options to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
+
+------
+#### [ Airflow v2\.0\.2 ]
+
+```
+kubernetes
+apache-airflow[cncf.kubernetes]==2.0.2
+```
+
+------
+#### [ Airflow v1\.10\.12 ]
 
 ```
 awscli
 kubernetes==12.0.1
 ```
 
-After you modify the file, be sure to update the environment configuration to use the new version of the file from the S3 bucket\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
+------
 
 ## Create an identity mapping for EKS<a name="eksctl-identity-map"></a>
 
@@ -296,18 +308,6 @@ aws eks update-kubeconfig \
 --alias aws
 ```
 
-Edit the kube\_config\.yaml file to replace this line:
-
-```
-command: aws
-```
-
-With the following:
-
-```
-command: /usr/local/airflow/.local/bin/aws
-```
-
 If you used a specific profile when you ran `update-kubeconfig` you need to remove the `env:` section added to the kube\_config\.yaml file so that it works correctly with Amazon MWAA\. To do so, delete the following from the file and then save it:
 
 ```
@@ -319,6 +319,61 @@ env:
 ## Create a DAG<a name="eksctl-create-dag"></a>
 
 Use the following code example to create a \.py file, such as mwaa\_pod\_example\.py, for the DAG\.
+
+------
+#### [ Airflow v2\.0\.2 ]
+
+```
+"""
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+from airflow import DAG
+from datetime import datetime
+from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
+
+default_args = {
+   'owner': 'aws',
+   'depends_on_past': False,
+   'start_date': datetime(2019, 2, 20),
+   'provide_context': True
+}
+
+dag = DAG(
+   'kubernetes_pod_example', default_args=default_args, schedule_interval=None)
+
+#use a kube_config stored in s3 dags folder for now
+kube_config_path = '/usr/local/airflow/dags/kube_config.yaml'
+
+podRun = KubernetesPodOperator(
+                       namespace="mwaa",
+                       image="ubuntu:18.04",
+                       cmds=["bash"],
+                       arguments=["-c", "ls"],
+                       labels={"foo": "bar"},
+                       name="mwaa-pod-test",
+                       task_id="pod-task",
+                       get_logs=True,
+                       dag=dag,
+                       is_delete_operator_pod=False,
+                       config_file=kube_config_path,
+                       in_cluster=False,
+                       cluster_context='aws'
+                       )
+```
+
+------
+#### [ Airflow v1\.10\.12 ]
 
 ```
 """
@@ -368,6 +423,8 @@ podRun = KubernetesPodOperator(
                        cluster_context='aws'
                        )
 ```
+
+------
 
 ## Add the DAG and kube\_config\.yaml to the S3 bucket<a name="eksctl-dag-bucket"></a>
 

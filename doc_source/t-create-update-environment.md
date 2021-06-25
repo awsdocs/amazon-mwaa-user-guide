@@ -8,11 +8,12 @@ The topics on this page contains errors you may encounter when creating and upda
 + [Create bucket](#troubleshooting-create-bucket)
   + [I can't select the option for S3 Block Public Access settings](#t-create-bucket)
 + [Create environment](#troubleshooting-create-environment)
-  + [I tried creating an environment and it's stuck in the "Creating" state](#t-stuck-failure)
+  + [I tried to create an environment and it's stuck in the "Creating" state](#t-stuck-failure)
   + [I tried to create an environment but it shows the status as "Create failed"](#t-create-environ-failed)
   + [I tried to select a VPC and received a "Network Failure" error](#t-network-failure)
-  + [I received a service, partition, or resource "must be passed" error](#t-service-partition)
+  + [I tried to create an environment and received a service, partition, or resource "must be passed" error](#t-service-partition)
   + [I tried to create an environment and it shows the status as "Available" but when I try to access the Airflow UI an "Empty Reply from Server" or "502 Bad Gateway" error is shown](#t-create-environ-empty-reply)
+  + [I tried to create an environment and my user name is a bunch of random character names](#t-create-environ-random-un)
 + [Update environment](#troubleshooting-update-environment)
   + [I tried changing the environment class but the update failed](#t-rollback-billing-failure)
 + [Access environment](#troubleshooting-access-environment)
@@ -32,7 +33,7 @@ If it takes more than twenty minutes for your environment to install a new versi
 
 1. Check Apache Airflow configuration options\. If you're using Secrets Manager, verify that the key\-value pairs you specified as an Apache Airflow configuration option were configured correctly\. To learn more, see [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
 
-1. Check VPC network configuration\. To learn more, see [I tried creating an environment and it's stuck in the "Creating" state](#t-stuck-failure)\.
+1. Check VPC network configuration\. To learn more, see [I tried to create an environment and it's stuck in the "Creating" state](#t-stuck-failure)\.
 
 1. Check execution role permissions\. An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon MWAA permission to invoke the resources of other AWS services \(such as Amazon S3, CloudWatch, Amazon SQS, Amazon ECR\) on your behalf\. Your [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) or [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) also needs to be permitted access\. To learn more, see [Execution role](mwaa-create-role.md)\.
 
@@ -73,7 +74,7 @@ The [execution role](mwaa-create-role.md) for your Amazon MWAA environment needs
 
 The following topic describes the errors you may receive when creating an environment\.
 
-### I tried creating an environment and it's stuck in the "Creating" state<a name="t-stuck-failure"></a>
+### I tried to create an environment and it's stuck in the "Creating" state<a name="t-stuck-failure"></a>
 
 We recommend the following steps:
 
@@ -107,7 +108,7 @@ We recommend the following steps:
 
 We recommend the following steps:
 
-1. Check VPC network configuration\. To learn more, see [I tried creating an environment and it's stuck in the "Creating" state](#t-stuck-failure)\.
+1. Check VPC network configuration\. To learn more, see [I tried to create an environment and it's stuck in the "Creating" state](#t-stuck-failure)\.
 
 1. Check user permissions\. Amazon MWAA performs a dry run against a user's credentials before creating an environment\. Your AWS account may not have permission in AWS Identity and Access Management \(IAM\) to create some of the resources for an environment\. For example, if you chose the **Private network** Apache Airflow access mode, your AWS account must have been granted access by your administrator to the [AmazonMWAAFullConsoleAccess](access-policies.md#console-full-access) access control policy for your environment, which allows your account to create VPC endpoints\.
 
@@ -120,12 +121,12 @@ We recommend the following steps:
 ### I tried to select a VPC and received a "Network Failure" error<a name="t-network-failure"></a>
 
 We recommend the following steps:
-+ If you see a "Network Failure" error when you try to select a VPC when creating your environment, turn off any in\-browser proxies that are running, and then try again\.
++ If you see a "Network Failure" error when you try to select an Amazon VPC when creating your environment, turn off any in\-browser proxies that are running, and then try again\.
 
-### I received a service, partition, or resource "must be passed" error<a name="t-service-partition"></a>
+### I tried to create an environment and received a service, partition, or resource "must be passed" error<a name="t-service-partition"></a>
 
 We recommend the following steps:
-+ This may be because the S3 URI you entered for the S3 bucket for your environment includes a '/' at the end of the URI\. To resolve this issue, remove the '/' in the S3 bucket path\. The value should be an S3 URI in the following format:
++ You may be receiving this error because the URI you specified for your Amazon S3 bucket includes a '/' at the end of the URI\. We recommend removing the '/' in the path\. The value should be in the following format:
 
   ```
   s3://your-bucket-name
@@ -135,9 +136,14 @@ We recommend the following steps:
 
 We recommend the following steps:
 
-1. Check VPC security group configuration\. To learn more, see [I tried creating an environment and it's stuck in the "Creating" state](#t-stuck-failure)\.
+1. Check VPC security group configuration\. To learn more, see [I tried to create an environment and it's stuck in the "Creating" state](#t-stuck-failure)\.
+
+1. Confirm that any Apache Airflow packages you listed in the `requirements.txt` correspond to the Apache Airflow version you're running on Amazon MWAA\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
 
 1. To run a troubleshooting script that checks the Amazon VPC network setup and configuration for your Amazon MWAA environment, see the [Verify Environment](https://github.com/awslabs/aws-support-tools/tree/master/MWAA) script in AWS Support Tools on GitHub\.
+
+### I tried to create an environment and my user name is a bunch of random character names<a name="t-create-environ-random-un"></a>
++ Apache Airflow has a maximum of 64 characters for user names\. If your AWS Identity and Access Management \(IAM\) role exceeds this length, a hash algorithm is used to reduce it, while remaining unique\.
 
 ## Update environment<a name="troubleshooting-update-environment"></a>
 

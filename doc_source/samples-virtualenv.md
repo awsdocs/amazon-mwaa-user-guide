@@ -10,6 +10,7 @@ The following sample shows how to patch the Apache Airflow PythonVirtualenvOpera
 + [Custom plugin sample code](#samples-virtualenv-plugins-code)
 + [Plugins\.zip](#samples-virtualenv-pluginszip)
 + [Code sample](#samples-virtualenv-code)
++ [Airflow configuration options](#samples-virtualenv-airflow-config)
 + [What's next?](#samples-virtualenv-next-up)
 
 ## Version<a name="samples-virtualenv-version"></a>
@@ -48,6 +49,22 @@ Apache Airflow will execute the contents of Python files in the plugins folder a
 1. Copy the contents of the following code sample and save locally as `virtual_python_plugin.py`\.
 
    ```
+   """
+   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+    
+   Permission is hereby granted, free of charge, to any person obtaining a copy of
+   this software and associated documentation files (the "Software"), to deal in
+   the Software without restriction, including without limitation the rights to
+   use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+   the Software, and to permit persons to whom the Software is furnished to do so.
+    
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+   FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   """
    from airflow.plugins_manager import AirflowPlugin
    import airflow.utils.python_virtualenv 
    from typing import List
@@ -128,6 +145,22 @@ The following steps describe how to create the DAG code for the custom plugin\.
 1. Copy the contents of the following code sample and save locally as `virtualenv_test.py`\.
 
    ```
+   """
+   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+    
+   Permission is hereby granted, free of charge, to any person obtaining a copy of
+   this software and associated documentation files (the "Software"), to deal in
+   the Software without restriction, including without limitation the rights to
+   use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+   the Software, and to permit persons to whom the Software is furnished to do so.
+    
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+   FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   """
    from airflow import DAG
    from airflow.operators.python import PythonVirtualenvOperator
    from airflow.utils.dates import days_ago
@@ -177,6 +210,10 @@ The following steps describe how to create the DAG code for the custom plugin\.
    ```
 
 ------
+
+## Airflow configuration options<a name="samples-virtualenv-airflow-config"></a>
+
+If you're using Apache Airflow v2\.0\.2, add `core.lazy_load_plugins : False` as an Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2\.0](configuring-env-variables.md#configuring-2.0-airflow-override)\.
 
 ## What's next?<a name="samples-virtualenv-next-up"></a>
 + Learn how to upload the `requirements.txt` file in this example to your Amazon S3 bucket in [Installing Python dependencies](working-dags-dependencies.md)\.

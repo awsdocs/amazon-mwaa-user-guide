@@ -4,6 +4,7 @@ This section describes the different ways to configure an Apache Airflow connect
 
 **Topics**
 + [Overview of Apache Airflow variables and connections](#manage-connections-t-overview)
++ [Overview of connection types](manage-connection-types.md)
 + [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)
 
 ## Overview of Apache Airflow variables and connections<a name="manage-connections-t-overview"></a>

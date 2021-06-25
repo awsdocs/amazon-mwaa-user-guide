@@ -10,7 +10,7 @@ This guide describes the steps create an Amazon S3 bucket to store your Apache A
 ## Before you begin<a name="mwaa-s3-bucket-before"></a>
 + The Amazon S3 bucket name can't be changed after you create the bucket\. To learn more, see [Rules for bucket naming](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html#bucketnamingrules) in the *Amazon Simple Storage Service Developer Guide*\.
 + An Amazon S3 bucket used for an Amazon MWAA environment must be configured to **Block all public access**, with **Bucket Versioning** enabled\.
-+ An Amazon S3 bucket used for an Amazon MWAA environment must be located in the same AWS Region as an Amazon MWAA environment\. To view a list of AWS Regions for Amazon MWAA, see [Amazon MWAA regions](what-is-mwaa.md#regions-mwaa)\.
++ An Amazon S3 bucket used for an Amazon MWAA environment must be located in the same AWS Region as an Amazon MWAA environment\. To view a list of AWS Regions for Amazon MWAA, see [Region availability](what-is-mwaa.md#regions-mwaa)\.
 
 ## Create the bucket<a name="mwaa-s3-bucket-create"></a>
 

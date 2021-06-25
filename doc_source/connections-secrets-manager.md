@@ -37,6 +37,30 @@ The [execution role](mwaa-create-role.md) for your Amazon MWAA environment needs
 
 The following section describes how to create an Apache Airflow configuration option on the Amazon MWAA console for the AWS Secrets Manager backend\. If you're using a configuration setting of the same name in `airflow.cfg`, the configuration you create in the following steps will take precedence and override the configuration settings\.
 
+------
+#### [ Airflow v2\.0\.2 ]
+
+1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
+
+1. Choose an environment\.
+
+1. Choose **Edit**\.
+
+1. Choose **Next**\.
+
+1. Choose **Add custom configuration** in the **Airflow configuration options** pane\. Add the following key\-value pairs:
+
+   1. `secrets.backend` : `airflow.providers.amazon.aws.secrets.secrets_manager.SecretsManagerBackend`
+
+   1. `secrets.backend_kwargs` : `{"connections_prefix" : "airflow/connections", "variables_prefix" : "airflow/variables"}`
+
+      This tells Apache Airflow to look for the secret at the `airflow/connections/*` and `airflow/variables/*` path\.
+
+1. Choose **Save**\.
+
+------
+#### [ Airflow v1\.10\.12 ]
+
 1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
 
 1. Choose an environment\.
@@ -54,6 +78,8 @@ The following section describes how to create an Apache Airflow configuration op
       This tells Apache Airflow to look for the secret at the `airflow/connections/*` and `airflow/variables/*` path\.
 
 1. Choose **Save**\.
+
+------
 
 ## Step three: Generate an Apache Airflow AWS connection URI string<a name="connections-sm-aa-uri"></a>
 

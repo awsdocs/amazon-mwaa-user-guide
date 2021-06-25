@@ -12,7 +12,7 @@ An Apache Airflow UI link is available on the Amazon Managed Workflows for Apach
 
 ## Prerequisites<a name="access-airflow-ui-prereqs"></a>
 
-The following section describes the preliminary steps required to use the commands and scripts on this page\.
+The following section describes the preliminary steps required to use the commands and scripts in this section\.
 
 ### Access<a name="access-airflow-ui-prereqs-access"></a>
 + AWS account access in AWS Identity and Access Management \(IAM\) to the Amazon MWAA permissions policy in [Apache Airflow UI access policy: AmazonMWAAWebServerAccess](access-policies.md#web-ui-access)\.

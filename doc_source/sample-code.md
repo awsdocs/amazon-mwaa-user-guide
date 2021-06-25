@@ -3,6 +3,8 @@
 This guide contains code samples, including DAGs and custom plugins, that you can use on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
 **Topics**
++ [Using a secret key in AWS Secrets Manager for an Apache Airflow Snowflake connection](samples-sm-snowflake.md)
++ [Using a DAG to write custom metrics in CloudWatch](samples-custom-metrics.md)
 + [Aurora PostgreSQL database cleanup on an Amazon MWAA environment](samples-database-cleanup.md)
 + [Using a secret key in AWS Secrets Manager for an Apache Airflow variable](samples-secrets-manager-var.md)
 + [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)
@@ -16,3 +18,7 @@ This guide contains code samples, including DAGs and custom plugins, that you ca
 + [Using Amazon MWAA with Amazon RDS Microsoft SQL Server](samples-sql-server.md)
 + [Using Amazon MWAA with Amazon EMR](samples-emr.md)
 + [Using Amazon MWAA with Amazon EKS](mwaa-eks-example.md)
++ [AWS blogs and tutorials](#samples-blogs-tutorials)
+
+## AWS blogs and tutorials<a name="samples-blogs-tutorials"></a>
++ [Working with Amazon EKS and Amazon MWAA for Apache Airflow v2\.x](https://dev.to/aws/working-with-amazon-eks-and-amazon-managed-workflows-for-apache-airflow-v2-x-k12)

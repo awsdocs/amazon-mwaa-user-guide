@@ -5,10 +5,14 @@ The topics on this page contains resolutions to Apache Airflow v2\.0\.2 Python d
 **Contents**
 + [Connections](#troubleshooting-conn-202)
   + [I can't connect to Secrets Manager](#access-secrets-manager-202)
+  + [I can't connect to Snowflake](#missing-snowflake)
 + [Web server](#troubleshooting-webserver-202)
   + [I see a 5xx error accessing the web server](#5xx-webserver-202)
+  + [I see a 'The scheduler does not appear to be running' error](#error-scheduler-202)
 + [Tasks](#troubleshooting-tasks-202)
   + [I see my tasks stuck or not completing](#stranded-tasks-202)
++ [CLI](#troubleshooting-cli-202)
+  + [I see a '503' error when triggering a DAG in the CLI](#cli-toomany-202)
 
 ## Connections<a name="troubleshooting-conn-202"></a>
 
@@ -24,6 +28,68 @@ We recommend the following steps:
 
 1. Learn how to use the secret key for an Apache Airflow connection \(`myconn`\) in [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)\.
 
+### I can't connect to Snowflake<a name="missing-snowflake"></a>
+
+We recommend the following steps:
+
+1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+
+1. Add the following entries to the requirements\.txt for your environment\.
+
+   ```
+   apache-airflow-providers-snowflake==1.3.0
+   ```
+
+1. Add the following imports to your DAG:
+
+   ```
+   from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
+   ```
+
+Ensure the Apache Airflow connection object includes the following key\-value pairs:
+
+1. **Conn Id: **snowflake\_conn
+
+1. **Conn Type: **Snowflake
+
+1. **Host: **<my account>\.<my region if not us\-west\-2>\.snowflakecomputing\.com
+
+1. **Schema: **<my schema>
+
+1. **Login: **<my user name>
+
+1. **Password: **\*\*\*\*\*\*\*\*
+
+1. **Port: ** <port, if any>
+
+1. **Extra: **
+
+   ```
+   {
+       "account": "<my account>",
+       "warehouse": "<my warehouse>",
+       "database": "<my database>",
+       "region": "<my region if not using us-west-2 otherwise omit this line>"
+   }
+   ```
+
+For example:
+
+```
+>>> import json
+>>> from airflow.models.connection import Connection
+>>> myconn = Connection(
+...    conn_id='snowflake_conn',
+...    conn_type='Snowflake',
+...    host='YOUR_ACCOUNT.YOUR_REGION.snowflakecomputing.com',
+...    schema='YOUR_SCHEMA'
+...    login='YOUR_USERNAME',
+...    password='YOUR_PASSWORD',
+...    port='YOUR_PORT'
+...    extra=json.dumps(dict(account='YOUR_ACCOUNT', warehouse='YOUR_WAREHOUSE, database='YOUR_DB_OPTION', region='YOUR_REGION')),
+... )
+```
+
 ## Web server<a name="troubleshooting-webserver-202"></a>
 
 The following topic describes the errors you may receive for your Apache Airflow *Web server* on Amazon MWAA\.
@@ -37,6 +103,16 @@ We recommend the following steps:
 1. Check the `requirements.txt`\. Verify the Airflow "extras" package and other libraries listed in your `requirements.txt` are compatible with your Apache Airflow version\.
 
 1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
+
+### I see a 'The scheduler does not appear to be running' error<a name="error-scheduler-202"></a>
+
+If the scheduler doesn't appear to be running, or the last "heart beat" was received several hours ago, your DAGs may not appear in Apache Airflow, and new tasks will not be scheduled\.
+
+We recommend the following steps:
+
+1. Confirm that your VPC security group allows inbound access to port 5432\. This port is needed to connect to the Amazon Aurora PostgreSQL metadata database\. After this rule is added, give Amazon MWAA a few minutes, and the error should disappear\. To learn more, see [Security in your VPC on Amazon MWAA](vpc-security.md)\.
+
+1. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\.
 
 ## Tasks<a name="troubleshooting-tasks-202"></a>
 
@@ -87,3 +163,11 @@ If your Apache Airflow tasks are "stuck" or not completing, we recommend the fol
 ![\[Apache Airflow Actions\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-airflow-scaling-menu.png)
 
 1. Learn more about the Apache Airflow task lifecycle at [Concepts](https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#task-lifecycle) in the *Apache Airflow reference guide*\.
+
+## CLI<a name="troubleshooting-cli-202"></a>
+
+The following topic describes the errors you may receive when running Airflow CLI commands in the AWS Command Line Interface\.
+
+### I see a '503' error when triggering a DAG in the CLI<a name="cli-toomany-202"></a>
+
+The Airflow CLI runs on the Apache Airflow *Web server*, which has limited concurrency\. Typically a maximum of 4 CLI commands can run simultaneously\.

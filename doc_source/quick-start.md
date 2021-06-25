@@ -3,7 +3,7 @@
 This quick start tutorial uses an AWS CloudFormation template that creates the Amazon VPC infrastructure, an Amazon S3 bucket with a `dags` folder, and an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment at the same time\. It then walks you through three AWS Command Line Interface \(AWS CLI\) commands to upload a DAG to Amazon S3, then run the DAG in Apache Airflow, and view logs in CloudWatch\. It concludes by walking you through the steps to create an IAM policy for an Apache Airflow development team\.
 
 **Note**  
-The AWS CloudFormation template on this page creates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment for the latest version of Apache Airflow available in AWS CloudFormation\. The latest version available in AWS CloudFormation \(as of May 26, 2021\) is Apache Airflow v1\.10\.12\.
+The AWS CloudFormation template on this page creates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment for the latest version of Apache Airflow available in AWS CloudFormation\. The latest version available \(as of "today"\) is Apache Airflow v2\.0\.2\.
 
 **Topics**
 + [In this tutorial](#quick-start-overview)
@@ -18,15 +18,15 @@ The AWS CloudFormation template on this page creates an Amazon Managed Workflows
 ## In this tutorial<a name="quick-start-overview"></a>
 
 The AWS CloudFormation template on this page creates the following:
-+ **VPC infrastructure**\. This template uses [Public routing over the Internet](networking-about.md#networking-about-overview-public)\. It uses the [Public network access mode](configuring-networking.md#access-overview-public) for the Apache Airflow *Web server* in `WebserverAccessMode: PUBLIC_ONLY`\.
-+ **Amazon S3 bucket**\. The AWS CloudFormation template creates an Amazon S3 bucket with a `dags` folder\. It's configured to **Block all public access**, with **Bucket Versioning** enabled, as defined in [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)\.
-+ **Amazon MWAA environment**\. The AWS CloudFormation template creates an Amazon MWAA environment that is associated to the `dags` folder in the Amazon S3 bucket, an execution role with permission to AWS services used by Amazon MWAA, and it specifies the default for encryption using an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), as defined in [Create an Amazon MWAA environment](create-environment.md)\.
-+ **CloudWatch Logs**\. The AWS CloudFormation template enables Apache Airflow logs in CloudWatch at the "INFO" level and up for the following log groups: *Airflow scheduler log group*, *Airflow web server log group*, *Airflow worker log group*, *Airflow DAG processing log group*, and the *Airflow task log group*\.
++ **VPC infrastructure**\. The template uses [Public routing over the Internet](networking-about.md#networking-about-overview-public)\. It uses the [Public network access mode](configuring-networking.md#access-overview-public) for the Apache Airflow *Web server* in `WebserverAccessMode: PUBLIC_ONLY`\.
++ **Amazon S3 bucket**\. The template creates an Amazon S3 bucket with a `dags` folder\. It's configured to **Block all public access**, with **Bucket Versioning** enabled, as defined in [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)\.
++ **Amazon MWAA environment**\. The template creates an Amazon MWAA environment that's associated to the following: the `dags` folder on the Amazon S3 bucket, an execution role with permission to AWS services used by Amazon MWAA, and the default for encryption using an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), as defined in [Create an Amazon MWAA environment](create-environment.md)\.
++ **CloudWatch Logs**\. The template enables Apache Airflow logs in CloudWatch at the "INFO" level and up for the following log groups: *Airflow scheduler log group*, *Airflow web server log group*, *Airflow worker log group*, *Airflow DAG processing log group*, and the *Airflow task log group*\.
 
 In this tutorial, you'll create and complete the following:
-+ **Upload and run DAG**\. The tutorial walks you through the steps to upload Apache Airflow's tutorial DAG for Apache Airflow v1\.10\.12 to Amazon S3, and then run in the Apache Airflow UI, as defined in [Adding or updating DAGs](configuring-dag-folder.md)\.
-+ **View logs**\. The tutorial walks you through the steps to view the *Airflow web server log group* in CloudWatch Logs\.
-+ **Create IAM policy**\. The tutorial walks you through the steps to create an IAM policy for your Apache Airflow development team, as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
++ **Upload and run a DAG**\. The steps to upload Apache Airflow's tutorial DAG for Apache Airflow v1\.10\.12 to Amazon S3, and then run in the Apache Airflow UI, as defined in [Adding or updating DAGs](configuring-dag-folder.md)\.
++ **View logs**\. The steps to view the *Airflow web server log group* in CloudWatch Logs\.
++ **Create IAM policy**\. The steps to create an IAM policy for your Apache Airflow development team, as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
 
 ## Prerequisites<a name="quick-start-before"></a>
 

@@ -20,8 +20,11 @@ The topics on this page contains resolutions to Apache Airflow v1\.10\.12 Python
 + [Web server](#troubleshooting-web-server)
   + [I'm using the BigQueryOperator and it's causing my web server to crash](#operator-biquery)
   + [I see a 5xx error accessing the web server](#5xx-webserver)
+  + [I see a 'The scheduler does not appear to be running' error](#error-scheduler-11012)
 + [Tasks](#troubleshooting-tasks)
   + [I see my tasks stuck or not completing](#stranded-tasks)
++ [CLI](#troubleshooting-cli-11012)
+  + [I see a '503' error when triggering a DAG in the CLI](#cli-toomany-11012)
 
 ## Updating requirements\.txt<a name="troubleshooting-dependencies"></a>
 
@@ -260,6 +263,16 @@ We recommend the following steps:
 
 1. Explore ways to specify Python dependencies in a `requirements.txt` file, see [Managing Python dependencies in requirements\.txt](best-practices-dependencies.md)\.
 
+### I see a 'The scheduler does not appear to be running' error<a name="error-scheduler-11012"></a>
+
+If the scheduler doesn't appear to be running, or the last "heart beat" was received several hours ago, your DAGs may not appear in Apache Airflow, and new tasks will not be scheduled\.
+
+We recommend the following steps:
+
+1. Confirm that your VPC security group allows inbound access to port 5432\. This port is needed to connect to the Amazon Aurora PostgreSQL metadata database\. After this rule is added, give Amazon MWAA a few minutes, and the error should disappear\. To learn more, see [Security in your VPC on Amazon MWAA](vpc-security.md)\.
+
+1. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\.
+
 ## Tasks<a name="troubleshooting-tasks"></a>
 
 The following topic describes the errors you may receive for Apache Airflow tasks in an environment\.
@@ -309,3 +322,11 @@ If your Apache Airflow tasks are "stuck" or not completing, we recommend the fol
 ![\[Apache Airflow Actions\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-airflow-scaling-menu.png)
 
 1. Learn more about the Apache Airflow task lifecycle at [Concepts](https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#task-lifecycle) in the *Apache Airflow reference guide*\.
+
+## CLI<a name="troubleshooting-cli-11012"></a>
+
+The following topic describes the errors you may receive when running Airflow CLI commands in the AWS Command Line Interface\.
+
+### I see a '503' error when triggering a DAG in the CLI<a name="cli-toomany-11012"></a>
+
+The Airflow CLI runs on the Apache Airflow *Web server*, which has limited concurrency\. Typically a maximum of 4 CLI commands can run simultaneously\.
