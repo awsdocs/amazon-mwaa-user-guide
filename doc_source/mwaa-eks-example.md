@@ -144,7 +144,7 @@ No resources found in mwaa namespace.
 
 You must create an IAM role and then bind it to the Amazon EKS \(k8s\) cluster so that it can be used for authentication through IAM\. The role is used only to log in to the cluster, and does not have any permissions for the console or API calls\.
 
-Create a new role for the Amazon MWAA environment using the steps in [Amazon MWAA Execution role](mwaa-create-role.md)\. However, instead of creating and attaching the policies described in that topic, attach the following policy:
+Create a new role for the Amazon MWAA environment using the steps in [Amazon MWAA execution role](mwaa-create-role.md)\. However, instead of creating and attaching the policies described in that topic, attach the following policy:
 
 ```
 {

@@ -10,6 +10,7 @@ Apache Airflow v2\.0\.2 is already set\-up to collect and send [StatsD](https://
   + [Apache Airflow Counters](#counters-metrics-v202)
   + [Apache Airflow Gauges](#gauges-metrics-v202)
   + [Apache Airflow Timers](#timers-metrics-v202)
++ [What's next?](#mwaa-metrics202-next-up)
 
 ## Terms<a name="access-metrics-cw-terms-v202"></a>
 
@@ -147,3 +148,6 @@ The Apache Airflow metrics in this section contain data about [Apache Airflow *T
 |  DAGScheduleDelay  |  dagrun\.schedule\_delay\.\{dag\_id\}  |  Milliseconds  |  DAG, \{dag\_id\}  | 
 |  FirstTaskSchedulingDelay  |  dagrun\.\{dag\_id\}\.first\_task\_scheduling\_delay  |  Milliseconds  |  DAG, \{dag\_id\}  | 
 |  TaskInstanceDuration  |  dag\.\{dag\_id\}\.\{task\_id\}\.duration  |  Milliseconds  |  DAG, \{dag\_id\} Task, \{task\_id\}  | 
+
+## What's next?<a name="mwaa-metrics202-next-up"></a>
++ Explore the Amazon MWAA API operation used to publish environment health metrics at [PublishMetrics](https://docs.aws.amazon.com/mwaa/latest/API/API_PublishMetrics.html)\.

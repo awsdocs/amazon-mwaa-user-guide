@@ -28,6 +28,7 @@ This page describes common questions you may encounter when using Amazon Managed
   + [How long does it take Amazon MWAA to recognize a new DAG file?](#recog-dag)
   + [Why is my DAG file not picked up by Apache Airflow?](#dag-file-error)
   + [Can I remove a `plugins.zip` or `requirements.txt` from an environment?](#remove-plugins-reqs)
+  + [Why don't I see my plugins in the Airflow 2\.0 Admin > Plugins menu?](#view-plugins-ui)
 + [Migrating](#q-migrating)
   + [How do I migrate to Amazon MWAA from an on\-premises or a self\-managed Apache Airflow deployment?](#migrate-from-onprem)
 
@@ -147,7 +148,7 @@ DAGs are synchronized from the S3 bucket the environment\. If you add a new DAG 
 
 The following are possible solutions for this issue:
 
-1. Check that your execution role has sufficient permissions to your Amazon S3 bucket\. To learn more, see [Amazon MWAA Execution role](mwaa-create-role.md)\.
+1. Check that your execution role has sufficient permissions to your Amazon S3 bucket\. To learn more, see [Amazon MWAA execution role](mwaa-create-role.md)\.
 
 1. Check that the Amazon S3 bucket has *Block Public Access* configured, and *Versioning* enabled\. To learn more, see [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)\.
 
@@ -155,7 +156,11 @@ The following are possible solutions for this issue:
 
 ### Can I remove a `plugins.zip` or `requirements.txt` from an environment?<a name="remove-plugins-reqs"></a>
 
-Currently, there is no way to remove a `plugins.zip` or `requirements.txt` from an environment once they’ve been added, but we're working on the issue\. In the interim, a workaround is to point to an empty text or zip file, respectively\.
+Currently, there is no way to remove a plugins\.zip or requirements\.txt from an environment once they’ve been added, but we're working on the issue\. In the interim, a workaround is to point to an empty text or zip file, respectively\. To learn more, see [Deleting files on Amazon S3](working-dags-delete.md)\.
+
+### Why don't I see my plugins in the Airflow 2\.0 Admin > Plugins menu?<a name="view-plugins-ui"></a>
+
+For security reasons, the Apache Airflow Web server on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the Apache Airflow *Web server*\. The plugin that's shown allows Amazon MWAA to authenticate your Apache Airflow users in AWS Identity and Access Management \(IAM\)\.
 
 ## Migrating<a name="q-migrating"></a>
 

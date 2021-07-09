@@ -31,7 +31,7 @@ The following section shows how to create an Amazon VPC network on the Amazon MW
 
 The following image shows where you can find the **Create MWAA VPC** button on the Amazon MWAA console\. 
 
-![\[This image shows where you can find the Create MWAA VPC on the MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-create-vpc.png)
+![\[This image shows where you can find the Create MWAA VPC on the Amazon MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-create-vpc.png)
 
 ### Option two: Creating a VPC network *with* Internet access<a name="vpc-create-template-private-or-public"></a>
 
@@ -296,7 +296,7 @@ It takes about 30 minutes to create the Amazon VPC infrastructure\.
 
 ### Option three: Creating a VPC network *without* Internet access<a name="vpc-create-template-private-only"></a>
 
-The following AWS CloudFormation template creates an Amazon VPC network *without Internet access* in your default AWS Region\. This option uses [Private routing without Internet access](networking-about.md#networking-about-overview-private)\. This template can be used for an Apache Airflow *Web server* with the **Private network** access mode only\. It provides [VPC endpoints and access to the AWS services used by an environment](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-attach-services)\.
+The following AWS CloudFormation template creates an Amazon VPC network *without Internet access* in your default AWS Region\. This option uses [Private routing without Internet access](networking-about.md#networking-about-overview-private)\. This template can be used for an Apache Airflow *Web server* with the **Private network** access mode only\. It creates the required [VPC endpoints for the AWS services used by an environment](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-attach-services)\.
 
 1. Copy the contents of the following template and save locally as `cfn-vpc-private.yaml`\. You can also [download the template](./samples/cfn-vpc-private.zip)\.
 

@@ -296,11 +296,6 @@ The following steps describe how to open your Apache Airflow UI\.
 
 1. Choose **Open Airflow UI**\.
 
-<<<<<<< HEAD
 ## What's next?<a name="bastion-next-up"></a>
 + Learn how to run Airflow CLI commands on an SSH tunnel to a bastion host in [Apache Airflow CLI command reference](airflow-cli-command-reference.md)\.
 + Learn how to upload DAG code to your Amazon S3 bucket in [Adding or updating DAGs](configuring-dag-folder.md)\.
-=======
-## What's next?<a name="create-vpc-next-up"></a>
-+ Learn how to upload DAG code to your Amazon S3 bucket in [Adding or updating DAGs](configuring-dag-folder.md)\.
->>>>>>> 441c1148e2db9f055b24c3646b9befcc1c7a0cfa

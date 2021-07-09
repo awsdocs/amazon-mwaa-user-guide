@@ -37,7 +37,7 @@ If you chose the **Public network** access mode for your Apache Airflow *Web ser
 
 ## Permission to use other AWS services<a name="vpc-vpe-permission"></a>
 
-The interface endpoints use the execution role for your environment in AWS Identity and Access Management \(IAM\) to manage permission to AWS resources used by your environment\. As more AWS services are enabled for an environment, each service will require you to configure permission using your environment's execution role\. To add permissions, see [Amazon MWAA Execution role](mwaa-create-role.md)\.
+The interface endpoints use the execution role for your environment in AWS Identity and Access Management \(IAM\) to manage permission to AWS resources used by your environment\. As more AWS services are enabled for an environment, each service will require you to configure permission using your environment's execution role\. To add permissions, see [Amazon MWAA execution role](mwaa-create-role.md)\.
 
 If you've chosen the **Private network** access mode for your Apache Airflow *Web server*, you must also allow permission in the VPC endpoint policy for each endpoint\. To learn more, see [VPC endpoint policies \(private routing only\)](vpc-security.md#vpc-external-vpce-policies)\.
 

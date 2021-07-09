@@ -36,5 +36,5 @@ The service\-linked role enables permission to certain IAM actions in Amazon ECR
    This shows the service permissions granted to the role\.
 
 ## What's next?<a name="mwaa-slr-next-up"></a>
-+ Learn how to add permissions to allow Amazon MWAA to use other AWS resources used by your environment in [Amazon MWAA Execution role](mwaa-create-role.md)\.
++ Learn how to add permissions to allow Amazon MWAA to use other AWS resources used by your environment in [Amazon MWAA execution role](mwaa-create-role.md)\.
 + Learn more about how IAM actions work in [IAM JSON policy elements: Action](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html)\.

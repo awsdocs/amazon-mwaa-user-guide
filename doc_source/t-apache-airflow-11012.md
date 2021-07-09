@@ -42,7 +42,7 @@ The following topic describes the errors you may receive when running DAGs\.
 
 We recommend the following steps:
 
-1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 1. Add the following package to your `requirements.txt`\.
 
@@ -56,7 +56,7 @@ We recommend the following steps:
 
 We recommend the following steps:
 
-1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 1. Add the following to your `requirements.txt` with your Apache Airflow version\. For example:
 
@@ -70,7 +70,7 @@ We recommend the following steps:
 
 We recommend the following steps:
 
-1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 1. Add the following package to your `requirements.txt` and specify your Apache Airflow version\. For example:
 
@@ -84,7 +84,7 @@ We recommend the following steps:
 
 Amazon MWAA uses Amazon Linux which requires a specific version of Cython and cryptograpy libraries\. We recommend the following steps:
 
-1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 1. Add the following package to your `requirements.txt`\.
 
@@ -112,7 +112,7 @@ Amazon MWAA uses Amazon Linux which requires a specific version of Cython and cr
 
 Amazon MWAA uses Amazon Linux which requires a specific version of Cython\. We recommend the following steps:
 
-1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 1. Add the following package to your `requirements.txt`\.
 
@@ -138,7 +138,7 @@ The following topic describes the errors you may receive when using Operators\.
 
 Amazon MWAA does not support operators with UI extensions\. We recommend the following steps:
 
-1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 1. A workaround is to override the extension by adding a line in the DAG to set `<operator name>.operator_extra_links = None` after importing the problem operators\. For example:
 
@@ -157,7 +157,7 @@ The following topic describes the errors you may receive when using an Apache Ai
 
 We recommend the following steps:
 
-1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 1. Add the following entries to the requirements\.txt for your environment\.
 
@@ -251,7 +251,7 @@ We recommend the following steps:
    BigQueryOperator.operator_extra_links = None
    ```
 
-1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 ### I see a 5xx error accessing the web server<a name="5xx-webserver"></a>
 

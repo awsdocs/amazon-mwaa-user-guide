@@ -150,22 +150,27 @@ The following section describes how to install a wheel that's hosted on a URL\. 
 ### Option three: Python dependencies hosted on a private PyPi/PEP\-503 Compliant Repo<a name="best-practices-dependencies-custom-auth-url"></a>
 
 The following section describes how to install an Apache Airflow extra that's hosted on a private URL with authentication\.
-+ Add [Apache Airflow configuration options](configuring-env-variables.md) for each authentication credential\. For example, if your `requirements.txt` consists of the following:
 
-  ```
-  --index-url=https://${AIRFLOW__FOO__USER}:${AIRFLOW__FOO__PASS}@my.privatepypi.com
-  private-package==1.2.3
-  ```
+1. Add your username and password as [Apache Airflow configuration options](configuring-env-variables.md)\. For example:
+   + `foo.user` : `YOUR_USER_NAME`
+   + `foo.pass` : `YOUR_PASSWORD`
 
-  You would add the following key\-value pairs as an [Apache Airflow configuration option](configuring-env-variables.md):
-  + `foo.user` : `YOUR_USER_NAME`
-  + `foo.pass` : `YOUR_PASSWORD`
+1. Create your `requirements.txt` file\. Substitute the placeholders in the following example with your private URL, and the username and password you've added as [Apache Airflow configuration options](configuring-env-variables.md)\. For example:
 
-  To learn more, see [Apache Airflow configuration options](configuring-env-variables.md)\.
+   ```
+   --index-url https://${AIRFLOW__FOO__USER}:${AIRFLOW__FOO__PASS}@my.privatepypi.com
+   ```
+
+1. Add any additional libraries to your `requirements.txt` file\. For example:
+
+   ```
+   --index-url https://${AIRFLOW__FOO__USER}:${AIRFLOW__FOO__PASS}@my.privatepypi.com
+   my-private-package==1.2.3
+   ```
 
 ## Enabling logs on the Amazon MWAA console<a name="best-practices-dependencies-troubleshooting-enable"></a>
 
-The [execution role](mwaa-create-role.md) for your Amazon MWAA environment needs permission to send logs to CloudWatch Logs\. To update the permissions of an execution role, see [Amazon MWAA Execution role](mwaa-create-role.md)\.
+The [execution role](mwaa-create-role.md) for your Amazon MWAA environment needs permission to send logs to CloudWatch Logs\. To update the permissions of an execution role, see [Amazon MWAA execution role](mwaa-create-role.md)\.
 
 You can enable Apache Airflow logs at the `INFO`, `WARNING`, `ERROR`, or `CRITICAL` level\. When you choose a log level, Amazon MWAA sends logs for that level and all higher levels of severity\. For example, if you enable logs at the `INFO` level, Amazon MWAA sends `INFO` logs and `WARNING`, `ERROR`, and `CRITICAL` log levels to CloudWatch Logs\. We recommend enabling Apache Airflow logs at the `INFO` level for the *Scheduler* to view logs received for the `requirements.txt`\. 
 

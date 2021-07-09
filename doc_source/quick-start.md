@@ -20,13 +20,13 @@ The AWS CloudFormation template on this page creates an Amazon Managed Workflows
 The AWS CloudFormation template on this page creates the following:
 + **VPC infrastructure**\. The template uses [Public routing over the Internet](networking-about.md#networking-about-overview-public)\. It uses the [Public network access mode](configuring-networking.md#access-overview-public) for the Apache Airflow *Web server* in `WebserverAccessMode: PUBLIC_ONLY`\.
 + **Amazon S3 bucket**\. The template creates an Amazon S3 bucket with a `dags` folder\. It's configured to **Block all public access**, with **Bucket Versioning** enabled, as defined in [Create an Amazon S3 bucket for Amazon MWAA](mwaa-s3-bucket.md)\.
-+ **Amazon MWAA environment**\. The template creates an Amazon MWAA environment that's associated to the following: the `dags` folder on the Amazon S3 bucket, an execution role with permission to AWS services used by Amazon MWAA, and the default for encryption using an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), as defined in [Create an Amazon MWAA environment](create-environment.md)\.
-+ **CloudWatch Logs**\. The template enables Apache Airflow logs in CloudWatch at the "INFO" level and up for the following log groups: *Airflow scheduler log group*, *Airflow web server log group*, *Airflow worker log group*, *Airflow DAG processing log group*, and the *Airflow task log group*\.
++ **Amazon MWAA environment**\. The template creates an Amazon MWAA environment that's associated to the `dags` folder on the Amazon S3 bucket, an execution role with permission to AWS services used by Amazon MWAA, and the default for encryption using an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), as defined in [Create an Amazon MWAA environment](create-environment.md)\.
++ **CloudWatch Logs**\. The template enables Apache Airflow logs in CloudWatch at the "INFO" level and up for the *Airflow scheduler log group*, *Airflow web server log group*, *Airflow worker log group*, *Airflow DAG processing log group*, and the *Airflow task log group*\.
 
 In this tutorial, you'll create and complete the following:
-+ **Upload and run a DAG**\. The steps to upload Apache Airflow's tutorial DAG for Apache Airflow v1\.10\.12 to Amazon S3, and then run in the Apache Airflow UI, as defined in [Adding or updating DAGs](configuring-dag-folder.md)\.
-+ **View logs**\. The steps to view the *Airflow web server log group* in CloudWatch Logs\.
-+ **Create IAM policy**\. The steps to create an IAM policy for your Apache Airflow development team, as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
++ **Upload and run a DAG**\. Upload Apache Airflow's tutorial DAG for Apache Airflow v2\.0\.2 to Amazon S3, and then run in the Apache Airflow UI, as defined in [Adding or updating DAGs](configuring-dag-folder.md)\.
++ **View logs**\. View the *Airflow web server log group* in CloudWatch Logs\.
++ **Create the access control policy**\. Create the access control policy in IAM for your Apache Airflow development team, as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
 
 ## Prerequisites<a name="quick-start-before"></a>
 
@@ -476,7 +476,7 @@ It takes over 30 minutes to create the Amazon VPC infrastructure, Amazon S3 buck
 
 ## Step three: Upload a DAG to Amazon S3 and run in the Apache Airflow UI<a name="quick-start-upload-dag"></a>
 
-1. Copy the contents of the `tutorial.py` file for [Apache Airflow v1\.10\.12](https://airflow.apache.org/docs/apache-airflow/1.10.12/tutorial.html#example-pipeline-definition) and save locally as `tutorial.py`\.
+1. Copy the contents of the `tutorial.py` file for [Apache Airflow v2\.0\.2](http://airflow.apache.org/docs/apache-airflow/2.0.2/tutorial.html) and save locally as `tutorial.py`\.
 
 1. In your command prompt, navigate to the directory where `tutorial.py` is stored\. For example:
 
@@ -514,7 +514,7 @@ It takes over 30 minutes to create the Amazon VPC infrastructure, Amazon S3 buck
 
 ## Step four: View logs in CloudWatch Logs<a name="quick-start-logs"></a>
 
-You can view Apache Airflow logs in the CloudWatch console for all of the Apache Airflow logs which were enabled by the AWS CloudFormation stack\. The following section shows how to view logs for the *Airflow web server log group*\.
+You can view Apache Airflow logs in the CloudWatch console for all of the Apache Airflow logs that were enabled by the AWS CloudFormation stack\. The following section shows how to view logs for the *Airflow web server log group*\.
 
 1. Open the [Environments page](https://console.aws.amazon.com/mwaa/home#/environments) on the Amazon MWAA console\.
 
@@ -526,7 +526,7 @@ You can view Apache Airflow logs in the CloudWatch console for all of the Apache
 
 ## Step five: Create IAM policies for an Apache Airflow development team<a name="quick-start-create-group"></a>
 
-Let's say you have an Apache Airflow development team of ten developers and you want to create a group in IAM named `AirflowDevelopmentGroup` to apply permissions to all of your developers\. These users need access to the `AmazonMWAAFullConsoleAccess`, `AmazonMWAAAirflowCliAccess`, and `AmazonMWAAWebServerAccess` permission policies to [access an Amazon MWAA environment and Apache Airflow UI](access-policies.md)\. This section describes how to create a group in IAM, create and attach these policies, and associate the group to an IAM user\. 
+Let's say you have an Apache Airflow development team of ten developers and you want to create a group in IAM named `AirflowDevelopmentGroup` to apply permissions for all of your developers\. These users need access to the `AmazonMWAAFullConsoleAccess`, `AmazonMWAAAirflowCliAccess`, and `AmazonMWAAWebServerAccess` permission policies to [access an Amazon MWAA environment and the Apache Airflow UI](access-policies.md)\. This section describes how to create a group in IAM, create and attach the policies, and associate the group to an IAM user\. 
 
 **To create the AmazonMWAAFullConsoleAccess policy**
 

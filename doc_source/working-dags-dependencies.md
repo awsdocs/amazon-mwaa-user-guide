@@ -7,8 +7,9 @@ A Python dependency is any package or distribution that is not included in the A
 + [How it works](#working-dags-dependencies-how)
 + [Python dependencies overview](#working-dags-dependencies-overview)
   + [Python dependencies location and size limits](#working-dags-dependencies-quota)
-  + [Testing Python dependencies using the Amazon MWAA CLI utility](#working-dags-dependencies-cli-utility)
-  + [Creating a `requirements.txt`](#working-dags-dependencies-syntax-create)
++ [Creating a requirements\.txt file](#working-dags-dependencies-test-create)
+  + [Step one: Test Python dependencies using the Amazon MWAA CLI utility](#working-dags-dependencies-cli-utility)
+  + [Step two: Create the `requirements.txt`](#working-dags-dependencies-syntax-create)
 + [Uploading `requirements.txt` to Amazon S3](#configuring-dag-dependencies-upload)
   + [Using the AWS CLI](#configuring-dag-dependencies-upload-cli)
   + [Using the Amazon S3 console](#configuring-dag-dependencies-upload-console)
@@ -55,12 +56,16 @@ The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during 
 **Note**  
 For security reasons, the Apache Airflow *Web server* on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the *Web server*\.
 
-### Testing Python dependencies using the Amazon MWAA CLI utility<a name="working-dags-dependencies-cli-utility"></a>
+## Creating a requirements\.txt file<a name="working-dags-dependencies-test-create"></a>
+
+The following steps describe the steps we recommend to create a requirements\.txt file locally\.
+
+### Step one: Test Python dependencies using the Amazon MWAA CLI utility<a name="working-dags-dependencies-cli-utility"></a>
 + The command line interface \(CLI\) utility replicates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment locally\.
 + The CLI builds a Docker container image locally that’s similar to an Amazon MWAA production image\. This allows you to run a local Apache Airflow environment to develop and test DAGs, custom plugins, and dependencies before deploying to Amazon MWAA\.
 + To run the CLI, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
-### Creating a `requirements.txt`<a name="working-dags-dependencies-syntax-create"></a>
+### Step two: Create the `requirements.txt`<a name="working-dags-dependencies-syntax-create"></a>
 
 The following section describes how to specify Python dependencies from the [Python Package Index](https://pypi.org/) in a `requirements.txt` file\.
 

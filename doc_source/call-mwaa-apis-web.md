@@ -10,6 +10,7 @@ You can use the commands on this page to generate a web login token, and then ma
 + [Using a bash script](#create-web-login-token-bash)
 + [Using a POST API request](#create-web-login-token-post-api)
 + [Using a Python script](#create-web-login-token-python)
++ [What's next?](#mwaa-webcli-next-up)
 
 ## Prerequisites<a name="call-mwaa-apis-web-prereqs"></a>
 
@@ -136,3 +137,6 @@ The following example uses the [boto3 create\_web\_login\_token](https://boto3.a
    ```
    python3 create-web-login-token.py
    ```
+
+## What's next?<a name="mwaa-webcli-next-up"></a>
++ Explore the Amazon MWAA API operation used to create a web login token at [CreateWebLoginToken](https://docs.aws.amazon.com/mwaa/latest/API/API_CreateWebLoginToken.html)\.

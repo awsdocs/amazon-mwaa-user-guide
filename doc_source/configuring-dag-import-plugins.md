@@ -7,10 +7,12 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) supports Apache Airflow's b
 + [How it works](#configuring-dag-plugins-how)
 + [Custom plugins overview](#configuring-dag-plugins-overview)
   + [Custom plugins directory and size limits](#configuring-dag-plugins-quota)
++ [Examples of custom plugins](#configuring-dag-plugins-airflow-ex)
   + [Example using a flat directory structure in plugins\.zip](#configuring-dag-plugins-overview-simple)
   + [Example using a nested directory structure in plugins\.zip](#configuring-dag-plugins-overview-complex)
-  + [Testing custom plugins using the Amazon MWAA CLI utility](#configuring-dag-plugins-cli-utility)
-  + [Creating a plugins\.zip file](#configuring-dag-plugins-zip)
++ [Creating a plugins\.zip file](#configuring-dag-plugins-test-create)
+  + [Step one: Test custom plugins using the Amazon MWAA CLI utility](#configuring-dag-plugins-cli-utility)
+  + [Step two: Create the plugins\.zip file](#configuring-dag-plugins-zip)
 + [Uploading `plugins.zip` to Amazon S3](#configuring-dag-plugins-upload)
   + [Using the AWS CLI](#configuring-dag-plugins-upload-cli)
   + [Using the Amazon S3 console](#configuring-dag-plugins-upload-console)
@@ -55,6 +57,8 @@ The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during 
 
 **Note**  
 For security reasons, the Apache Airflow *Web server* on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the *Web server*\.
+
+## Examples of custom plugins<a name="configuring-dag-plugins-airflow-ex"></a>
 
 The following section uses sample code in the *Apache Airflow reference guide* to show how to structure your local development environment\.
 
@@ -305,6 +309,8 @@ class HelloOperator(BaseOperator):
         return message
 ```
 
+Follow the steps in [Testing custom plugins using the Amazon MWAA CLI utility](#configuring-dag-plugins-cli-utility), and then [Creating a plugins\.zip file](#configuring-dag-plugins-zip) to zip the contents **within** your `plugins` directory\. For example, `cd plugins`\.
+
 ------
 #### [ Airflow v1\.10\.12 ]
 
@@ -465,36 +471,42 @@ class HelloOperator(BaseOperator):
         return message
 ```
 
+Follow the steps in [Testing custom plugins using the Amazon MWAA CLI utility](#configuring-dag-plugins-cli-utility), and then [Creating a plugins\.zip file](#configuring-dag-plugins-zip) to zip the contents **within** your `plugins` directory\. For example, `cd plugins`\.
+
 ------
 
-### Testing custom plugins using the Amazon MWAA CLI utility<a name="configuring-dag-plugins-cli-utility"></a>
+## Creating a plugins\.zip file<a name="configuring-dag-plugins-test-create"></a>
+
+The following steps describe the steps we recommend to create a plugins\.zip file locally\.
+
+### Step one: Test custom plugins using the Amazon MWAA CLI utility<a name="configuring-dag-plugins-cli-utility"></a>
 + The command line interface \(CLI\) utility replicates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment locally\.
 + The CLI builds a Docker container image locally that’s similar to an Amazon MWAA production image\. This allows you to run a local Apache Airflow environment to develop and test DAGs, custom plugins, and dependencies before deploying to Amazon MWAA\.
 + To run the CLI, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
-### Creating a plugins\.zip file<a name="configuring-dag-plugins-zip"></a>
+### Step two: Create the plugins\.zip file<a name="configuring-dag-plugins-zip"></a>
 
 You can use a built\-in ZIP archive utility, or any other ZIP utility \(such as [7zip](https://www.7-zip.org/download.html)\) to create a \.zip file\.
 
 **Note**  
 The built\-in zip utility for Windows OS may add subfolders when you create a \.zip file\. We recommend verifying the contents of the plugins\.zip file before uploading to your Amazon S3 bucket to ensure no additional directories were added\.
 
-1. Change directories to your `$AIRFLOW_HOME/plugins` folder\.
+1. Change directories to your local Airflow plugins directory\. For example:
 
    ```
-   myproject$ cd $AIRFLOW_HOME/plugins
+   myproject$ cd plugins
    ```
 
 1. Run the following command to ensure that the contents have executable permissions \(macOS and Linux only\)\.
 
    ```
-   $AIRFLOW_HOME/plugins$ chmod -R 755 .
+   plugins$ chmod -R 755 .
    ```
 
-1. Zip the contents within your `$AIRFLOW_HOME/plugins` folder\.
+1. Zip the contents **within** your `plugins` folder\.
 
    ```
-   $AIRFLOW_HOME/plugins$ zip -r plugins.zip .
+   plugins$ zip -r plugins.zip .
    ```
 
 ## Uploading `plugins.zip` to Amazon S3<a name="configuring-dag-plugins-upload"></a>

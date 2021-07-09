@@ -13,6 +13,8 @@ The topics on this page contains resolutions to Apache Airflow v2\.0\.2 Python d
   + [I see my tasks stuck or not completing](#stranded-tasks-202)
 + [CLI](#troubleshooting-cli-202)
   + [I see a '503' error when triggering a DAG in the CLI](#cli-toomany-202)
++ [Operators](#troubleshooting-operators-202)
+  + [I received a `PermissionError: [Errno 13] Permission denied` error using the S3Transform operator](#op-s3-transform)
 
 ## Connections<a name="troubleshooting-conn-202"></a>
 
@@ -32,7 +34,7 @@ We recommend the following steps:
 
 We recommend the following steps:
 
-1. Test your Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
 1. Add the following entries to the requirements\.txt for your environment\.
 
@@ -171,3 +173,57 @@ The following topic describes the errors you may receive when running Airflow CL
 ### I see a '503' error when triggering a DAG in the CLI<a name="cli-toomany-202"></a>
 
 The Airflow CLI runs on the Apache Airflow *Web server*, which has limited concurrency\. Typically a maximum of 4 CLI commands can run simultaneously\.
+
+## Operators<a name="troubleshooting-operators-202"></a>
+
+The following topic describes the errors you may receive when using Operators\.
+
+### I received a `PermissionError: [Errno 13] Permission denied` error using the S3Transform operator<a name="op-s3-transform"></a>
+
+We recommend the following steps if you're trying to run a shell script with the *S3Transform* operator and you're receiving a `PermissionError: [Errno 13] Permission denied` error\. The following steps assume you have an existing plugins\.zip file\. If you're creating a *new* plugins\.zip, see [Installing custom plugins](configuring-dag-import-plugins.md)\.
+
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
+
+1. Create your "transform" script\.
+
+   ```
+   #!/bin/bash
+   cp $1 $2
+   ```
+
+1. \(optional\) macOS and Linux users may need to run the following command to ensure the script is executable\.
+
+   ```
+   chmod 777 transform_test.sh
+   ```
+
+1. Add the script to your plugins\.zip\. 
+
+   ```
+   zip plugins.zip transform_test.sh
+   ```
+
+1. Follow the steps in [Upload the plugins\.zip to Amazon S3](configuring-dag-import-plugins.md#configuring-dag-plugins-upload)\.
+
+1. Follow the steps in [Specifying the plugins\.zip version on the Amazon MWAA console](configuring-dag-import-plugins.md#configuring-dag-plugins-s3-mwaaconsole)\.
+
+1. Create the following DAG\.
+
+   ```
+   from airflow import DAG
+   from airflow.providers.amazon.aws.operators.s3_file_transform import S3FileTransformOperator
+   from airflow.utils.dates import days_ago
+   import os
+   
+   DAG_ID = os.path.basename(__file__).replace(".py", "")
+   
+   with DAG (dag_id=DAG_ID, schedule_interval=None, catchup=False, start_date=days_ago(1)) as dag:
+       file_transform = S3FileTransformOperator(
+           task_id='file_transform',
+           transform_script='/usr/local/airflow/plugins/transform_test.sh',
+           source_s3_key='s3://YOUR_S3_BUCKET/files/input.txt',
+           dest_s3_key='s3://YOUR_S3_BUCKET/files/output.txt'
+       )
+   ```
+
+1. Follow the steps in [Uploading DAG code to Amazon S3](configuring-dag-folder.md#configuring-dag-folder-uploading)\.

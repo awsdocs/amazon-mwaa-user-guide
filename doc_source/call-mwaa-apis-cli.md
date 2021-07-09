@@ -10,6 +10,7 @@ You can use the commands on this page to generate a CLI token, and then make Ama
 + [Using a curl script](#create-cli-token-curl)
 + [Using a bash script](#create-cli-token-bash)
 + [Using a Python script](#create-cli-token-python)
++ [What's next?](#mwaa-cli-next-up)
 
 ## Prerequisites<a name="call-mwaa-apis-cli-prereqs"></a>
 
@@ -302,3 +303,6 @@ The following example uses the [boto3 create\_cli\_token](https://boto3.amazonaw
    ```
 
 ------
+
+## What's next?<a name="mwaa-cli-next-up"></a>
++ Explore the Amazon MWAA API operation used to create a CLI token at [CreateCliToken](https://docs.aws.amazon.com/mwaa/latest/API/API_CreateCliToken.html)\.

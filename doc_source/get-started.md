@@ -15,7 +15,7 @@ To use Amazon MWAA, you may need to take additional steps to ensure you have the
 
 To create an environment, you'll need:
 + **AWS account** – An AWS account with permission to use Amazon MWAA and the AWS services and resources used by your environment\.
-+ **Amazon S3 bucket** – An Amazon S3 bucket with versioning enabled, and public access blocked\. An Amazon S3 bucket is used to store your DAGs and associated files, such as `plugins.zip` and `requirements.txt`\.
++ **Amazon S3 bucket** – An Amazon S3 bucket configured to **Block all public access**, with **Bucket Versioning** enabled\. An Amazon S3 bucket is used to store your DAGs and associated files, such as `plugins.zip` and `requirements.txt`\.
 + **Amazon VPC** – The Amazon VPC networking components required by an Amazon MWAA environment\. You can use an existing VPC that meets these requirements \(advanced\), or create the VPC and networking components as defined in [Create the VPC network](vpc-create.md)\.
 + **Customer master key \(CMK\)** – A Customer master key \(CMK\) for data encryption on your environment\. You can choose the default option on the Amazon MWAA console to create an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) when you create an environment, or specify an existing [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) with permissions to other AWS services used by your environment configured \(advanced\)\.
 + **Execution role** – An execution role that allows Amazon MWAA to access AWS resources in your environment\. You can choose the default option on the Amazon MWAA console to create an execution role when you create an environment\.

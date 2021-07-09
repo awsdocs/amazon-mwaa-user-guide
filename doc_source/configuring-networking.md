@@ -60,7 +60,7 @@ You'll need to take the following steps to configure access for your users, and 
 
 1. **Add permissions**\. Amazon MWAA needs permission to use other AWS services\. When you create an environment, Amazon MWAA creates a [service\-linked role](mwaa-slr.md) that allows it to use certain IAM actions for Amazon Elastic Container Registry \(Amazon ECR\), CloudWatch Logs, and Amazon EC2\. 
 
-   You can add permission to use additional actions for these services, or to use other AWS services by adding permissions to your execution role\. To learn more, see [Amazon MWAA Execution role](mwaa-create-role.md)\.
+   You can add permission to use additional actions for these services, or to use other AWS services by adding permissions to your execution role\. To learn more, see [Amazon MWAA execution role](mwaa-create-role.md)\.
 
 1. **Create user policies**\. You may need to create multiple IAM policies for your users to configure access to your environment and Apache Airflow UI\. To learn more, see [Accessing an Amazon MWAA environment](access-policies.md)\.
 
@@ -70,7 +70,7 @@ If you choose the **Private network** option for your Apache Airflow *Web server
 
 1. **Add permissions**\. Amazon MWAA needs permission to use other AWS services\. When you create an environment, Amazon MWAA creates a [service\-linked role](mwaa-slr.md) that allows it to use certain IAM actions for Amazon Elastic Container Registry \(Amazon ECR\), CloudWatch Logs, and Amazon EC2\. 
 
-   You can add permission to use additional actions for these services, or to use other AWS services by adding permissions to your execution role\. To learn more, see [Amazon MWAA Execution role](mwaa-create-role.md)\.
+   You can add permission to use additional actions for these services, or to use other AWS services by adding permissions to your execution role\. To learn more, see [Amazon MWAA execution role](mwaa-create-role.md)\.
 
 1. **Create user policies**\. You may need to create multiple IAM policies for your users to configure access to your environment and Apache Airflow UI\. To learn more, see [Accessing an Amazon MWAA environment](access-policies.md)\.
 

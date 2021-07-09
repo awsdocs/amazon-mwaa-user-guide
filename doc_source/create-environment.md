@@ -98,7 +98,7 @@ An existing Amazon VPC security group must be configured with specific inbound a
 
    1. By default, Amazon MWAA uses an AWS owned key to encrypt your data\.
 
-   1. **Optional**\. Choose **Customize encryption settings \(advanced\)** to choose a different AWS KMS key \(such as the Amazon S3 key you're using for server\-side encryption on your bucket\), or enter the ARN\.
+   1. **Optional**\. Choose **Customize encryption settings \(advanced\)** to choose a different AWS KMS key\. If you choose to specify a [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) in this step, you must specify an AWS KMS key ID or ARN\. [AWS KMS aliases and multi\-region keys are not supported by Amazon MWAA](custom-keys-certs.md)\. If you specified an Amazon S3 key for server\-side encryption on your Amazon S3 bucket, you must specify the same key for your Amazon MWAA environment\.
 **Note**  
 You must have permissions to the key to select it on the Amazon MWAA console\. You must also grant permissions for Amazon MWAA to use the key by attaching the policy described in [Attach key policy](custom-keys-certs.md#custom-keys-certs-grant-policies-attach)\.
 
@@ -138,3 +138,4 @@ It takes about twenty to thirty minutes to create an environment\.
 ## What's next?<a name="mwaa-env-next-up"></a>
 + Learn how to grant users access to your Apache Airflow *Web server* and Amazon MWAA environment in [Managing access to an Amazon MWAA environment](manage-access.md)\.
 + Learn how to access the VPC endpoint for your Apache Airflow *Web server* \(private network access\) in [Managing access to VPC endpoints on Amazon MWAA](vpc-vpe-access.md)\.
++ Explore the Amazon MWAA API operation used to create an environment at [CreateEnvironment](https://docs.aws.amazon.com/mwaa/latest/API/API_CreateEnvironment.html)\.

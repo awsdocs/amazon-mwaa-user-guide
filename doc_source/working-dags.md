@@ -7,6 +7,7 @@ To run Directed Acyclic Graphs \(DAGs\) on an Amazon Managed Workflows for Apach
 + [Adding or updating DAGs](configuring-dag-folder.md)
 + [Installing custom plugins](configuring-dag-import-plugins.md)
 + [Installing Python dependencies](working-dags-dependencies.md)
++ [Deleting files on Amazon S3](working-dags-delete.md)
 
 ## Amazon S3 bucket overview<a name="working-dags-s3-about"></a>
 

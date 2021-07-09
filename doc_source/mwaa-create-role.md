@@ -1,6 +1,6 @@
-# Amazon MWAA Execution role<a name="mwaa-create-role"></a>
+# Amazon MWAA execution role<a name="mwaa-create-role"></a>
 
-An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon Managed Workflows for Apache Airflow \(MWAA\) permission to invoke the resources of other AWS services on your behalf\. This can include resources such as your Amazon S3 bucket, [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), and CloudWatch Logs\. Amazon MWAA environments need one execution role per environment\. This page describes how to use and configure the execution role for your environment to allow Amazon MWAA to access other AWS services\.
+An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon Managed Workflows for Apache Airflow \(MWAA\) permission to invoke the resources of other AWS services on your behalf\. This can include resources such as your Amazon S3 bucket, [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), and CloudWatch Logs\. Amazon MWAA environments need one execution role per environment\. This page describes how to use and configure the execution role for your environment to allow Amazon MWAA to access other AWS resources used by your environment\.
 
 **Contents**
 + [Execution role overview](#mwaa-create-role-how)
