@@ -69,7 +69,6 @@ The following list shows the Apache Airflow CLI commands available on Amazon MWA
 |  v2\.0\.2  |  Yes  |  [variables delete](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#delete_repeat4)  | 
 |  v2\.0\.2  |  Yes  |  [variables get](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#get_repeat3)  | 
 |  v2\.0\.2  |  Yes  |  [variables list](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list_repeat8)  | 
-|  v2\.0\.2  |  Yes  |  [variables set](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#set_repeat1)  | 
 |  v2\.0\.2  |  Yes  |  [version](http://airflow.apache.org/docs/apache-airflow/1.10.12/cli-ref.html#version)  | 
 
 ------
@@ -127,6 +126,7 @@ The following list shows the Apache Airflow CLI commands **not** available on Am
 |  v2\.0\.2  |  No  |  [users create](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#create_repeat1)  | 
 |  v2\.0\.2  |  No  |  [users delete](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#delete_repeat3)  | 
 |  v2\.0\.2  |  No  |  [users list](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list_repeat7)  | 
+|  v2\.0\.2  |  No  |  [variables set](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#set_repeat1)  | 
 |  v2\.0\.2  |  No  |  [webserver](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#webserver)  | 
 |  v2\.0\.2  |  No  |  [worker](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#worker)  | 
 

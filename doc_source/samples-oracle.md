@@ -118,6 +118,12 @@ Amazon MWAA will extract the contents of plugins\.zip into `/usr/local/airflow/p
 
 **Download client folder**
 
+1. Install the unzip package locally\. For example:
+
+   ```
+   sudo yum install unzip
+   ```
+
 1. Create an `oracle_plugin` directory\. For example:
 
    ```

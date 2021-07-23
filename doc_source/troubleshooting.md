@@ -63,3 +63,4 @@ This topic describes common issues and errors you may encounter when using Apach
     + [I see a 'Cannot locate a 64\-bit Oracle Client library: "libclntsh\.so: cannot open shared object file: No such file or directory' in Apache Airflow logs](t-cloudwatch-cloudtrail-logs.md#t-plugins-logs)
     + [I see psycopg2 'server closed the connection unexpectedly' in my Scheduler logs](t-cloudwatch-cloudtrail-logs.md#scheduler-postgres-library)
     + [I see 'Executor reports task instance %s finished \(%s\) although the task says its %s' in my DAG processing logs](t-cloudwatch-cloudtrail-logs.md#long-running-tasks)
+    + [I see 'Could not read remote logs from log\_group: airflow\-\{environmentName\}\-Task log\_stream: \{DAG\_ID\}/\{TASK\_ID\}/\{time\}/\{n\}\.log\.' in my DAG processing logs](t-cloudwatch-cloudtrail-logs.md#t-task-fail-permission)

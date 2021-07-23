@@ -10,6 +10,7 @@ The topics on this page contains resolutions to Amazon CloudWatch Logs and AWS C
   + [I see a 'Cannot locate a 64\-bit Oracle Client library: "libclntsh\.so: cannot open shared object file: No such file or directory' in Apache Airflow logs](#t-plugins-logs)
   + [I see psycopg2 'server closed the connection unexpectedly' in my Scheduler logs](#scheduler-postgres-library)
   + [I see 'Executor reports task instance %s finished \(%s\) although the task says its %s' in my DAG processing logs](#long-running-tasks)
+  + [I see 'Could not read remote logs from log\_group: airflow\-\{environmentName\}\-Task log\_stream: \{DAG\_ID\}/\{TASK\_ID\}/\{time\}/\{n\}\.log\.' in my DAG processing logs](#t-task-fail-permission)
 
 ## Logs<a name="troubleshooting-view-logs"></a>
 
@@ -108,4 +109,23 @@ Executor reports task instance %s finished (%s) although the task says its %s. (
 ```
 
 We recommend the following steps:
-+ Consider breaking the task into multiple shorter\-running tasks\. Airflow typically has a model whereby operators are asynchronous\. It invokes activities on external systems, and Apache Airflow Sensors poll to see when its complete\. If a Sensor fails, it can be safely retried without impacting the Operator's functionality\.
++ Consider breaking up the task into multiple, shorter running tasks\. Airflow typically has a model whereby operators are asynchronous\. It invokes activities on external systems, and Apache Airflow Sensors poll to see when its complete\. If a Sensor fails, it can be safely retried without impacting the Operator's functionality\.
+
+### I see 'Could not read remote logs from log\_group: airflow\-\{environmentName\}\-Task log\_stream: \{DAG\_ID\}/\{TASK\_ID\}/\{time\}/\{n\}\.log\.' in my DAG processing logs<a name="t-task-fail-permission"></a>
+
+If you see an error similar to the following, the execution role for your environment may not contain a permissions policy to create log streams for task logs\. 
+
+```
+Reading remote log from Cloudwatch log_group: airflow-{environmentName}-Task log_stream: {DAG_ID}/{TASK_ID}/{time}/{n}.log.Could not read remote logs from log_group: airflow-{environmentName}-Task log_stream: {DAG_ID}/{TASK_ID}/{time}/{n}.log.
+```
+
+We recommend the following steps:
++ Modify the execution role for your environment using one of the sample policies at [Amazon MWAA execution role](mwaa-create-role.md)\.
+
+You may have also specified a provider package in your `requirements.txt` file that is incompatible with your Apache Airflow version\. For example, if you're using Apache Airflow v2\.0\.2, you may have specified a package, such as the [apache\-airflow\-providers\-databricks](https://airflow.apache.org/docs/apache-airflow-providers-databricks/stable/index.html) package, which is only compatible with Airflow 2\.1\+\.
+
+We recommend the following steps:
+
+1. If you're using Apache Airflow v2\.0\.2, modify the `requirements.txt` file and add `apache-airflow[databricks]`\. This installs the correct version of the Databricks package that is compatible with Apache Airflow v2\.0\.2\.
+
+1. Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.

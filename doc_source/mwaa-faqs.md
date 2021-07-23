@@ -20,6 +20,7 @@ This page describes common questions you may encounter when using Amazon Managed
   + [Why is a self\-referencing rule required on the VPC security group?](#sg-rule)
   + [Can I hide environments from different groups in IAM?](#hide-environments)
   + [Can I store temporary data on the Apache Airflow Worker?](#store-data)
+  + [Does Amazon MWAA support shared Amazon VPCs or shared subnets?](#shared-vpc)
 + [Metrics](#q-metrics)
   + [What metrics are used to determine whether to scale Workers?](#metrics-workers)
   + [Can I create custom metrics in CloudWatch?](#metrics-custom)
@@ -29,6 +30,7 @@ This page describes common questions you may encounter when using Amazon Managed
   + [Why is my DAG file not picked up by Apache Airflow?](#dag-file-error)
   + [Can I remove a `plugins.zip` or `requirements.txt` from an environment?](#remove-plugins-reqs)
   + [Why don't I see my plugins in the Airflow 2\.0 Admin > Plugins menu?](#view-plugins-ui)
+  + [Can I use AWS Database Migration Service \(DMS\) Operators?](#ops-dms)
 + [Migrating](#q-migrating)
   + [How do I migrate to Amazon MWAA from an on\-premises or a self\-managed Apache Airflow deployment?](#migrate-from-onprem)
 
@@ -84,7 +86,7 @@ Amazon MWAA does not currently support on\-demand Amazon EC2 Spot Instance types
 
 ### Does Amazon MWAA support a custom domain?<a name="custom-dns"></a>
 
-Yes\. You can use a custom domain for your Apache Airflow host name using [Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html)\. Apply an [AWS Certificate Manager \(ACM\) certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs.html) to the Application Load Balancer, and then apply the Route 53 CNAME to the Application Load Balancer to match the fully qualified domain name \(FQDN\) of the certificate\.
+Yes\. You can use a custom domain for your Apache Airflow host name using [Amazon Route 53 ](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html)\. Apply an [AWS Certificate Manager \(ACM\) certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs.html) to the Application Load Balancer, and then apply the Route 53 CNAME to the Application Load Balancer to match the fully qualified domain name \(FQDN\) of the certificate\.
 
 ### Can I SSH into my environment?<a name="ssh-dag"></a>
 
@@ -109,7 +111,7 @@ To trigger the DAG in the Apache Airflow UI, use:
 
 ### Why is a self\-referencing rule required on the VPC security group?<a name="sg-rule"></a>
 
-By creating a self\-referencing rule, you can restrict the source to the same security group in the VPC, and it's not open to all networks\. To learn more, see [Security in your VPC on Amazon MWAA](vpc-security.md)\.
+By creating a self\-referencing rule, you're restricting the source to the same security group in the VPC, and it's not open to all networks\. To learn more, see [Security in your VPC on Amazon MWAA](vpc-security.md)\.
 
 ### Can I hide environments from different groups in IAM?<a name="hide-environments"></a>
 
@@ -122,11 +124,15 @@ Your Apache Airflow Operators can store temporary data on the *Workers*\. Apache
 **Note**  
 Total ephemeral storage is limited to 4 GB\. There's no guarantee that subsequent tasks will be run on the same Fargate container instance, which might use a different `/tmp` folder\.
 
+### Does Amazon MWAA support shared Amazon VPCs or shared subnets?<a name="shared-vpc"></a>
+
+Amazon MWAA doesn't currently support shared Amazon VPCs or shared subnets\. The VPC you select when you create an environment should be owned by the account that is attempting to create environment\. To learn more, see [Work with shared VPCs](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html#vpc-share-unsupported-services)\.
+
 ## Metrics<a name="q-metrics"></a>
 
 ### What metrics are used to determine whether to scale Workers?<a name="metrics-workers"></a>
 
-Amazon MWAA monitors the **QueuedTasks** and **RunningTasks** in CloudWatch to determine whether to scale Apache Airflow *Workers * on your environment\. To learn more, see [Amazon MWAA performance metrics in Amazon CloudWatch](cw-metrics.md)\.
+Amazon MWAA monitors the **QueuedTasks** and **RunningTasks** in CloudWatch to determine whether to scale Apache Airflow *Workers * on your environment\. To learn more, see [Monitoring and metrics for Amazon Managed Workflows for Apache Airflow \(MWAA\)](cw-metrics.md)\.
 
 ### Can I create custom metrics in CloudWatch?<a name="metrics-custom"></a>
 
@@ -161,6 +167,10 @@ Currently, there is no way to remove a plugins\.zip or requirements\.txt from an
 ### Why don't I see my plugins in the Airflow 2\.0 Admin > Plugins menu?<a name="view-plugins-ui"></a>
 
 For security reasons, the Apache Airflow Web server on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the Apache Airflow *Web server*\. The plugin that's shown allows Amazon MWAA to authenticate your Apache Airflow users in AWS Identity and Access Management \(IAM\)\.
+
+### Can I use AWS Database Migration Service \(DMS\) Operators?<a name="ops-dms"></a>
+
+Amazon MWAA doesn't currently support [DMS Operators](https://airflow.apache.org/docs/apache-airflow-providers-amazon/stable/operators/dms.html)\. Each environment has its own Amazon Aurora PostgreSQL managed by AWS\. 
 
 ## Migrating<a name="q-migrating"></a>
 

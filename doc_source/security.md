@@ -11,7 +11,6 @@ This documentation helps you understand how to apply the shared responsibility m
 **Topics**
 + [Data Protection](data-protection.md)
 + [AWS Identity and Access Management](security-iam.md)
-+ [Monitoring](monitoring.md)
 + [Compliance Validation](compliance-validation.md)
 + [Resilience](disaster-recovery-resiliency.md)
 + [Infrastructure Security](infrastructure-security.md)

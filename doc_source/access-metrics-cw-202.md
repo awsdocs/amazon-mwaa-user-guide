@@ -1,4 +1,4 @@
-# Accessing Apache Airflow v2\.0\.2 metrics for an Amazon MWAA environment in CloudWatch<a name="access-metrics-cw-202"></a>
+# Apache Airflow v2\.0\.2 environment metrics in CloudWatch<a name="access-metrics-cw-202"></a>
 
 Apache Airflow v2\.0\.2 is already set\-up to collect and send [StatsD](https://github.com/etsy/statsd) metrics for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment to Amazon CloudWatch\. The complete list of metrics sent is available on the [Apache Airflow v2\.0\.2 metrics](https://airflow.apache.org/docs/apache-airflow/2.0.2/logging-monitoring/metrics.html) in the *Apache Airflow reference guide*\. This page describes the Apache Airflow metrics available in CloudWatch, and how to access metrics in the CloudWatch console\.
 

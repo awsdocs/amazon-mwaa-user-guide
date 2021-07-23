@@ -31,7 +31,7 @@ We recommend deleting file versions and delete markers periodically to reduce st
 
 ## How it works<a name="working-dags-delete-how"></a>
 
-Amazon MWAA runs a [sync](https://docs.aws.amazon.com/v2/documentation/api/latest/reference/s3/sync.html) operation on your Amazon S3 bucket every thirty seconds\. This causes any DAG deletions in an Amazon S3 bucket to be synced to the Airflow image of your Fargate container\.
+Amazon MWAA runs a sync operation on your Amazon S3 bucket every thirty seconds\. This causes any DAG deletions in an Amazon S3 bucket to be synced to the Airflow image of your Fargate container\.
 
 For `plugins.zip` and `requirements.txt` files, changes occur only after an environment update when Amazon MWAA builds a new Airflow image of your Fargate container with the custom plugins and Python dependencies\. If you delete the *current* version of any of a `requirements.txt` or `plugins.zip` file, and then update your environment without providing a new version for the deleted file, then the update will fail with an error message, such as, "Unable to read version `{version}` of file `{file}`"\.
 

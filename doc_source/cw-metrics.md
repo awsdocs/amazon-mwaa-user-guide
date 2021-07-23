@@ -1,9 +1,11 @@
-# Amazon MWAA performance metrics in Amazon CloudWatch<a name="cw-metrics"></a>
+# Monitoring and metrics for Amazon Managed Workflows for Apache Airflow \(MWAA\)<a name="cw-metrics"></a>
 
-Amazon CloudWatch is basically a metrics repository for AWS services that allows you to retrieve statistics based on the [metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html#Metric) and [dimensions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html#Dimension) published by a service\. You can use these metrics to configure [alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html#CloudWatchAlarms), calculate statistics and then present the data in a [dashboard](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Dashboards.html) that helps you assess the health of your environment in the Amazon CloudWatch console\. 
-
-Apache Airflow is already set\-up to send [StatsD](https://github.com/etsy/statsd) metrics for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment to Amazon CloudWatch\. This section describes the performance metrics and dimensions published to CloudWatch for your Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
+Monitoring is an important part of maintaining the reliability, availability, and performance of Amazon Managed Workflows for Apache Airflow \(MWAA\) and your AWS solution\. We recommend collecting monitoring data from all parts of your AWS solution so that you can more easily debug a multi\-point failure if one occurs\. This guide describes what resources AWS provides for monitoring your Amazon MWAA environment and responding to potential events\.
 
 **Topics**
-+ [Accessing Apache Airflow v2\.0\.2 metrics for an Amazon MWAA environment in CloudWatch](access-metrics-cw-202.md)
-+ [Accessing Apache Airflow v1\.10\.12 metrics for an Amazon MWAA environment in CloudWatch](access-metrics-cw-110.md)
++ [Monitoring overview on Amazon MWAA](monitoring-overview.md)
++ [Viewing audit logs in AWS CloudTrail](monitoring-cloudtrail.md)
++ [Viewing Airflow logs in Amazon CloudWatch](monitoring-airflow.md)
++ [Monitoring dashboards and alarms on Amazon MWAA](monitoring-dashboard.md)
++ [Apache Airflow v2\.0\.2 environment metrics in CloudWatch](access-metrics-cw-202.md)
++ [Apache Airflow v1\.10\.12 environment metrics in CloudWatch](access-metrics-cw-110.md)

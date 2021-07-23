@@ -188,12 +188,13 @@ The following Python script does not require the Apache Airflow CLI\.
    
    conn_type = 'YOUR_DB_OPTION'
    host = 'YOUR_MWAA_AIRFLOW_UI_URL'
+   port = 'YOUR_PORT'
    login = 'YOUR_AWS_ACCESS_KEY_ID'
    password = 'YOUR_AWS_SECRET_ACCESS_KEY'
    role_arn = urllib.parse.quote_plus('YOUR_EXECUTION_ROLE_ARN')
    region_name = 'YOUR_REGION'
    
-   conn_string = '{0}://{1}:{2}@{3}?role_arn={4}&region_name={5}'.format(conn_type, host, login, password, role_arn, region_name)
+   conn_string = '{0}://{1}:{2}@{3}:{4}?role_arn={5}&region_name={6}'.format(conn_type, login, password, host, port, role_arn, region_name)
    print(conn_string)
    ```
 

@@ -597,7 +597,7 @@ You need to specify the version of your `plugins.zip` file on the Amazon MWAA co
 
 1. On the **DAG code in Amazon S3** pane, choose a `plugins.zip` version in the dropdown list\.
 
-1. Choose **Next**, **Update environment**\.
+1. Choose **Next**\.
 
 ## Example use cases for plugins\.zip<a name="configuring-dag-plugins-examples"></a>
 + Learn how to create a custom plugin in [Custom plugin with Apache Hive and Hadoop](samples-hive.md)\.
