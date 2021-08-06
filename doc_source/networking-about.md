@@ -4,6 +4,7 @@ An Amazon VPC is a virtual network that is linked to your AWS account\. It gives
 
 **Contents**
 + [Terms](#networking-about-defs)
++ [What's supported](#networking-about-supported)
 + [VPC infrastructure overview](#networking-about-overview)
   + [Public routing over the Internet](#networking-about-overview-public)
   + [Private routing without Internet access](#networking-about-overview-private)
@@ -19,6 +20,16 @@ An Amazon VPC network that has access to the Internet\.
 
 **Private routing**  
 An Amazon VPC network **without** access to the Internet\.
+
+## What's supported<a name="networking-about-supported"></a>
+
+The following table describes the types of Amazon VPCs Amazon MWAA supports\.
+
+
+| Amazon VPC types | Supported | 
+| --- | --- | 
+|  An Amazon VPC owned by the account that is attempting to create the environment\.  |  Yes  | 
+|  A shared Amazon VPC where multiple AWS accounts create their AWS resources\.  |  No  | 
 
 ## VPC infrastructure overview<a name="networking-about-overview"></a>
 

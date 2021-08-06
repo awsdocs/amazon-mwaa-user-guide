@@ -3,9 +3,13 @@
 Apache Airflow stores connections as a connection URI string\. It provides a connections template in the Apache Airflow UI to generate the connection URI string, regardless of the connection type\. If a connection template is not available in the Apache Airflow UI, an alternate connection template can be used to generate this connection URI string, such as using the HTTP connection template\. The primary difference is the URI prefix, such as `my-conn-type://`, which Apache Airflow providers typically ignore for a connection\. This page describes how to use connection templates in the Apache Airflow UI interchangeably for different connection types\.
 
 **Topics**
++ [What's changed in v2\.0\.2](#manage-connection-types-changed)
 + [Example connection URI string](#manage-connection-types-string-example)
 + [Example connection template](#manage-connection-types-template-example)
 + [Example using an HTTP connection template for a Jdbc connection](#manage-connection-types-example)
+
+## What's changed in v2\.0\.2<a name="manage-connection-types-changed"></a>
++ **Changed: Airflow connection types**\. By default, the Airflow UI contains a subset of the connection types that were available in Apache Airflow v1\.10\.12\. To view a list of the connection types available for Apache Airflow v2\.0\.2 on Amazon MWAA by default, see [Airflow 2\.0\+ provider packages installed on Amazon MWAA environments](connections-packages.md)\. 
 
 ## Example connection URI string<a name="manage-connection-types-string-example"></a>
 

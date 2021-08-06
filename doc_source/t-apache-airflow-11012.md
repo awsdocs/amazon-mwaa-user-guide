@@ -213,7 +213,7 @@ For example:
 ...    login='YOUR_USERNAME',
 ...    password='YOUR_PASSWORD',
 ...    port='YOUR_PORT'
-...    extra=json.dumps(dict(account='YOUR_ACCOUNT', warehouse='YOUR_WAREHOUSE, database='YOUR_DB_OPTION', region='YOUR_REGION')),
+...    extra=json.dumps(dict(account='YOUR_ACCOUNT', warehouse='YOUR_WAREHOUSE', database='YOUR_DB_OPTION', region='YOUR_REGION')),
 ... )
 ```
 

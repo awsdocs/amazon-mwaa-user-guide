@@ -3,6 +3,7 @@
 This guide contains code samples, including DAGs and custom plugins, that you can use on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
 **Topics**
++ [Using a DAG to import variables in the CLI](samples-variables-import.md)
 + [Creating an SSH connection using the SSHOperator](samples-ssh.md)
 + [Using a secret key in AWS Secrets Manager for an Apache Airflow Snowflake connection](samples-sm-snowflake.md)
 + [Using a DAG to write custom metrics in CloudWatch](samples-custom-metrics.md)

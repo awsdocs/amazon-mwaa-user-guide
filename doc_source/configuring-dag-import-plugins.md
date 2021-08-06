@@ -5,6 +5,7 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) supports Apache Airflow's b
 **Contents**
 + [Prerequisites](#configuring-dag-plugins-prereqs)
 + [How it works](#configuring-dag-plugins-how)
++ [What's changed in v2\.0\.2](#configuring-dag-plugins-changed)
 + [Custom plugins overview](#configuring-dag-plugins-overview)
   + [Custom plugins directory and size limits](#configuring-dag-plugins-quota)
 + [Examples of custom plugins](#configuring-dag-plugins-airflow-ex)
@@ -44,6 +45,10 @@ To run custom plugins on your environment, you must do three things:
 
 **Note**  
 If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
+
+## What's changed in v2\.0\.2<a name="configuring-dag-plugins-changed"></a>
++ **New: Operators, Hooks, and Executors**\. The import statements in your DAGs, and the custom plugins you specify in a `plugins.zip` on Amazon MWAA have changed between Apache Airflow v1\.10\.12 and Apache Airflow v2\.0\.2\. For example, `from airflow.contrib.hooks.aws_hook import AwsHook` in Apache Airflow v1\.10\.12 has changed to `from airflow.providers.amazon.aws.hooks.base_aws import AwsBaseHook` in Apache Airflow v2\.0\.2\. To learn more, see [Python API Reference](https://airflow.apache.org/docs/apache-airflow/2.0.2/python-api-ref.html) in the *Apache Airflow reference guide*\.
++ **New: Imports in plugins**\. Importing operators, sensors, hooks added in plugins using `airflow.{operators,sensors,hooks}.<plugin_name>` is no longer supported\. These extensions should be imported as regular Python modules\. In v2\.0\+, the recommended approach is to place them in the DAGs directory and create and use an *\.airflowignore* file to exclude them from being parsed as DAGs\. To learn more, see [Modules Management](https://airflow.apache.org/docs/apache-airflow/stable/modules_management.html) and [Creating a custom Operator](https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html) in the *Apache Airflow reference guide*\.
 
 ## Custom plugins overview<a name="configuring-dag-plugins-overview"></a>
 

@@ -7,6 +7,7 @@ This topic describes common issues and errors you may encounter when using Apach
   + [Connections](t-apache-airflow-202.md#troubleshooting-conn-202)
     + [I can't connect to Secrets Manager](t-apache-airflow-202.md#access-secrets-manager-202)
     + [I can't connect to Snowflake](t-apache-airflow-202.md#missing-snowflake)
+    + [I can't see my connection in the Airflow UI](t-apache-airflow-202.md#connection-type-missing)
   + [Web server](t-apache-airflow-202.md#troubleshooting-webserver-202)
     + [I see a 5xx error accessing the web server](t-apache-airflow-202.md#5xx-webserver-202)
     + [I see a 'The scheduler does not appear to be running' error](t-apache-airflow-202.md#error-scheduler-202)
@@ -63,4 +64,4 @@ This topic describes common issues and errors you may encounter when using Apach
     + [I see a 'Cannot locate a 64\-bit Oracle Client library: "libclntsh\.so: cannot open shared object file: No such file or directory' in Apache Airflow logs](t-cloudwatch-cloudtrail-logs.md#t-plugins-logs)
     + [I see psycopg2 'server closed the connection unexpectedly' in my Scheduler logs](t-cloudwatch-cloudtrail-logs.md#scheduler-postgres-library)
     + [I see 'Executor reports task instance %s finished \(%s\) although the task says its %s' in my DAG processing logs](t-cloudwatch-cloudtrail-logs.md#long-running-tasks)
-    + [I see 'Could not read remote logs from log\_group: airflow\-\{environmentName\}\-Task log\_stream: \{DAG\_ID\}/\{TASK\_ID\}/\{time\}/\{n\}\.log\.' in my DAG processing logs](t-cloudwatch-cloudtrail-logs.md#t-task-fail-permission)
+    + [I see 'Could not read remote logs from log\_group: airflow\-\*\{\*environmentName\}\-Task log\_stream:\* \{\*DAG\_ID\}/\*\{\*TASK\_ID\}/\*\{\*time\}/\*\{\*n\}\.log\.' in my task logs](t-cloudwatch-cloudtrail-logs.md#t-task-fail-permission)

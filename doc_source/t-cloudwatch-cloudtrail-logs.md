@@ -10,7 +10,7 @@ The topics on this page contains resolutions to Amazon CloudWatch Logs and AWS C
   + [I see a 'Cannot locate a 64\-bit Oracle Client library: "libclntsh\.so: cannot open shared object file: No such file or directory' in Apache Airflow logs](#t-plugins-logs)
   + [I see psycopg2 'server closed the connection unexpectedly' in my Scheduler logs](#scheduler-postgres-library)
   + [I see 'Executor reports task instance %s finished \(%s\) although the task says its %s' in my DAG processing logs](#long-running-tasks)
-  + [I see 'Could not read remote logs from log\_group: airflow\-\{environmentName\}\-Task log\_stream: \{DAG\_ID\}/\{TASK\_ID\}/\{time\}/\{n\}\.log\.' in my DAG processing logs](#t-task-fail-permission)
+  + [I see 'Could not read remote logs from log\_group: airflow\-\*\{\*environmentName\}\-Task log\_stream:\* \{\*DAG\_ID\}/\*\{\*TASK\_ID\}/\*\{\*time\}/\*\{\*n\}\.log\.' in my task logs](#t-task-fail-permission)
 
 ## Logs<a name="troubleshooting-view-logs"></a>
 
@@ -111,12 +111,12 @@ Executor reports task instance %s finished (%s) although the task says its %s. (
 We recommend the following steps:
 + Consider breaking up the task into multiple, shorter running tasks\. Airflow typically has a model whereby operators are asynchronous\. It invokes activities on external systems, and Apache Airflow Sensors poll to see when its complete\. If a Sensor fails, it can be safely retried without impacting the Operator's functionality\.
 
-### I see 'Could not read remote logs from log\_group: airflow\-\{environmentName\}\-Task log\_stream: \{DAG\_ID\}/\{TASK\_ID\}/\{time\}/\{n\}\.log\.' in my DAG processing logs<a name="t-task-fail-permission"></a>
+### I see 'Could not read remote logs from log\_group: airflow\-\*\{\*environmentName\}\-Task log\_stream:\* \{\*DAG\_ID\}/\*\{\*TASK\_ID\}/\*\{\*time\}/\*\{\*n\}\.log\.' in my task logs<a name="t-task-fail-permission"></a>
 
 If you see an error similar to the following, the execution role for your environment may not contain a permissions policy to create log streams for task logs\. 
 
 ```
-Reading remote log from Cloudwatch log_group: airflow-{environmentName}-Task log_stream: {DAG_ID}/{TASK_ID}/{time}/{n}.log.Could not read remote logs from log_group: airflow-{environmentName}-Task log_stream: {DAG_ID}/{TASK_ID}/{time}/{n}.log.
+Could not read remote logs from log_group: airflow-*{*environmentName}-Task log_stream:* {*DAG_ID}/*{*TASK_ID}/*{*time}/*{*n}.log.
 ```
 
 We recommend the following steps:

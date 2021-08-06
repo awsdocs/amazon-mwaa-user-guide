@@ -6,6 +6,7 @@ The topics on this page contains resolutions to Apache Airflow v2\.0\.2 Python d
 + [Connections](#troubleshooting-conn-202)
   + [I can't connect to Secrets Manager](#access-secrets-manager-202)
   + [I can't connect to Snowflake](#missing-snowflake)
+  + [I can't see my connection in the Airflow UI](#connection-type-missing)
 + [Web server](#troubleshooting-webserver-202)
   + [I see a 5xx error accessing the web server](#5xx-webserver-202)
   + [I see a 'The scheduler does not appear to be running' error](#error-scheduler-202)
@@ -88,9 +89,21 @@ For example:
 ...    login='YOUR_USERNAME',
 ...    password='YOUR_PASSWORD',
 ...    port='YOUR_PORT'
-...    extra=json.dumps(dict(account='YOUR_ACCOUNT', warehouse='YOUR_WAREHOUSE, database='YOUR_DB_OPTION', region='YOUR_REGION')),
+...    extra=json.dumps(dict(account='YOUR_ACCOUNT', warehouse='YOUR_WAREHOUSE', database='YOUR_DB_OPTION', region='YOUR_REGION')),
 ... )
 ```
+
+### I can't see my connection in the Airflow UI<a name="connection-type-missing"></a>
+
+Apache Airflow provides connection templates in the Apache Airflow UI\. It uses this to generate the connection URI string, regardless of the connection type\. If a connection template is not available in the Apache Airflow UI, an alternate connection template can be used to generate a connection URI string, such as using the HTTP connection template\.
+
+We recommend the following steps:
+
+1. View the connection types Amazon MWAA's providing in the Apache Airflow UI at [Airflow 2\.0\+ provider packages installed on Amazon MWAA environments](connections-packages.md)\.
+
+1. View the commands to create an Apache Airflow connection in the CLI at [Apache Airflow CLI command reference](airflow-cli-command-reference.md)\.
+
+1. Learn how to use connection templates in the Apache Airflow UI interchangeably for connection types that aren't available in the Apache Airflow UI on Amazon MWAA at [Overview of connection types](manage-connection-types.md)\.
 
 ## Web server<a name="troubleshooting-webserver-202"></a>
 

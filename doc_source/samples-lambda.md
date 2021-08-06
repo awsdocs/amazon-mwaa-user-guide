@@ -12,6 +12,7 @@ The following sample code uses an AWS Lambda function to get an Apache Airflow C
 
 ## Version<a name="samples-lambda-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-lambda-prereqs"></a>
 
@@ -23,7 +24,7 @@ You can use this sample code on a private network if the Lambda function and you
 
 ## Permissions<a name="samples-lambda-permissions"></a>
 
-To use the sample code on this page, your AWS account needs access to the `AmazonMWAAAirflowCliAccess` policy\. To learn more, see [Apache Airflow CLI policy: AmazonMWAAAirflowCliAccess](access-policies.md)\.
+Your AWS account needs access to the `AmazonMWAAAirflowCliAccess` policy\. To learn more, see [Apache Airflow CLI policy: AmazonMWAAAirflowCliAccess](access-policies.md)\.
 
 ## Dependencies<a name="samples-lambda-dependencies"></a>
 
@@ -34,6 +35,43 @@ The sample code on this page doesn't require a `requirements.txt` or `plugins.zi
 The following sample code uses an AWS Lambda function to get an Apache Airflow CLI token and invoke a DAG in an Amazon MWAA environment\. Copy the sample code and substitute the placeholders with the following:
 + The name of the Amazon MWAA environment in `YOUR_ENVIRONMENT_NAME`\.
 + The name of the DAG you want to invoke in `YOUR_DAG_NAME`\.
+
+------
+#### [ Airflow v2\.0\.2 ]
+
+```
+import boto3
+import http.client
+import base64
+import ast
+mwaa_env_name = 'YOUR_ENVIRONMENT_NAME'
+dag_name = 'YOUR_DAG_NAME'
+mwaa_cli_command = 'dags trigger'
+​
+client = boto3.client('mwaa')
+​
+def lambda_handler(event, context):
+    # get web token
+    mwaa_cli_token = client.create_cli_token(
+        Name=mwaa_env_name
+    )
+    
+    conn = http.client.HTTPSConnection(mwaa_cli_token['WebServerHostname'])
+    payload = "dags trigger " + dag_name
+    headers = {
+      'Authorization': 'Bearer ' + mwaa_cli_token['CliToken'],
+      'Content-Type': 'text/plain'
+    }
+    conn.request("POST", "/aws_mwaa/cli", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    dict_str = data.decode("UTF-8")
+    mydata = ast.literal_eval(dict_str)
+    return base64.b64decode(mydata['stdout'])
+```
+
+------
+#### [ Airflow v1\.10\.12 ]
 
 ```
 import boto3
@@ -65,6 +103,8 @@ def lambda_handler(event, context):
     mydata = ast.literal_eval(dict_str)
     return base64.b64decode(mydata['stdout'])
 ```
+
+------
 
 ## What's next?<a name="samples-lambda-next-up"></a>
 + Learn how to invoke a Lambda function using the AWS CLI in [AWS Lambda function logging in Python](https://docs.aws.amazon.com/lambda/latest/dg/python-logging.html)\.

@@ -3,9 +3,10 @@
 This page describes the supported and unsupported Apache Airflow CLI commands on Amazon Managed Workflows for Apache Airflow \(MWAA\)\.
 
 **Contents**
-+ [Prerequisites](#access-airflow-ui-prereqs)
++ [Prerequisites](#airflow-cli-command-prereqs)
   + [Access](#access-airflow-ui-prereqs-access)
   + [AWS CLI](#access-airflow-ui-prereqs-cli)
++ [What's changed in v2\.0\.2](#airflow-cli-command-changed)
 + [Supported commands](#airflow-cli-commands-supported)
 + [Unsupported commands](#airflow-unsupported-cli-commands)
 + [Using commands that parse DAGs](#parsing-support)
@@ -13,7 +14,7 @@ This page describes the supported and unsupported Apache Airflow CLI commands on
 + [Example to run CLI commands on an SSH tunnel to a bastion host](#example-airflow-cli-commands-private)
 + [Samples in GitHub and AWS tutorials](#airflow-cli-commands-tutorials)
 
-## Prerequisites<a name="access-airflow-ui-prereqs"></a>
+## Prerequisites<a name="airflow-cli-command-prereqs"></a>
 
 The following section describes the preliminary steps required to use the commands and scripts on this page\.
 
@@ -26,6 +27,9 @@ The following section describes the preliminary steps required to use the comman
 The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
 + [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 + [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+
+## What's changed in v2\.0\.2<a name="airflow-cli-command-changed"></a>
++ **New: Airflow CLI command structure**\. The Apache Airflow v2\.0\.2 CLI is organized so that related commands are grouped together as subcommands, which means you need to update Apache Airflow v1\.10\.12 scripts if you want to upgrade to Apache Airflow v2\.0\.2\. For example, `unpause` in Apache Airflow v1\.10\.12 is now `dags unpause` in Apache Airflow v2\.0\.2\. To learn more, see [Airflow CLI changes in 2\.0](http://airflow.apache.org/docs/apache-airflow/2.0.2/upgrading-to-2.html#airflow-cli-changes-in-2-0) in the *Apache Airflow reference guide*\.
 
 ## Supported commands<a name="airflow-cli-commands-supported"></a>
 
@@ -68,6 +72,7 @@ The following list shows the Apache Airflow CLI commands available on Amazon MWA
 |  v2\.0\.2  |  Yes  |  [tasks test](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#test_repeat1)  | 
 |  v2\.0\.2  |  Yes  |  [variables delete](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#delete_repeat4)  | 
 |  v2\.0\.2  |  Yes  |  [variables get](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#get_repeat3)  | 
+|  v2\.0\.2  |  Yes  |  [variables set](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#set_repeat1)  | 
 |  v2\.0\.2  |  Yes  |  [variables list](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list_repeat8)  | 
 |  v2\.0\.2  |  Yes  |  [version](http://airflow.apache.org/docs/apache-airflow/1.10.12/cli-ref.html#version)  | 
 
@@ -126,7 +131,6 @@ The following list shows the Apache Airflow CLI commands **not** available on Am
 |  v2\.0\.2  |  No  |  [users create](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#create_repeat1)  | 
 |  v2\.0\.2  |  No  |  [users delete](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#delete_repeat3)  | 
 |  v2\.0\.2  |  No  |  [users list](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list_repeat7)  | 
-|  v2\.0\.2  |  No  |  [variables set](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#set_repeat1)  | 
 |  v2\.0\.2  |  No  |  [webserver](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#webserver)  | 
 |  v2\.0\.2  |  No  |  [worker](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#worker)  | 
 
