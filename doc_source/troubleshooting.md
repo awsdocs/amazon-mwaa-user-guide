@@ -58,7 +58,7 @@ This topic describes common issues and errors you may encounter when using Apach
     + [I can't access the Apache Airflow UI](t-create-update-environment.md#t-no-access-airflow-ui)
 + [Troubleshooting: CloudWatch Logs and CloudTrail errors](t-cloudwatch-cloudtrail-logs.md)
   + [Logs](t-cloudwatch-cloudtrail-logs.md#troubleshooting-view-logs)
-    + [I can't see my task logs or I received a 'remote log' error in the Airflow UI](t-cloudwatch-cloudtrail-logs.md#t-task-logs)
+    + [I can't see my task logs or I received a 'Reading remote log from Cloudwatch log\_group' error](t-cloudwatch-cloudtrail-logs.md#t-task-logs)
     + [I see a 'ResourceAlreadyExistsException' error in CloudTrail](t-cloudwatch-cloudtrail-logs.md#t-cloudtrail)
     + [I see an 'Invalid request' error in CloudTrail](t-cloudwatch-cloudtrail-logs.md#t-cloudtrail-bucket)
     + [I see a 'Cannot locate a 64\-bit Oracle Client library: "libclntsh\.so: cannot open shared object file: No such file or directory' in Apache Airflow logs](t-cloudwatch-cloudtrail-logs.md#t-plugins-logs)

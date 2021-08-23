@@ -79,7 +79,7 @@ This means you can run 50 concurrent tasks in your environment\. Any tasks beyon
 
 1. Increase the **Maximum worker count**\. In this example, increasing maximum workers from `10` to `20` would double the number of concurrent tasks the environment can run\.
 
-**Specify Minimum workers**\. You can also specify the minimum number of Apache Airflow *Workers* that run in your environment using the AWS Command Line Interface \(AWS CLI\)\. For example:
+**Specify Minimum workers**\. You can also specify the minimum and maximum number of Apache Airflow *Workers* that run in your environment using the AWS Command Line Interface \(AWS CLI\)\. For example:
 
 ```
 aws mwaa update-environment --max-workers 10 --min-workers 10 --name YOUR_ENVIRONMENT_NAME
@@ -92,5 +92,4 @@ To learn more, see the [update\-environment](https://docs.aws.amazon.com/cli/lat
 In rare cases, Apache Airflow may think there are tasks still running\. To resolve this issue, you need to clear the stranded task in your Apache Airflow UI\. For more information, see the [I see my tasks stuck or not completing](troubleshooting.md) troubleshooting topic\.
 
 ## What's next?<a name="mwaa-autoscaling-next-up"></a>
-+ Learn how to increase the size of your environment in [Amazon MWAA environment class](environment-class.md)\.
-+ Learn how to specify the minimum number of Apache Airflow *Workers* using the [update\-environment](https://docs.aws.amazon.com/cli/latest/reference/mwaa/update-environment.html) command in the AWS Command Line Interface \(AWS CLI\)\. 
++ Learn more about the best practices we recommend to tune the performance of your environment in [Performance tuning for Apache Airflow on Amazon MWAA](best-practices-tuning.md)\.

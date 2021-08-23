@@ -4,7 +4,7 @@ The topics on this page contains resolutions to Amazon CloudWatch Logs and AWS C
 
 **Contents**
 + [Logs](#troubleshooting-view-logs)
-  + [I can't see my task logs or I received a 'remote log' error in the Airflow UI](#t-task-logs)
+  + [I can't see my task logs or I received a 'Reading remote log from Cloudwatch log\_group' error](#t-task-logs)
   + [I see a 'ResourceAlreadyExistsException' error in CloudTrail](#t-cloudtrail)
   + [I see an 'Invalid request' error in CloudTrail](#t-cloudtrail-bucket)
   + [I see a 'Cannot locate a 64\-bit Oracle Client library: "libclntsh\.so: cannot open shared object file: No such file or directory' in Apache Airflow logs](#t-plugins-logs)
@@ -16,7 +16,7 @@ The topics on this page contains resolutions to Amazon CloudWatch Logs and AWS C
 
 The following topic describes the errors you may receive when viewing Apache Airflow logs\.
 
-### I can't see my task logs or I received a 'remote log' error in the Airflow UI<a name="t-task-logs"></a>
+### I can't see my task logs or I received a 'Reading remote log from Cloudwatch log\_group' error<a name="t-task-logs"></a>
 
 If you see blank logs, or the follow error when viewing *Task logs* in the Airflow UI:
 
@@ -25,9 +25,11 @@ If you see blank logs, or the follow error when viewing *Task logs* in the Airfl
 ```
 + We recommend the following steps:
 
-  1. Verify that you enabled task logs at the INFO level in your environment details view\.
+  1. Verify that you enabled task logs at the INFO level for your environment\. To learn more, see [Viewing Airflow logs in Amazon CloudWatch](monitoring-airflow.md)\.
 
-  1. Verify that your operator has the appropriate Python libraries to load correctly\. You can try eliminating imports until you find the one that is causing the issue\.
+  1. Verify that your operator has the appropriate Python libraries to load\. You can try eliminating imports until you find the one that's causing the issue\.
+
+  1. Set the number of processes the Scheduler runs in `celery.sync_parallelism` to `1`\. To learn more, see [Performance tuning for Apache Airflow on Amazon MWAA](best-practices-tuning.md)\.
 
 ### I see a 'ResourceAlreadyExistsException' error in CloudTrail<a name="t-cloudtrail"></a>
 

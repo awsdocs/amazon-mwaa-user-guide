@@ -127,7 +127,6 @@ The following example uses the [boto3 create\_web\_login\_token](https://boto3.a
    webToken = response["WebToken"]
    airflowUIUrl = 'https://{0}/aws_mwaa/aws-console-sso?login=true#{1}'.format(webServerHostName, webToken)
    print("Here is your Airflow UI URL: ")
-   airflowUIUrl
    print(airflowUIUrl)
    ```
 

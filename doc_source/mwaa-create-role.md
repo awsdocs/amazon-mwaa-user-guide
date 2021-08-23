@@ -1,6 +1,6 @@
 # Amazon MWAA execution role<a name="mwaa-create-role"></a>
 
-An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon Managed Workflows for Apache Airflow \(MWAA\) permission to invoke the resources of other AWS services on your behalf\. This can include resources such as your Amazon S3 bucket, [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), and CloudWatch Logs\. Amazon MWAA environments need one execution role per environment\. This page describes how to use and configure the execution role for your environment to allow Amazon MWAA to access other AWS resources used by your environment\.
+An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon Managed Workflows for Apache Airflow \(MWAA\) permission to invoke the resources of other AWS services on your behalf\. This can include resources such as your Amazon S3 bucket, [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), and CloudWatch Logs\. Amazon MWAA environments need one execution role per environment\. This page describes how to use and configure the execution role for your environment to allow Amazon MWAA to access other AWS resources used by your environment\.
 
 **Contents**
 + [Execution role overview](#mwaa-create-role-how)
@@ -12,8 +12,8 @@ An execution role is an AWS Identity and Access Management \(IAM\) role with a p
   + [Attaching a JSON policy to use other AWS services](#mwaa-create-role-attach-json-policy)
 + [Using Apache Airflow connections](#mwaa-create-role-airflow-connections)
 + [Sample JSON policies for an execution role](#mwaa-create-role-json)
-  + [Sample policy for a customer managed CMK](#mwaa-create-role-cmk)
-  + [Sample policy for an AWS owned CMK](#mwaa-create-role-aocmk)
+  + [Sample policy for a customer managed key](#mwaa-create-role-cmk)
+  + [Sample policy for an AWS owned key](#mwaa-create-role-aocmk)
 + [What's next?](#mwaa-create-role-next-up)
 
 ## Execution role overview<a name="mwaa-create-role-how"></a>
@@ -21,15 +21,15 @@ An execution role is an AWS Identity and Access Management \(IAM\) role with a p
 Permission for Amazon MWAA to use other AWS services used by your environment are obtained from the execution role\. An Amazon MWAA execution role needs permission to the following AWS services used by an environment:
 + Amazon CloudWatch \(CloudWatch\) – to send Apache Airflow metrics and logs\.
 + Amazon Simple Storage Service \(Amazon S3\) – to parse your environment's DAG code and supporting files \(such as a `requirements.txt`\)\.
-+ Amazon Simple Queue Service \(Amazon SQS\) – to queue your environment's Apache Airflow tasks\.
-+ AWS Key Management Service \(AWS KMS\) – for your environment's data encryption \(using either an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) or your [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk)\)\.
++ Amazon Simple Queue Service \(Amazon SQS\) – to queue your environment's Apache Airflow tasks in an Amazon SQS queue owned by Amazon MWAA\.
++ AWS Key Management Service \(AWS KMS\) – for your environment's data encryption \(using either an [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) or your [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk)\)\.
 
 An execution role also needs permission to the following IAM actions:
 + `airflow:PublishMetrics` – to allow Amazon MWAA to monitor the health of an environment\.
 
 ### Permissions attached by default<a name="mwaa-create-role-how-create-role"></a>
 
-You can use the default options on the Amazon MWAA console to create an execution role and an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), then use the steps on this page to add permission policies to your execution role\.
+You can use the default options on the Amazon MWAA console to create an execution role and an [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk), then use the steps on this page to add permission policies to your execution role\.
 + When you choose the **Create new role** option on the console, Amazon MWAA attaches the minimal permissions needed by an environment to your execution role\.
 + In some cases, Amazon MWAA attaches the maximum permissions\. For example, we recommend choosing the option on the Amazon MWAA console to create an execution role when you create an environment\. Amazon MWAA adds the permissions policies for all CloudWatch Logs groups automatically by using the regex pattern in the execution role as `"arn:aws:logs:your-region:your-account-id:log-group:airflow-your-environment-name-*"`\.
 
@@ -49,7 +49,7 @@ You can change the execution role for your environment at any time\. If a new ex
 
 ## Create a new role<a name="mwaa-create-role-mwaa-onconsole"></a>
 
-By default, Amazon MWAA creates an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) for data encryption and an execution role on your behalf\. You can choose the default options on the Amazon MWAA console when you create an environment\. The following image shows the default option to create an execution role for an environment\.
+By default, Amazon MWAA creates an [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) for data encryption and an execution role on your behalf\. You can choose the default options on the Amazon MWAA console when you create an environment\. The following image shows the default option to create an execution role for an environment\.
 
 ![\[This is an image with the default option to create a new role.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-permissions.png)
 
@@ -133,9 +133,9 @@ The sample permission policies in this section show two policies you can use to 
 
 We recommend copying the example policy, replacing the sample ARNs or placeholders, then using the JSON policy to create or update an execution role\. For example, replacing `{your-region}` with `us-east-1`\.
 
-### Sample policy for a customer managed CMK<a name="mwaa-create-role-cmk"></a>
+### Sample policy for a customer managed key<a name="mwaa-create-role-cmk"></a>
 
-The following example shows an execution role policy you can use for an [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk)\. 
+The following example shows an execution role policy you can use for an [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk)\. 
 
 ```
 {
@@ -246,7 +246,7 @@ Next, you need to allow Amazon MWAA to assume this role in order to perform acti
 }
 ```
 
-Then attach the following JSON policy to your [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk)\. This policy uses the [https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html#conditions-kms-encryption-context](https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html#conditions-kms-encryption-context) condition key prefix to permit access to your Apache Airflow logs group in CloudWatch Logs\.
+Then attach the following JSON policy to your [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk)\. This policy uses the [https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html#conditions-kms-encryption-context](https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html#conditions-kms-encryption-context) condition key prefix to permit access to your Apache Airflow logs group in CloudWatch Logs\.
 
 ```
 {
@@ -271,9 +271,9 @@ Then attach the following JSON policy to your [Customer managed CMK](https://doc
 }
 ```
 
-### Sample policy for an AWS owned CMK<a name="mwaa-create-role-aocmk"></a>
+### Sample policy for an AWS owned key<a name="mwaa-create-role-aocmk"></a>
 
-The following example shows an execution role policy you can use for an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)\. 
+The following example shows an execution role policy you can use for an [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)\. 
 
 ```
 {
@@ -368,5 +368,5 @@ The following example shows an execution role policy you can use for an [AWS own
 
 ## What's next?<a name="mwaa-create-role-next-up"></a>
 + Learn about the required permissions you and your Apache Airflow users need to access your environment in [Accessing an Amazon MWAA environment](access-policies.md)\.
-+ Learn about [Customer managed CMKs for Data Encryption](custom-keys-certs.md)\.
++ Learn about [Customer managed keys for Data Encryption](custom-keys-certs.md)\.
 + Explore more [Customer managed policy examples](https://docs.aws.amazon.com/kms/latest/developerguide/customer-managed-policies.html)\.

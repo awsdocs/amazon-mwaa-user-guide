@@ -73,6 +73,7 @@ This section provides an overview of what's supported on Amazon MWAA, what's cha
 |  Simplified Kubernetes Executor  |  No  |  Allows you to use a re\-architected Kubernetes Executor and KubernetesPodExecutor \(which allow users to dynamically launch tasks as individual Kubernetes Pods\)\.  |  [Kubernetes Executor](https://airflow.apache.org/docs/apache-airflow/stable/executor/kubernetes.html)  | 
 |  UI/UX Improvements  |  Yes  |  Allows you to use a more intuitive front\-end experience to the Apache Airflow UI\.  |  [Airflow UI](https://airflow.apache.org/docs/apache-airflow/stable/ui.html)  | 
 |  Airflow connections on Amazon MWAA  |  Yes  |  Allows you to use the Apache Airflow `connections add` and `connections delete` CLI commands\. To learn more, see [Apache Airflow CLI command reference](airflow-cli-command-reference.md)\.  |  [Command Line Interface](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#command-line-interface)  | 
+|  DAG decorators  |  Yes  |  Allows you to decorate a function with @dag or @task to to turn it into a DAG generator function or into a task instance using a PythonOperator\.   |  [The DAG decorator](https://airflow.apache.org/docs/apache-airflow/stable/concepts/dags.html#the-dag-decorator)  | 
 
 ### What's changed between v1\.10\.12 and v2\.0\.2<a name="airflow-versions-what-changed-202"></a>
 

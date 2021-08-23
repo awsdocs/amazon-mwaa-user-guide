@@ -15,7 +15,7 @@ To use Amazon Managed Workflows for Apache Airflow \(MWAA\), you must use an acc
 
 ## How it works<a name="access-policies-how"></a>
 
-The resources and services used in an Amazon MWAA environment are not accessible to all IAM entities \(users, roles, or groups\)\. You must create a policy that grants your Apache Airflow users permission to access these resources\. For example, you need to grant access to your Apache Airflow development team\.
+The resources and services used in an Amazon MWAA environment are not accessible to all AWS Identity and Access Management \(IAM\) entities, such as users, roles, or groups\. You must create a policy that grants your Apache Airflow users permission to access these resources\. For example, you need to grant access to your Apache Airflow development team\.
 
 Amazon MWAA uses these policies to validate whether a user has the permissions needed to perform an action on the AWS console or via the APIs used by an environment\.
 
@@ -344,7 +344,7 @@ You can create the JSON policy, and attach the policy to your user, role, or gro
 
 ## Example use case to attach policies to a developer group<a name="access-policy-use-case"></a>
 
-Let's say you're using a group in IAM named `AirflowDevelopmentGroup` to apply permissions to all of the developers on your Apache Airflow development team\. These users need access to the `AmazonMWAAFullConsoleAccess`, `AmazonMWAAAirflowCliAccess`, and `AmazonMWAAWebServerAccess` permission policies\. This section describes how to create a group in IAM, create and attach these policies, and associate the group to an IAM user\. The steps assume you're using an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)\.
+Let's say you're using a group in IAM named `AirflowDevelopmentGroup` to apply permissions to all of the developers on your Apache Airflow development team\. These users need access to the `AmazonMWAAFullConsoleAccess`, `AmazonMWAAAirflowCliAccess`, and `AmazonMWAAWebServerAccess` permission policies\. This section describes how to create a group in IAM, create and attach these policies, and associate the group to an IAM user\. The steps assume you're using an [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)\.
 
 **To create the AmazonMWAAFullConsoleAccess policy**
 
@@ -362,7 +362,7 @@ Let's say you're using a group in IAM named `AirflowDevelopmentGroup` to apply p
 
    1. *\{your\-account\-id\}* – your AWS account ID \(such as `0123456789`\)
 
-   1. *\{your\-kms\-id\}* – the `aws/airflow` identifer for an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)
+   1. *\{your\-kms\-id\}* – the `aws/airflow` identifer for an [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk)
 
 1. Choose the **Review policy**\.
 

@@ -4,6 +4,7 @@ This page describes common questions you may encounter when using Amazon Managed
 
 **Contents**
 + [Supported versions](#q-supported-versions)
+  + [What does Amazon MWAA support for Apache Airflow v2\.0\.2?](#airflow-support)
   + [Why are older versions of Apache Airflow not supported?](#airflow-version)
   + [What Python version should I use?](#python-version)
   + [Can I specify more than 25 Apache Airflow Workers?](#scaling-quota)
@@ -35,6 +36,10 @@ This page describes common questions you may encounter when using Amazon Managed
   + [How do I migrate to Amazon MWAA from an on\-premises or a self\-managed Apache Airflow deployment?](#migrate-from-onprem)
 
 ## Supported versions<a name="q-supported-versions"></a>
+
+### What does Amazon MWAA support for Apache Airflow v2\.0\.2?<a name="airflow-support"></a>
+
+To learn what Amazon MWAA supports, see [Apache Airflow versions on Amazon Managed Workflows for Apache Airflow \(MWAA\)](airflow-versions.md)\.
 
 ### Why are older versions of Apache Airflow not supported?<a name="airflow-version"></a>
 

@@ -8,7 +8,7 @@ This page describes the Amazon VPC components used to secure your Amazon Managed
 + [Network access control lists \(ACLs\)](#vpc-security-acl)
   + [\(Recommended\) Example ACLs](#vpc-security-acl-example)
 + [VPC security groups](#vpc-security-sg)
-  + [\(Recommended\) Example security group all access](#vpc-security-sg-example)
+  + [\(Recommended\) Example all access self\-referencing security group](#vpc-security-sg-example)
   + [\(Optional\) Example security group that restricts inbound access to port 5432](#vpc-security-sg-example-port5432)
   + [\(Optional\) Example security group that restricts inbound access to port 443](#vpc-security-sg-example-port443)
 + [VPC endpoint policies \(private routing only\)](#vpc-external-vpce-policies)
@@ -28,7 +28,7 @@ An Amazon VPC network **without** access to the Internet\.
 Security groups and access control lists \(ACLs\) provide ways to control the network traffic across the subnets and instances in your Amazon VPC using rules you specify\.
 + Network traffic to and from a subnet can be controlled by Access Control Lists \(ACLs\)\. You only need one ACL, and the same ACL can be used on multiple environments\.
 + Network traffic to and from an instance can be controlled by an Amazon VPC security group\. You can use between one to five security groups per environment\.
-+ Network traffic to and from an instance can also be controlled by VPC endpoint policies\. If Internet access within your Amazon VPC is not allowed by your organization and you're using an Amazon VPC network with private routing, a VPC endpoint policy is required for the [AWS VPC endpoints and Apache Airflow VPC endpoints](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-examples)\.
++ Network traffic to and from an instance can also be controlled by VPC endpoint policies\. If Internet access within your Amazon VPC is not allowed by your organization and you're using an Amazon VPC network with *private routing*, a VPC endpoint policy is required for the [AWS VPC endpoints and Apache Airflow VPC endpoints](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-examples)\.
 
 ## Network access control lists \(ACLs\)<a name="vpc-security-acl"></a>
 
@@ -52,9 +52,9 @@ A [VPC security group](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Secu
 
 Every Amazon VPC has a default security group\. By default, it has no inbound rules\. It has an outbound rule that allows all outbound traffic\. You can edit the default security group rules, or create a custom security group and attach it to your Amazon VPC\. On Amazon MWAA, you need to configure inbound and outbound rules to direct traffic on your NAT gateways\.
 
-### \(Recommended\) Example security group all access<a name="vpc-security-sg-example"></a>
+### \(Recommended\) Example all access self\-referencing security group<a name="vpc-security-sg-example"></a>
 
-The following example shows the *inbound* security group rules that allows all traffic for an Amazon VPC for an Amazon VPC with *public routing* or *private routing*\.
+The following example shows the *inbound* security group rules that allows all traffic for an Amazon VPC for an Amazon VPC with *public routing* or *private routing*\. The security group in this example is a self\-referencing rule to itself\.
 
 
 | Type | Protocol | Source Type | Source | 
@@ -70,7 +70,7 @@ The following example shows the *outbound* security group rules\.
 
 ### \(Optional\) Example security group that restricts inbound access to port 5432<a name="vpc-security-sg-example-port5432"></a>
 
-The following example shows the *inbound* security group rules that allow all HTTPS traffic on port 5432 for the Amazon Aurora PostgreSQL metadata database\. 
+The following example shows the *inbound* security group rules that allow all HTTPS traffic on port 5432 for the Amazon Aurora PostgreSQL metadata database \(owned by Amazon MWAA\) for your environment\.
 
 **Note**  
 If you choose to restrict traffic using this rule, you'll need to add another rule to allow TCP traffic on port 443\.

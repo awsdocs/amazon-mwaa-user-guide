@@ -48,9 +48,9 @@ Avoid including sensitive information, such as account numbers, in the bucket na
 
    1. Choose **AWS Key Management Service key \(SSE\-KMS\)** to use an AWS KMS key for encryption on your Amazon S3 bucket:
 
-      1. **AWS managed key \(aws/s3\)** \- If you choose this option, you can either use an [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) managed by Amazon MWAA, or specify a [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) for encryption of your Amazon MWAA environment\.
+      1. **AWS managed key \(aws/s3\)** \- If you choose this option, you can either use an [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) managed by Amazon MWAA, or specify a [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) for encryption of your Amazon MWAA environment\.
 
-      1. **Choose from your AWS KMS keys** or **Enter AWS KMS key ARN** \- If you choose to specify a [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) in this step, you must specify an AWS KMS key ID or ARN\. [AWS KMS aliases and multi\-region keys are not supported by Amazon MWAA](custom-keys-certs.md)\. The AWS KMS key you specify must also be used for encryption on your Amazon MWAA environment\. 
+      1. **Choose from your AWS KMS keys** or **Enter AWS KMS key ARN** \- If you choose to specify a [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) in this step, you must specify an AWS KMS key ID or ARN\. [AWS KMS aliases and multi\-region keys are not supported by Amazon MWAA](custom-keys-certs.md)\. The AWS KMS key you specify must also be used for encryption on your Amazon MWAA environment\. 
 
 1. **Optional** \- *Advanced settings*\. If you want to enable Amazon S3 Object Lock:
 

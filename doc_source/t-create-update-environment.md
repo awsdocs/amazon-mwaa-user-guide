@@ -35,7 +35,7 @@ If it takes more than twenty minutes for your environment to install a new versi
 
 1. Check VPC network configuration\. To learn more, see [I tried to create an environment and it's stuck in the "Creating" state](#t-stuck-failure)\.
 
-1. Check execution role permissions\. An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon MWAA permission to invoke the resources of other AWS services \(such as Amazon S3, CloudWatch, Amazon SQS, Amazon ECR\) on your behalf\. Your [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) or [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) also needs to be permitted access\. To learn more, see [Execution role](mwaa-create-role.md)\.
+1. Check execution role permissions\. An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon MWAA permission to invoke the resources of other AWS services \(such as Amazon S3, CloudWatch, Amazon SQS, Amazon ECR\) on your behalf\. Your [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) or [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) also needs to be permitted access\. To learn more, see [Execution role](mwaa-create-role.md)\.
 
 1. To run a troubleshooting script that checks the Amazon VPC network setup and configuration for your Amazon MWAA environment, see the [Verify Environment](https://github.com/awslabs/aws-support-tools/tree/master/MWAA) script in AWS Support Tools on GitHub\.
 
@@ -80,27 +80,11 @@ We recommend the following steps:
 
 1. Check VPC network with *public routing*\. If you're using an Amazon VPC *with Internet access*, verify the following:
 
-   1. That the VPC security group allows all traffic in the self\-referencing rule, or *optionally* specifies the port range for HTTPS port range 443 and a TCP port range 5432\.
-
-   1. That the two public subnets route to a NAT gateway \(or NAT instance\) with an Elastic IPv4 Address \(EIP\), and have a route table that directs internet\-bound traffic to an Internet gateway\.
-
-   1. That the two private subnets have a route table to a NAT gateway \(or NAT instance\), and **do not** route to an Internet gateway\.
-
-   1. To learn more, see [About networking on Amazon MWAA](networking-about.md)\.
+   1. That your Amazon VPC is configured to allow network traffic between the different AWS resources used by your Amazon MWAA environment, as defined in [About networking on Amazon MWAA](networking-about.md)\. For example, your VPC security group must either allow all traffic in a self\-referencing rule, or optionally specify the port range for HTTPS port range 443 and a TCP port range 5432\.
 
 1. Check VPC network with *private routing*\. If you're using an Amazon VPC *without Internet access*, verify the following:
 
-   1. That the VPC security group allows all traffic in the self\-referencing rule, or *optionally* specifies the port range for HTTPS port range 443 and a TCP port range 5432\.
-
-   1. That the two private subnets **do not** have a route table to a NAT gateway \(or NAT instance\), *nor* an Internet gateway\.
-
-   1. That the two private subnets have a route table to the VPC endpoints for AWS services used by your environment, and VPC endpoints for Apache Airflow\.
-
-   1. That the VPC endpoint policies allow "all access"\.
-
-   1. That the local route table enables instances in your VPC to communicate with your own network\.
-
-   1. To learn more, see [About networking on Amazon MWAA](networking-about.md)\.
+   1. That your Amazon VPC is configured to allow network traffic between the different AWS resources for your Amazon MWAA environment, as defined in [About networking on Amazon MWAA](networking-about.md)\. For example, your two private subnets must **not** have a route table to a NAT gateway \(or NAT instance\), **nor** an Internet gateway\.
 
 1. To run a troubleshooting script that checks the Amazon VPC network setup and configuration for your Amazon MWAA environment, see the [Verify Environment](https://github.com/awslabs/aws-support-tools/tree/master/MWAA) script in AWS Support Tools on GitHub\.
 
@@ -112,7 +96,7 @@ We recommend the following steps:
 
 1. Check user permissions\. Amazon MWAA performs a dry run against a user's credentials before creating an environment\. Your AWS account may not have permission in AWS Identity and Access Management \(IAM\) to create some of the resources for an environment\. For example, if you chose the **Private network** Apache Airflow access mode, your AWS account must have been granted access by your administrator to the [AmazonMWAAFullConsoleAccess](access-policies.md#console-full-access) access control policy for your environment, which allows your account to create VPC endpoints\.
 
-1. Check execution role permissions\. An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon MWAA permission to invoke the resources of other AWS services \(such as Amazon S3, CloudWatch, Amazon SQS, Amazon ECR\) on your behalf\. Your [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) or [AWS owned CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) also needs to be permitted access\. To learn more, see [Execution role](mwaa-create-role.md)\.
+1. Check execution role permissions\. An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon MWAA permission to invoke the resources of other AWS services \(such as Amazon S3, CloudWatch, Amazon SQS, Amazon ECR\) on your behalf\. Your [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) or [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) also needs to be permitted access\. To learn more, see [Execution role](mwaa-create-role.md)\.
 
 1. Check Apache Airflow logs\. If you enabled Apache Airflow logs, verify your log groups were created successfully on the [Logs groups page](https://console.aws.amazon.com/cloudwatch/home#logsV2:log-groups) on the CloudWatch console\. If you see blank logs, the most common reason is due to missing permissions in your execution role for CloudWatch or Amazon S3 where logs are written\. To learn more, see [Execution role](mwaa-create-role.md)\.
 

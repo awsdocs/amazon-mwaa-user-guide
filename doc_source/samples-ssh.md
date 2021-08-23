@@ -79,7 +79,6 @@ The following DAG fetches the private key value from Secrets Manager, decodes an
    with DAG(dag_id="remote_server_direct_key02", schedule_interval='@daily', start_date=days_ago(2), default_args=args, catchup=False) as dag:
        task1 = BashOperator(
            task_id="pem_script00",
-           bash_command="ls "
            bash_command="/usr/local/airflow/.local/bin/aws secretsmanager get-secret-value --secret-id your-key-name --query 'SecretString' --output text |base64 -d > /tmp/your-key-name.pem"
       )
    

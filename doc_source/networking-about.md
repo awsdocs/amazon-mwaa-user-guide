@@ -44,13 +44,15 @@ This section describes the Amazon VPC infrastructure of an environment with publ
   + Up to 5 security groups can be specified\.
   + The security group must specify a self\-referencing inbound rule to itself\.
   + The security group must specify an outbound rule for all traffic \(`0.0.0.0/0`\)\.
-  + The security group must allow all traffic in the self\-referencing rule\. For example, [\(Recommended\) Example security group all access](vpc-security.md#vpc-security-sg-example)\. 
+  + The security group must allow all traffic in the self\-referencing rule\. For example, [\(Recommended\) Example all access self\-referencing security group ](vpc-security.md#vpc-security-sg-example)\. 
   + The security group can *optionally* restrict traffic further by specifying the port range for HTTPS port range `443` and a TCP port range `5432`\. For example, [\(Optional\) Example security group that restricts inbound access to port 5432](vpc-security.md#vpc-security-sg-example-port5432) and [\(Optional\) Example security group that restricts inbound access to port 443](vpc-security.md#vpc-security-sg-example-port443)\.
 + **Two public subnets**\. A public subnet is a subnet that's associated with a route table that has a route to an Internet gateway\.
+  + Two public subnets are required\. This allows Amazon MWAA to build a new container image for your environment in your other availability zone, if one container fails\. 
   + The subnets must be in different Availability Zones\. For example, `us-east-1a`, `us-east-1b`\.
   + The subnets must route to a NAT gateway \(or NAT instance\) with an Elastic IP Address \(EIP\)\.
   + The subnets must have a route table that directs internet\-bound traffic to an Internet gateway\.
 + **Two private subnets**\. A private subnet is a subnet that's **not** associated with a route table that has a route to an Internet gateway\.
+  + Two private subnets are required\. This allows Amazon MWAA to build a new container image for your environment in your other availability zone, if one container fails\. 
   + The subnets must be in different Availability Zones\. For example, `us-east-1a`, `us-east-1b`\. 
   + The subnets *must* have a route table to a NAT device \(gateway or instance\)\.
   + The subnets **must not** route to an Internet gateway\. 
@@ -71,11 +73,12 @@ This section describes the Amazon VPC infrastructure of an environment with *pri
   + Up to 5 security groups can be specified\.
   + The security group must specify a self\-referencing inbound rule to itself\.
   + The security group must specify an outbound rule for all traffic \(`0.0.0.0/0`\)\.
-  + The security group must allow all traffic in the self\-referencing rule\. For example, [\(Recommended\) Example security group all access](vpc-security.md#vpc-security-sg-example)\. 
+  + The security group must allow all traffic in the self\-referencing rule\. For example, [\(Recommended\) Example all access self\-referencing security group ](vpc-security.md#vpc-security-sg-example)\. 
   + The security group can *optionally* restrict traffic further by specifying the port range for HTTPS port range `443` and a TCP port range `5432`\. For example, [\(Optional\) Example security group that restricts inbound access to port 5432](vpc-security.md#vpc-security-sg-example-port5432) and [\(Optional\) Example security group that restricts inbound access to port 443](vpc-security.md#vpc-security-sg-example-port443)\.
 + **Two private subnets**\. A private subnet is a subnet that's **not** associated with a route table that has a route to an Internet gateway\.
+  + Two private subnets are required\. This allows Amazon MWAA to build a new container image for your environment in your other availability zone, if one container fails\. 
   + The subnets must be in different Availability Zones\. For example, `us-east-1a`, `us-east-1b`\.
-  + The subnets must have a route table to your VPC endpoints\.
+  + The subnets must have a route table to your VPC endpoints\. 
   + The subnets **must not** have a route table to a NAT device \(gateway or instance\), **nor** an Internet gateway\.
 + **A network access control list \(ACL\)**\. An NACL manages \(by allow or deny rules\) inbound and outbound traffic at the subnet level\.
   + The NACL must have an inbound rule that allows all traffic \(`0.0.0.0/0`\)\.

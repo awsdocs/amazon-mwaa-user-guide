@@ -98,7 +98,7 @@ An existing Amazon VPC security group must be configured with specific inbound a
 
    1. By default, Amazon MWAA uses an AWS owned key to encrypt your data\.
 
-   1. **Optional**\. Choose **Customize encryption settings \(advanced\)** to choose a different AWS KMS key\. If you choose to specify a [Customer managed CMK](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) in this step, you must specify an AWS KMS key ID or ARN\. [AWS KMS aliases and multi\-region keys are not supported by Amazon MWAA](custom-keys-certs.md)\. If you specified an Amazon S3 key for server\-side encryption on your Amazon S3 bucket, you must specify the same key for your Amazon MWAA environment\.
+   1. **Optional**\. Choose **Customize encryption settings \(advanced\)** to choose a different AWS KMS key\. If you choose to specify a [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) in this step, you must specify an AWS KMS key ID or ARN\. [AWS KMS aliases and multi\-region keys are not supported by Amazon MWAA](custom-keys-certs.md)\. If you specified an Amazon S3 key for server\-side encryption on your Amazon S3 bucket, you must specify the same key for your Amazon MWAA environment\.
 **Note**  
 You must have permissions to the key to select it on the Amazon MWAA console\. You must also grant permissions for Amazon MWAA to use the key by attaching the policy described in [Attach key policy](custom-keys-certs.md#custom-keys-certs-grant-policies-attach)\.
 

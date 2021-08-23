@@ -7,12 +7,15 @@ This page describes the supported and unsupported Apache Airflow CLI commands on
   + [Access](#access-airflow-ui-prereqs-access)
   + [AWS CLI](#access-airflow-ui-prereqs-cli)
 + [What's changed in v2\.0\.2](#airflow-cli-command-changed)
-+ [Supported commands](#airflow-cli-commands-supported)
-+ [Unsupported commands](#airflow-unsupported-cli-commands)
-+ [Using commands that parse DAGs](#parsing-support)
-+ [Example code to add a configuration when triggering a DAG](#example-airflow-cli-commands-trigger)
-+ [Example to run CLI commands on an SSH tunnel to a bastion host](#example-airflow-cli-commands-private)
-+ [Samples in GitHub and AWS tutorials](#airflow-cli-commands-tutorials)
++ [CLI commands](#airflow-cli-commands)
+  + [Supported commands](#airflow-cli-commands-supported)
+  + [Unsupported commands](#airflow-unsupported-cli-commands)
+  + [Using commands that parse DAGs](#parsing-support)
++ [Sample code](#airflow-cli-command-examples)
+  + [Set, get or delete an Apache Airflow v2\.0\.2 variable](#example-airflow-cli-commands-bash)
+  + [Add a configuration when triggering a DAG](#example-airflow-cli-commands-trigger)
+  + [Run CLI commands on an SSH tunnel to a bastion host](#example-airflow-cli-commands-private)
+  + [Samples in GitHub and AWS tutorials](#airflow-cli-commands-tutorials)
 
 ## Prerequisites<a name="airflow-cli-command-prereqs"></a>
 
@@ -31,7 +34,11 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
 ## What's changed in v2\.0\.2<a name="airflow-cli-command-changed"></a>
 + **New: Airflow CLI command structure**\. The Apache Airflow v2\.0\.2 CLI is organized so that related commands are grouped together as subcommands, which means you need to update Apache Airflow v1\.10\.12 scripts if you want to upgrade to Apache Airflow v2\.0\.2\. For example, `unpause` in Apache Airflow v1\.10\.12 is now `dags unpause` in Apache Airflow v2\.0\.2\. To learn more, see [Airflow CLI changes in 2\.0](http://airflow.apache.org/docs/apache-airflow/2.0.2/upgrading-to-2.html#airflow-cli-changes-in-2-0) in the *Apache Airflow reference guide*\.
 
-## Supported commands<a name="airflow-cli-commands-supported"></a>
+## CLI commands<a name="airflow-cli-commands"></a>
+
+The following section contains the CLI commands supported\.
+
+### Supported commands<a name="airflow-cli-commands-supported"></a>
 
 The following list shows the Apache Airflow CLI commands available on Amazon MWAA\. 
 
@@ -46,8 +53,6 @@ The following list shows the Apache Airflow CLI commands available on Amazon MWA
 |  v2\.0\.2  |  Yes  |  [connections delete](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#delete)  | 
 |  v2\.0\.2  |  Yes  |  [dags delete](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#delete_repeat1)  | 
 |  v2\.0\.2  |  Yes  |  [dags list\-jobs](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list-jobs)  | 
-|  v2\.0\.2  |  Yes  |  [dags list\-runs](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list-runs)  | 
-|  v2\.0\.2  |  Yes  |  [dags next\-execution](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#next-execution)  | 
 |  v2\.0\.2  |  Yes  |  [dags pause](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#pause)  | 
 |  v2\.0\.2  |  Yes  |  [dags report](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#report)  | 
 |  v2\.0\.2  |  Yes  |  [dags show](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#show)  | 
@@ -97,7 +102,7 @@ The following list shows the Apache Airflow CLI commands available on Amazon MWA
 
 ------
 
-## Unsupported commands<a name="airflow-unsupported-cli-commands"></a>
+### Unsupported commands<a name="airflow-unsupported-cli-commands"></a>
 
 The following list shows the Apache Airflow CLI commands **not** available on Amazon MWAA\. 
 
@@ -109,6 +114,8 @@ The following list shows the Apache Airflow CLI commands **not** available on Am
 | --- | --- | --- | 
 |  v2\.0\.2  |  \*No \([note](#parsing-support)\)  |  [dags backfill](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#backfill)  | 
 |  v2\.0\.2  |  \*No \([note](#parsing-support)\)  |  [dags list](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list_repeat2)  | 
+|  v2\.0\.2  |  \*No \([note](#parsing-support)\)  |  [dags list\-runs](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#list-runs)  | 
+|  v2\.0\.2  |  \*No \([note](#parsing-support)\)  |  [dags next\-execution](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#next-execution)  | 
 |  v2\.0\.2  |  No  |  [dags show **\-\-save**](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#show)  | 
 |  v2\.0\.2  |  No  |  [dags test **\-\-save\-dagrun**](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#test)  | 
 |  v2\.0\.2  |  No  |  [dags test **\-\-show\-dagrun**](http://airflow.apache.org/docs/apache-airflow/2.0.2/cli-and-env-variables-ref.html#test)  | 
@@ -168,11 +175,15 @@ The following list shows the Apache Airflow CLI commands **not** available on Am
 
 ------
 
-## Using commands that parse DAGs<a name="parsing-support"></a>
+### Using commands that parse DAGs<a name="parsing-support"></a>
 
 Apache Airflow CLI commands that parse DAGs will fail if the DAG uses plugins that depend on packages installed through a `requirements.txt`:
 + `backfill`
 + `dag_state`
++ `dags backfill`
++ `dags list`
++ `dags list-runs`
++ `dags next-execution`
 + `list_dag_runs`
 + `list_dags`
 + `list_tasks`
@@ -182,9 +193,44 @@ Apache Airflow CLI commands that parse DAGs will fail if the DAG uses plugins th
 
 You can use these CLI commands if your DAGS don't use plugins that depend on packages installed through a `requirements.txt`\.
 
-## Example code to add a configuration when triggering a DAG<a name="example-airflow-cli-commands-trigger"></a>
+## Sample code<a name="airflow-cli-command-examples"></a>
 
-You can use the following sample code to add a configuration when triggering a DAG, such as `airflow trigger_dag 'dag_name' —conf '{"key":"value"}'`\.
+The following section contains examples of different ways to use the Apache Airflow CLI\.
+
+### Set, get or delete an Apache Airflow v2\.0\.2 variable<a name="example-airflow-cli-commands-bash"></a>
+
+You can use the following sample code to set, get or delete a variable in the format of `<script> <mwaa env name> get | set | delete <variable> <variable value> </variable> </variable>`\. 
+
+```
+[ $# -eq 0 ] && echo "Usage: $0 MWAA environment name " && exit
+
+if [[ $2 == "" ]]; then
+    dag="variables list"
+
+elif  [ $2 == "get" ] ||  [ $2 == "delete" ] ||  [ $2 == "set" ]; then
+    dag="variables $2 $3 $4 $5"
+
+else
+    echo "Not a valid command"
+    exit 1
+fi
+
+CLI_JSON=$(aws mwaa --region $AWS_REGION create-cli-token --name $1) \
+    && CLI_TOKEN=$(echo $CLI_JSON | jq -r '.CliToken') \
+    && WEB_SERVER_HOSTNAME=$(echo $CLI_JSON | jq -r '.WebServerHostname') \
+    && CLI_RESULTS=$(curl --request POST "https://$WEB_SERVER_HOSTNAME/aws_mwaa/cli" \
+    --header "Authorization: Bearer $CLI_TOKEN" \
+    --header "Content-Type: text/plain" \
+    --data-raw "$dag" ) \
+    && echo "Output:" \
+    && echo $CLI_RESULTS | jq -r '.stdout' | base64 --decode \
+    && echo "Errors:" \
+    && echo $CLI_RESULTS | jq -r '.stderr' | base64 --decode
+```
+
+### Add a configuration when triggering a DAG<a name="example-airflow-cli-commands-trigger"></a>
+
+You can use the following sample code with Apache Airflow v1\.10\.12 and Apache Airflow v2\.0\.2 to add a configuration when triggering a DAG, such as `airflow trigger_dag 'dag_name' —conf '{"key":"value"}'`\.
 
 ```
 import boto3
@@ -201,7 +247,7 @@ conf = "{\"" + key + "\":\"" + value + "\"}"
 client = boto3.client('mwaa')
 
 mwaa_cli_token = client.create_cli_token(
-    Name=mwaa_env_name
+  Name=mwaa_env_name
 )
 
 mwaa_auth_token = 'Bearer ' + mwaa_cli_token['CliToken']
@@ -209,14 +255,14 @@ mwaa_webserver_hostname = 'https://{0}/aws_mwaa/cli'.format(mwaa_cli_token['WebS
 raw_data = "trigger_dag {0} -c '{1}'".format(dag_name, conf)
 
 mwaa_response = requests.post(
-        mwaa_webserver_hostname,
-        headers={
-            'Authorization': mwaa_auth_token,
-            'Content-Type': 'text/plain'
-            },
-        data=raw_data
-        )
-        
+      mwaa_webserver_hostname,
+      headers={
+          'Authorization': mwaa_auth_token,
+          'Content-Type': 'text/plain'
+          },
+      data=raw_data
+      )
+      
 mwaa_std_err_message = base64.b64decode(mwaa_response.json()['stderr']).decode('utf8')
 mwaa_std_out_message = base64.b64decode(mwaa_response.json()['stdout']).decode('utf8')
 
@@ -225,7 +271,7 @@ print(mwaa_std_err_message)
 print(mwaa_std_out_message)
 ```
 
-## Example to run CLI commands on an SSH tunnel to a bastion host<a name="example-airflow-cli-commands-private"></a>
+### Run CLI commands on an SSH tunnel to a bastion host<a name="example-airflow-cli-commands-private"></a>
 
 The following example shows how to run Airflow CLI commands using an SSH tunnel proxy to a Linux Bastion Host\.
 
@@ -243,6 +289,7 @@ The following example shows how to run Airflow CLI commands using an SSH tunnel 
    curl -x socks5h://0:8080 --request POST https://YOUR_HOST_NAME/aws_mwaa/cli --header YOUR_HEADERS --data-raw YOUR_CLI_COMMAND
    ```
 
-## Samples in GitHub and AWS tutorials<a name="airflow-cli-commands-tutorials"></a>
+### Samples in GitHub and AWS tutorials<a name="airflow-cli-commands-tutorials"></a>
++ [Working with Apache Airflow v2\.0\.2 parameters and variables in Amazon Managed Workflows for Apache Airflow \(MWAA\)](https://dev.to/aws/interacting-with-amazon-managed-workflows-for-apache-airflow-via-the-command-line-4e91)
 + [Interacting with Apache Airflow v1\.10\.12 on Amazon MWAA via the command line](https://dev.to/aws/interacting-with-amazon-managed-workflows-for-apache-airflow-via-the-command-line-4e91)
 + [Interactive Commands with Apache Airflow v1\.10\.12 on Amazon MWAA and Bash Operator](https://github.com/aws-samples/amazon-mwaa-examples/tree/main/dags/bash_operator_script) *on GitHub*

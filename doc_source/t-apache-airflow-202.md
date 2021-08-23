@@ -125,9 +125,9 @@ If the scheduler doesn't appear to be running, or the last "heart beat" was rece
 
 We recommend the following steps:
 
-1. Confirm that your VPC security group allows inbound access to port 5432\. This port is needed to connect to the Amazon Aurora PostgreSQL metadata database\. After this rule is added, give Amazon MWAA a few minutes, and the error should disappear\. To learn more, see [Security in your VPC on Amazon MWAA](vpc-security.md)\.
+1. Confirm that your VPC security group allows inbound access to port 5432\. This port is needed to connect to the Amazon Aurora PostgreSQL metadata database for your environment\. After this rule is added, give Amazon MWAA a few minutes, and the error should disappear\. To learn more, see [Security in your VPC on Amazon MWAA](vpc-security.md)\.
 
-1. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\.
+1. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\. To learn more, see [Monitoring and metrics for Amazon Managed Workflows for Apache Airflow \(MWAA\)](cw-metrics.md)\.
 
 ## Tasks<a name="troubleshooting-tasks-202"></a>
 
@@ -139,39 +139,43 @@ If your Apache Airflow tasks are "stuck" or not completing, we recommend the fol
 
 1. There may be a large number of DAGs defined\. Reduce the number of DAGs and perform an update of the environment \(such as changing a log level\) to force a reset\.
 
-   1. Airflow parses DAGs whether they are enabled or not\. If you're using greater than 50% of your environment's capacity you may start overwhelming the Apache Airflow *Scheduler*\. This leads to large *Total Parse Time* in CloudWatch Metrics or long DAG processing times in CloudWatch Logs\.
+   1. Airflow parses DAGs whether they are enabled or not\. If you're using greater than 50% of your environment's capacity you may start overwhelming the Apache Airflow *Scheduler*\. This leads to large *Total Parse Time* in CloudWatch Metrics or long DAG processing times in CloudWatch Logs\. There are other ways to optimize Apache Airflow configurations which are outside the scope of this guide\.
 
-     There are other ways to optimize Apache Airflow configurations which are outside the scope of this guide\.
+   1. To learn more about the best practices we recommend to tune the performance of your environment, see [Performance tuning for Apache Airflow on Amazon MWAA](best-practices-tuning.md)\.
 
-1. There may be a large number of tasks in the queue\. This often appears as a large—and growing—number of tasks in the "None" state, or as a large number in *Queued Tasks* and/or *Tasks Pending* in CloudWatch Metrics\. This can occur for the following reasons:
+1. There may be a large number of tasks in the queue\. This often appears as a large—and growing—number of tasks in the "None" state, or as a large number in *Queued Tasks* and/or *Tasks Pending* in CloudWatch\. This can occur for the following reasons:
 
-   1. If there are more tasks to run than the environment has the capacity to run, and/or a large number of tasks that were queued before autoscaling has time to detect the tasks and deploy additional workers\. 
+   1. If there are more tasks to run than the environment has the capacity to run, and/or a large number of tasks that were queued before autoscaling has time to detect the tasks and deploy additional *Workers*\. 
 
    1. If there are more tasks to run than an environment has the capacity to run, we recommend **reducing** the number of tasks that your DAGs run concurrently, and/or increasing the minimum Apache Airflow *Workers*\.
 
    1. If there are a large number of tasks that were queued before autoscaling has had time to detect and deploy additional workers, we recommend **staggering** task deployment and/or increasing the minimum Apache Airflow *Workers*\.
 
-   1. The following AWS Command Line Interface \(AWS CLI\) command can be used to change the minimum or maximum number of workers in your environment\.
+   1. You can use the [update\-environment](https://docs.aws.amazon.com/cli/latest/reference/mwaa/update-environment.html) command in the AWS Command Line Interface \(AWS CLI\) to change the minimum or maximum number of *Workers* that run on your environment\.
 
       ```
       aws mwaa update-environment --name MyEnvironmentName --min-workers 2 --max-workers 10
       ```
 
-1. There may be tasks being deleted mid\-exectution that appear as task logs which stop with no further indication in Apache Airflow\. This can occur for the following reasons:
+   1. To learn more about the best practices we recommend to tune the performance of your environment, see [Performance tuning for Apache Airflow on Amazon MWAA](best-practices-tuning.md)\.
+
+1. There may be tasks being deleted mid\-execution that appear as task logs which stop with no further indication in Apache Airflow\. This can occur for the following reasons:
 
    1. If there is a brief moment where 1\) the current tasks exceed current environment capacity, followed by 2\) a few minutes of no tasks executing or being queued, then 3\) new tasks being queued\. 
 
    1. Amazon MWAA autoscaling reacts to the first scenario by adding additional workers\. In the second scenario, it removes the additional workers\. Some of the tasks being queued may result with the workers in the process of being removed, and will end when the container is deleted\.
 
-   1. We recommend increasing the minimum number of workers on your environment\. You can also set the minimum workers equal to the maximum workers on your environment, effectively disabling autoscaling\. Another option is to adjust the timing of your DAGs and tasks to ensure that that these scenarios don't occur\.
+   1. We recommend increasing the minimum number of workers on your environment\. Another option is to adjust the timing of your DAGs and tasks to ensure that that these scenarios don't occur\.
 
-   1. The following AWS Command Line Interface \(AWS CLI\) command can be used to change the minimum or maximum number of workers in your environment to be the same, disabling autoscaling\.
+   1. You can also set the minimum workers equal to the maximum workers on your environment, effectively disabling autoscaling\. Use the [update\-environment](https://docs.aws.amazon.com/cli/latest/reference/mwaa/update-environment.html) command in the AWS Command Line Interface \(AWS CLI\) to **disable autoscaling** by setting the minimum and maximum number of workers to be the same\.
 
       ```
       aws mwaa update-environment --name MyEnvironmentName --min-workers 5 --max-workers 5
       ```
 
-1. If your tasks are stuck in the "running" state, you can also clear the tasks or mark them as succeeded or failed\. This allows the autoscaling component for your environment to scale down the number of workers running in an environment\. The following image shows an example of a stranded task\.  
+   1. To learn more about the best practices we recommend to tune the performance of your environment, see [Performance tuning for Apache Airflow on Amazon MWAA](best-practices-tuning.md)\.
+
+1. If your tasks are stuck in the "running" state, you can also clear the tasks or mark them as succeeded or failed\. This allows the autoscaling component for your environment to scale down the number of workers running on your environment\. The following image shows an example of a stranded task\.  
 ![\[This is an image with a stranded task.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-airflow-scaling.png)
 
    1. Choose the circle for the stranded task, and then select **Clear** \(as shown\)\. This allows Amazon MWAA to scale down workers; otherwise, Amazon MWAA can't determine which DAGs are enabled or disabled, and can't scale down, if there are still queued tasks\.  
