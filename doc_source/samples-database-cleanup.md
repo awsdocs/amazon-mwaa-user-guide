@@ -64,6 +64,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 from airflow import DAG, settings
  
 from airflow.providers.postgres.operators.postgres import PostgresOperator
+from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 from airflow.jobs.base_job import BaseJob
 from airflow.models import DAG, DagModel, DagRun, ImportError, Log, SlaMiss, RenderedTaskInstanceFields, TaskFail, TaskInstance, TaskReschedule, Variable, XCom
