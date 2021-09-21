@@ -3,8 +3,11 @@
 The topics on this page contains errors you may encounter when creating and updating an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment and how to resolve these errors\.
 
 **Contents**
-+ [Updating requirements\.txt](#troubleshooting-reqs)
++ [Updating `requirements.txt`](#troubleshooting-reqs)
   + [I specified a new version of my `requirements.txt` and it's taking more than 20 minutes to update my environment](#t-requirements)
++ [Plugins](#troubleshooting-plugins)
+  + [Does Amazon MWAA support implementing custom UI?](#custom-ui)
+  + [I am able to implement custom UI changes on the [Amazon MWAA local runner](https://github.com/aws/aws-mwaa-local-runner) via plugins, yet when I try to do the same on Amazon MWAA, I do not see my changes nor any errors\. Why is this happening?](#custom-ui-local-runner)
 + [Create bucket](#troubleshooting-create-bucket)
   + [I can't select the option for S3 Block Public Access settings](#t-create-bucket)
 + [Create environment](#troubleshooting-create-environment)
@@ -19,7 +22,7 @@ The topics on this page contains errors you may encounter when creating and upda
 + [Access environment](#troubleshooting-access-environment)
   + [I can't access the Apache Airflow UI](#t-no-access-airflow-ui)
 
-## Updating requirements\.txt<a name="troubleshooting-reqs"></a>
+## Updating `requirements.txt`<a name="troubleshooting-reqs"></a>
 
 The following topic describes the errors you may receive when updating your `requirements.txt`\.
 
@@ -38,6 +41,18 @@ If it takes more than twenty minutes for your environment to install a new versi
 1. Check execution role permissions\. An execution role is an AWS Identity and Access Management \(IAM\) role with a permissions policy that grants Amazon MWAA permission to invoke the resources of other AWS services \(such as Amazon S3, CloudWatch, Amazon SQS, Amazon ECR\) on your behalf\. Your [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) or [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) also needs to be permitted access\. To learn more, see [Execution role](mwaa-create-role.md)\.
 
 1. To run a troubleshooting script that checks the Amazon VPC network setup and configuration for your Amazon MWAA environment, see the [Verify Environment](https://github.com/awslabs/aws-support-tools/tree/master/MWAA) script in AWS Support Tools on GitHub\.
+
+## Plugins<a name="troubleshooting-plugins"></a>
+
+ The following topic describes issues you may encounter when configuring or updating Apache Airflow plugins\. 
+
+### Does Amazon MWAA support implementing custom UI?<a name="custom-ui"></a>
+
+Currently, Amazon MWAA does not support implementing custom UI changes\.
+
+### I am able to implement custom UI changes on the [Amazon MWAA local runner](https://github.com/aws/aws-mwaa-local-runner) via plugins, yet when I try to do the same on Amazon MWAA, I do not see my changes nor any errors\. Why is this happening?<a name="custom-ui-local-runner"></a>
+
+the Amazon MWAA local runner has all the Apache Airflow components bundled into one image, allowing you to apply custom UI plugin changes\.
 
 ## Create bucket<a name="troubleshooting-create-bucket"></a>
 

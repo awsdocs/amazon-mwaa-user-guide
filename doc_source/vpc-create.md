@@ -14,8 +14,8 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) requires an Amazon VPC and 
 ## Prerequisites<a name="vpc-create-prereqs"></a>
 
 The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
-+ [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-+ [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
++ [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)\.
++ [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)\.
 
 ## Before you begin<a name="vpc-create-how-networking"></a>
 + The [VPC network](#vpc-create) you specify for your environment can't be changed after the environment is created\.
@@ -239,12 +239,19 @@ The following AWS CloudFormation template creates an Amazon VPC network *with In
          RouteTableId: !Ref PrivateRouteTable2
          SubnetId: !Ref PrivateSubnet2
    
-     NoIngressSecurityGroup:
+     SecurityGroup:
        Type: AWS::EC2::SecurityGroup
        Properties:
-         GroupName: "no-ingress-sg"
-         GroupDescription: "Security group with no ingress rule"
+         GroupName: "mwaa-security-group"
+         GroupDescription: "Security group with a self-referencing inbound rule."
          VpcId: !Ref VPC
+   
+     SecurityGroupIngress:
+       Type: AWS::EC2::SecurityGroupIngress
+       Properties:
+         GroupId: !Ref SecurityGroup
+         IpProtocol: "-1"
+         SourceSecurityGroupId: !Ref SecurityGroup
    
    Outputs:
      VPC:
@@ -275,9 +282,9 @@ The following AWS CloudFormation template creates an Amazon VPC network *with In
        Description: A reference to the private subnet in the 2nd Availability Zone
        Value: !Ref PrivateSubnet2
    
-     NoIngressSecurityGroup:
-       Description: Security group with no ingress rule
-       Value: !Ref NoIngressSecurityGroup
+     SecurityGroupIngress:
+       Description: Security group with self-referencing inbound rule
+       Value: !Ref SecurityGroupIngress
    ```
 
 1. In your command prompt, navigate to the directory where `cfn-vpc-public-private.yaml` is stored\. For example:

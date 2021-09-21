@@ -33,11 +33,11 @@ In this tutorial, you'll complete the following tasks:
 ## Prerequisites<a name="quick-start-before"></a>
 
 The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
-+ [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-+ [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
++ [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)\.
++ [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)\.
 
 ## Step one: Save the AWS CloudFormation template locally<a name="quick-start-template"></a>
-+ Copy the contents of the following template and save locally as `mwaa_public_network.yaml`\. You can also [download the template](./samples/mwaa_public_network.zip)\.
++ Copy the contents of the following template and save locally as `mwaa_public_network.yaml`\. You can also [download the template](./samples/mwaa-public-network.zip)\.
 
   ```
   AWSTemplateFormatVersion: "2010-09-09"
@@ -264,12 +264,19 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
         RouteTableId: !Ref PrivateRouteTable2
         SubnetId: !Ref PrivateSubnet2
   
-    NoIngressSecurityGroup:
+    SecurityGroup:
       Type: AWS::EC2::SecurityGroup
       Properties:
-        GroupName: "no-ingress-sg"
-        GroupDescription: "Security group with no ingress rule"
+        GroupName: "mwaa-security-group"
+        GroupDescription: "Security group with a self-referencing inbound rule."
         VpcId: !Ref VPC
+  
+    SecurityGroupIngress:
+      Type: AWS::EC2::SecurityGroupIngress
+      Properties:
+        GroupId: !Ref SecurityGroup
+        IpProtocol: "-1"
+        SourceSecurityGroupId: !Ref SecurityGroup
   
     EnvironmentBucket:
       Type: AWS::S3::Bucket
@@ -451,9 +458,9 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
       Description: A reference to the private subnet in the 2nd Availability Zone
       Value: !Ref PrivateSubnet2
   
-    NoIngressSecurityGroup:
-      Description: Security group with no ingress rule
-      Value: !Ref NoIngressSecurityGroup
+    SecurityGroupIngress:
+      Description: Security group with self-referencing inbound rule
+      Value: !Ref SecurityGroupIngress
   
     MwaaApacheAirflowUI:
       Description: MWAA Environment

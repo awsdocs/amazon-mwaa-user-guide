@@ -28,8 +28,8 @@ The following section describes the preliminary steps required to use the comman
 ### AWS CLI<a name="access-airflow-ui-prereqs-cli"></a>
 
 The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables you to interact with AWS services using commands in your command\-line shell\. To complete the steps on this page, you need the following:
-+ [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-+ [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
++ [AWS CLI – Install version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)\.
++ [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)\.
 
 ## What's changed in v2\.0\.2<a name="airflow-cli-command-changed"></a>
 + **New: Airflow CLI command structure**\. The Apache Airflow v2\.0\.2 CLI is organized so that related commands are grouped together as subcommands, which means you need to update Apache Airflow v1\.10\.12 scripts if you want to upgrade to Apache Airflow v2\.0\.2\. For example, `unpause` in Apache Airflow v1\.10\.12 is now `dags unpause` in Apache Airflow v2\.0\.2\. To learn more, see [Airflow CLI changes in 2\.0](http://airflow.apache.org/docs/apache-airflow/2.0.2/upgrading-to-2.html#airflow-cli-changes-in-2-0) in the *Apache Airflow reference guide*\.

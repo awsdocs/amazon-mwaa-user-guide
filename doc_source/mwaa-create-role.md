@@ -192,6 +192,15 @@ The following example shows an execution role policy you can use for an [Custome
         },
         {
             "Effect": "Allow",
+            "Action": [
+                "s3:GetAccountPublicAccessBlock"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
             "Action": "cloudwatch:PutMetricData",
             "Resource": "*"
         },
@@ -323,6 +332,15 @@ The following example shows an execution role policy you can use for an [AWS own
             "Effect": "Allow",
             "Action": [
                 "logs:DescribeLogGroups"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetAccountPublicAccessBlock"
             ],
             "Resource": [
                 "*"

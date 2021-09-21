@@ -269,9 +269,12 @@ If the scheduler doesn't appear to be running, or the last "heart beat" was rece
 
 We recommend the following steps:
 
-1. Confirm that your VPC security group allows inbound access to port 5432\. This port is needed to connect to the Amazon Aurora PostgreSQL metadata database for your environment\. After this rule is added, give Amazon MWAA a few minutes, and the error should disappear\. To learn more, see [Security in your VPC on Amazon MWAA](vpc-security.md)\.
+1. Confirm that your VPC security group allows inbound access to port `5432`\. This port is needed to connect to the Amazon Aurora PostgreSQL metadata database for your environment\. After this rule is added, give Amazon MWAA a few minutes, and the error should disappear\. To learn more, see [Security in your VPC on Amazon MWAA](vpc-security.md)\. 
+**Note**  
+ The Aurora PostgreSQL metadatabase is part of the [Amazon MWAA service architecture](what-is-mwaa.md#architecture-mwaa) and is not visible in your AWS account\. 
+ Database\-related errors are usually a symptom of scheduler failure and not the root cause\. 
 
-1. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\. To learn more, see [Monitoring and metrics for Amazon Managed Workflows for Apache Airflow \(MWAA\)](cw-metrics.md)\.
+1.  If the scheduler is not running, it might be due to a number of factors such as [dependency installation failures](best-practices-dependencies.md), or an [oroverloaded scheduler](best-practices-tuning.md)\. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\. To learn more, see [Monitoring and metrics for Amazon Managed Workflows for Apache Airflow \(MWAA\)](cw-metrics.md)\.
 
 ## Tasks<a name="troubleshooting-tasks"></a>
 

@@ -91,7 +91,7 @@ Amazon MWAA does not currently support on\-demand Amazon EC2 Spot Instance types
 
 ### Does Amazon MWAA support a custom domain?<a name="custom-dns"></a>
 
-Yes\. You can use a custom domain for your Apache Airflow host name using [Amazon Route 53 ](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html)\. Apply an [AWS Certificate Manager \(ACM\) certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs.html) to the Application Load Balancer, and then apply the Route 53 CNAME to the Application Load Balancer to match the fully qualified domain name \(FQDN\) of the certificate\.
+Yes\. You can use a custom domain for your Apache Airflow host name using [Amazon Route 53 ](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html)\. Apply an [AWS Certificate Manager \(ACM\) certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs.html) to the Application Load Balancer, and then apply the Route 53 CNAME to the Application Load Balancer to match the fully qualified domain name \(FQDN\) of the certificate\.
 
 ### Can I SSH into my environment?<a name="ssh-dag"></a>
 

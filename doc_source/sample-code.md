@@ -20,6 +20,7 @@ This guide contains code samples, including DAGs and custom plugins, that you ca
 + [Using Amazon MWAA with Amazon RDS Microsoft SQL Server](samples-sql-server.md)
 + [Using Amazon MWAA with Amazon EMR](samples-emr.md)
 + [Using Amazon MWAA with Amazon EKS](mwaa-eks-example.md)
++ [Amazon ECS operator on Amazon MWAA](samples-ecs-operator.md)
 + [AWS blogs and tutorials](#samples-blogs-tutorials)
 
 ## AWS blogs and tutorials<a name="samples-blogs-tutorials"></a>
