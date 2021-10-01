@@ -1,6 +1,9 @@
 # Creating an Apache Airflow CLI token<a name="call-mwaa-apis-cli"></a>
 
-You can use the commands on this page to generate a CLI token, and then make Amazon Managed Workflows for Apache Airflow \(MWAA\) API calls directly in your command shell\. For example, you can get a token, then deploy DAGs programmatically using Amazon MWAA APIs\. The following section includes the steps to create an Apache Airflow CLI token using the AWS CLI, a curl script, a Python script, or a bash script\. The token returned in the response is valid for 60 seconds\.
+You can use the commands on this page to generate a CLI token, and then make Amazon Managed Workflows for Apache Airflow \(MWAA\) API calls directly in your command shell\. For example, you can get a token, then deploy DAGs programmatically using Amazon MWAA APIs\. The following section includes the steps to create an Apache Airflow CLI token using the AWS CLI, a curl script, a Python script, or a bash script\. The token returned in the response is valid for 60 seconds\. 
+
+**Note**  
+ The AWS CLI token is intended as a replacement for synchronous shell actions, not asynchronous API commands\. As such, available concurrency is limited\. To ensure that the web server remains responsive for users, it is recommended not to open a new AWS CLI request until the previous one completes successfully\. 
 
 **Contents**
 + [Prerequisites](#call-mwaa-apis-cli-prereqs)

@@ -25,7 +25,7 @@ To use the sample code on this page, you'll need the following:
 
 ## Requirements<a name="samples-hive-dependencies"></a>
 + No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1\.10\.12 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the Apache Airflow v2\.0\.2 base install [https://github\.com/aws/aws\-mwaa\-local\-runner/blob/main/docker/config/requirements\.txt](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
++ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2\.0\.2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
 
 ## Code sample<a name="samples-secrets-manager-code"></a>
 

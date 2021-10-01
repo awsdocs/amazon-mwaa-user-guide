@@ -119,7 +119,7 @@ If Internet access in your VPC is allowed by your organization, *and* you would 
 
 1. **What we recommend**:
 
-   1. We recommend using the Amazon MWAA console in [Option one: Creating the VPC network on the Amazon MWAA console](vpc-create.md#vpc-create-mwaa-console), or the AWS CloudFormation template in [Option two: Creating a VPC network *with* Internet access](vpc-create.md#vpc-create-template-private-or-public)\.
+   1. We recommend using the Amazon MWAA console in [Option one: Creating the VPC network on the Amazon MWAA console](vpc-create.md#vpc-create-mwaa-console), or the AWS CloudFormation template in [Option two: Creating an Amazon VPC network *with* Internet access](vpc-create.md#vpc-create-template-private-or-public)\.
 
    1. We recommend configuring access using an AWS Client VPN to your Apache Airflow *Web server* in [Tutorial: Configuring private network access using an AWS Client VPN](tutorials-private-network-vpn-client.md)\.
 
@@ -137,7 +137,7 @@ If Internet access in your VPC is **not allowed** by your organization:
 
 1. **What we recommend**:
 
-   1. We recommend using the AWS CloudFormation template to create an Amazon VPC without Internet access and the VPC endpoints for each AWS service used by Amazon MWAA in [Option three: Creating a VPC network *without* Internet access](vpc-create.md#vpc-create-template-private-only)\.
+   1. We recommend using the AWS CloudFormation template to create an Amazon VPC without Internet access and the VPC endpoints for each AWS service used by Amazon MWAA in [Option three: Creating an Amazon VPC network *without* Internet access](vpc-create.md#vpc-create-template-private-only)\.
 
    1. We recommend configuring access using an AWS Client VPN to your Apache Airflow *Web server* in [Tutorial: Configuring private network access using an AWS Client VPN](tutorials-private-network-vpn-client.md)\.
 

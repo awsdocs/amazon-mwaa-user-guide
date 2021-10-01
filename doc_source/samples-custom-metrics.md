@@ -1,12 +1,12 @@
 # Using a DAG to write custom metrics in CloudWatch<a name="samples-custom-metrics"></a>
 
-The following sample shows how to write a DAG that queries the Amazon Aurora PostgreSQL metadata database for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment and publishes custom metrics to Amazon CloudWatch\.
+The following sample shows how to write a DAG that runs a `PythonOperator` to retrieve OS\-level metrics for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment, and publishes the data as custom metrics to Amazon CloudWatch\.
 
 **Topics**
 + [Version](#samples-custom-metrics-version)
 + [Prerequisites](#samples-custom-metrics-prereqs)
 + [Permissions](#samples-custom-metrics-permissions)
-+ [Requirements](#samples-custom-metrics-dependencies)
++ [Dependencies](#samples-custom-metrics-dependencies)
 + [Code sample](#samples-custom-metrics-code)
 + [What's next?](#samples-custom-metrics-next-up)
 
@@ -22,9 +22,9 @@ To use the sample code on this page, you'll need the following:
 ## Permissions<a name="samples-custom-metrics-permissions"></a>
 + No additional permissions are required to use the sample code on this page\.
 
-## Requirements<a name="samples-custom-metrics-dependencies"></a>
+## Dependencies<a name="samples-custom-metrics-dependencies"></a>
 + No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1\.10\.12 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the Apache Airflow v2\.0\.2 base install [https://github\.com/aws/aws\-mwaa\-local\-runner/blob/main/docker/config/requirements\.txt](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
++ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2\.0\.2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
 
 ## Code sample<a name="samples-custom-metrics-code"></a>
 

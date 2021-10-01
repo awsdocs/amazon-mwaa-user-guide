@@ -33,7 +33,7 @@ You can use this tutorial before or after you've created an Amazon MWAA environm
 
 1. Check for user permissions\. Be sure that your account in AWS Identity and Access Management \(IAM\) has sufficient permissions to create and manage VPC resources\. 
 
-1. Use your Amazon MWAA VPC\. This tutorial assumes that you are associating the Client VPN to an existing VPC\. The Amazon VPC must be in the same AWS Region as an Amazon MWAA environment and have two private subnets\. If you haven't created an Amazon VPC, use the AWS CloudFormation template in [Option three: Creating a VPC network *without* Internet access](vpc-create.md#vpc-create-template-private-only)\.
+1. Use your Amazon MWAA VPC\. This tutorial assumes that you are associating the Client VPN to an existing VPC\. The Amazon VPC must be in the same AWS Region as an Amazon MWAA environment and have two private subnets\. If you haven't created an Amazon VPC, use the AWS CloudFormation template in [Option three: Creating an Amazon VPC network *without* Internet access](vpc-create.md#vpc-create-template-private-only)\.
 
 ## Objectives<a name="private-network-vpn-objectives"></a>
 

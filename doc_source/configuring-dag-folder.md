@@ -29,7 +29,7 @@ A Directed Acyclic Graph \(DAG\) is defined within a single Python file that def
 + [Operators](https://airflow.apache.org/concepts.html#operators) that describe how to run the DAG and the [tasks](https://airflow.apache.org/docs/stable/concepts.html#tasks) to run\.
 + [Operator relationships](https://airflow.apache.org/concepts.html#bitshift-composition) that describe the order in which to run the tasks\.
 
-Amazon MWAA automatically detects and syncs changes from your Amazon S3 bucket to Apache Airflow every 30 seconds\. To run an Apache Airflow platform on an Amazon MWAA environment, you need to copy your DAG definition to the `dags` folder in your storage bucket\. For example, the DAG folder in your storage bucket may look like this:
+ To run an Apache Airflow platform on an Amazon MWAA environment, you need to copy your DAG definition to the `dags` folder in your storage bucket\. For example, the DAG folder in your storage bucket may look like this:
 
 **Example DAG folder**  
 
@@ -37,6 +37,8 @@ Amazon MWAA automatically detects and syncs changes from your Amazon S3 bucket t
 dags/
 └ dag_def.py
 ```
+
+ Amazon MWAA automatically syncs new and changed objects from your Amazon S3 bucket to Amazon MWAA scheduler and worker containers’ `/usr/local/airflow/dags` folder every 30 seconds, preserving the Amazon S3 source’s file hierarchy, regardless of file type\. The time that new DAGs take to appear in your Apache Airflow UI is controlled by `scheduler\.dag\_dir\_list\_interval`\. Changes to existing DAGs will be picked up on the next [DAG processing loop](best-practices-tuning.md#best-practices-tuning-scheduler)\. 
 
 **Note**  
 You do not need to include the `airflow.cfg` configuration file in your DAG folder\. You can override the default Apache Airflow configurations from the Amazon MWAA console\. For more information, see [Apache Airflow configuration options](configuring-env-variables.md)\.

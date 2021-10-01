@@ -117,6 +117,10 @@ We recommend the following steps:
 
 1. To run a troubleshooting script that checks the Amazon VPC network setup and configuration for your Amazon MWAA environment, see the [Verify Environment](https://github.com/awslabs/aws-support-tools/tree/master/MWAA) script in AWS Support Tools on GitHub\.
 
+1. If you are using an Amazon VPC *without* internet access, ensure that you've created an Amazon S3 gateway endpoint, and granted the minimum required permisions to Amazon ECR to access Amazon S3\. To learn more about creating an Amazon S3 gateway endpoint, see the following:
+   + [Creating an Amazon VPC network without internet access](vpc-create.md#vpc-create-template-private-only)
+   +  [Create the Amazon S3 gateway endpoint](https://docs.aws.amazon.com/AmazonECR/latest/userguide/vpc-endpoints.html#ecr-setting-up-s3-gateway) in the *Amazon Elastic Container Registry User Guide* 
+
 ### I tried to select a VPC and received a "Network Failure" error<a name="t-network-failure"></a>
 
 We recommend the following steps:

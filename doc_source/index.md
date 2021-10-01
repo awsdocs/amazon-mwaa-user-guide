@@ -57,6 +57,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Using a secret key in AWS Secrets Manager for an Apache Airflow Snowflake connection](samples-sm-snowflake.md)
    + [Using a DAG to write custom metrics in CloudWatch](samples-custom-metrics.md)
    + [Aurora PostgreSQL database cleanup on an Amazon MWAA environment](samples-database-cleanup.md)
+   + [Writing DAG run information to a CSV file on Amazon S3](samples-dag-run-info-to-csv.md)
    + [Using a secret key in AWS Secrets Manager for an Apache Airflow variable](samples-secrets-manager-var.md)
    + [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)
    + [Creating a custom plugin with Oracle](samples-oracle.md)

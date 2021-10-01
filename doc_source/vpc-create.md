@@ -7,8 +7,8 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) requires an Amazon VPC and 
 + [Before you begin](#vpc-create-how-networking)
 + [Options to create the Amazon VPC network](#vpc-create-options)
   + [Option one: Creating the VPC network on the Amazon MWAA console](#vpc-create-mwaa-console)
-  + [Option two: Creating a VPC network *with* Internet access](#vpc-create-template-private-or-public)
-  + [Option three: Creating a VPC network *without* Internet access](#vpc-create-template-private-only)
+  + [Option two: Creating an Amazon VPC network *with* Internet access](#vpc-create-template-private-or-public)
+  + [Option three: Creating an Amazon VPC network *without* Internet access](#vpc-create-template-private-only)
 + [What's next?](#create-vpc-next-up)
 
 ## Prerequisites<a name="vpc-create-prereqs"></a>
@@ -33,7 +33,7 @@ The following image shows where you can find the **Create MWAA VPC** button on t
 
 ![\[This image shows where you can find the Create MWAA VPC on the Amazon MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-create-vpc.png)
 
-### Option two: Creating a VPC network *with* Internet access<a name="vpc-create-template-private-or-public"></a>
+### Option two: Creating an Amazon VPC network *with* Internet access<a name="vpc-create-template-private-or-public"></a>
 
 The following AWS CloudFormation template creates an Amazon VPC network *with Internet access* in your default AWS Region\. This option uses [Public routing over the Internet](networking-about.md#networking-about-overview-public)\. This template can be used for an Apache Airflow *Web server* with the **Private network** or **Public network** access modes\. 
 
@@ -301,9 +301,41 @@ The following AWS CloudFormation template creates an Amazon VPC network *with In
 **Note**  
 It takes about 30 minutes to create the Amazon VPC infrastructure\.
 
-### Option three: Creating a VPC network *without* Internet access<a name="vpc-create-template-private-only"></a>
+### Option three: Creating an Amazon VPC network *without* Internet access<a name="vpc-create-template-private-only"></a>
 
-The following AWS CloudFormation template creates an Amazon VPC network *without Internet access* in your default AWS Region\. This option uses [Private routing without Internet access](networking-about.md#networking-about-overview-private)\. This template can be used for an Apache Airflow *Web server* with the **Private network** access mode only\. It creates the required [VPC endpoints for the AWS services used by an environment](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-attach-services)\.
+The following AWS CloudFormation template creates an Amazon VPC network *without Internet access* in your default AWS region\.
+
+**Important**  
+ When using a Amazon VPC without internet access, you must grant permission to Amazon ECR to access Amazon S3 using a gateway endpoint\. You can create a gateway endpoint by doing the following:   
+ Copy the following `JSON` IAM policy, and save it locally as `s3-gw-endpoint-policy.json`\. The policy grants the minimum required permission for Amazon ECR to access Amazon S3 resources\.   
+
+   ```
+   {
+     "Statement": [
+       {
+         "Sid": "Access-to-specific-bucket-only",
+         "Principal": "*",
+         "Action": [
+           "s3:GetObject"
+         ],
+         "Effect": "Allow",
+         "Resource": ["arn:aws:s3:::prod-region-starport-layer-bucket/*"]
+       }
+     ]
+   }
+   ```
+ Create the endpoint using the following AWS CLI command\. Replace the values for `--vpc-id` and `--route-table-ids` with the information for your Amazon VPC\. Replace `--service-name` with the name according to your region\.   
+
+   ```
+   $ aws ec2 create-vpc-endpoint --vpc-id vpc-1a2b3c4d \
+   --service-name com.amazonaws.us-west-2.s3 \
+   --route-table-ids rtb-11aa22bb \
+   --vpc-endpoint-type Gateway \
+   --policy-document file://s3-gw-endpoint-policy.json
+   ```
+For more information about creating Amazon S3 gateway endpoints for Amazon ECR, see [Create the Amazon S3 gateway endpoint](https://docs.aws.amazon.com/AmazonECR/latest/userguide/vpc-endpoints.html#ecr-setting-up-s3-gateway) in the *Amazon Elastic Container Registry User Guide*\.
+
+ This option uses [Private routing without Internet access](networking-about.md#networking-about-overview-private)\. This template can be used for an Apache Airflow *Web server* with the **Private network** access mode only\. It creates the required [VPC endpoints for the AWS services used by an environment](vpc-vpe-create-access.md#vpc-vpe-create-view-endpoints-attach-services)\. 
 
 1. Copy the contents of the following template and save locally as `cfn-vpc-private.yaml`\. You can also [download the template](./samples/cfn-vpc-private.zip)\.
 
@@ -556,6 +588,9 @@ The following AWS CloudFormation template creates an Amazon VPC network *without
 It takes about 30 minutes to create the Amazon VPC infrastructure\.
 
 1. You'll need to create a mechanism to access these VPC endpoints from your computer\. To learn more, see [Managing access to VPC endpoints on Amazon MWAA](vpc-vpe-access.md)\.
+
+**Note**  
+ You can further restrict outbound access in the CIDR of your Amazon MWAA security group\. For example, you can restrict to itself by adding a self\-referencing outbound rule, the [prefix list](https://docs.aws.amazon.com/vpc/latest/privatelink/vpce-gateway.html) for Amazon S3, and the CIDR of your Amazon VPC\. 
 
 ## What's next?<a name="create-vpc-next-up"></a>
 + Learn how to create an Amazon MWAA environment in [Create an Amazon MWAA environment](create-environment.md)\.
