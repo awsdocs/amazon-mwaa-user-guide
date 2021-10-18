@@ -8,7 +8,7 @@ This guide describes the steps create an Amazon S3 bucket to store your Apache A
 + [What's next?](#mwaa-s3-bucket-next-up)
 
 ## Before you begin<a name="mwaa-s3-bucket-before"></a>
-+ The Amazon S3 bucket name can't be changed after you create the bucket\. To learn more, see [Rules for bucket naming](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html#bucketnamingrules) in the *Amazon Simple Storage Service Developer Guide*\.
++ The Amazon S3 bucket name can't be changed after you create the bucket\. To learn more, see [Rules for bucket naming](https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html#bucketnamingrules) in the *Amazon Simple Storage Service User Guide*\.
 + An Amazon S3 bucket used for an Amazon MWAA environment must be configured to **Block all public access**, with **Bucket Versioning** enabled\.
 + An Amazon S3 bucket used for an Amazon MWAA environment must be located in the same AWS Region as an Amazon MWAA environment\. To view a list of AWS Regions for Amazon MWAA, see [Region availability](what-is-mwaa.md#regions-mwaa)\.
 
@@ -56,7 +56,7 @@ Avoid including sensitive information, such as account numbers, in the bucket na
 
    1. Choose **Advanced settings**, **Enable**\.
 **Important**  
-Enabling Object Lock will permanently allow objects in this bucket to be locked\. To learn more, see [Locking Objects Using Amazon S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lock.html) in the *Amazon Simple Storage Service Developer Guide*\.
+Enabling Object Lock will permanently allow objects in this bucket to be locked\. To learn more, see [Locking Objects Using Amazon S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lock.html) in the *Amazon Simple Storage Service User Guide*\.
 
    1. Choose the acknowledgement\.
 

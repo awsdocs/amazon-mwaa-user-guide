@@ -1,6 +1,6 @@
 # Code examples for Amazon Managed Workflows for Apache Airflow \(MWAA\)<a name="sample-code"></a>
 
-This guide contains code samples, including DAGs and custom plugins, that you can use on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
+ This guide contains code samples, including DAGs and custom plugins, that you can use on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\. For more examples of using Apache Airflow with AWS services, see the [https://github.com/apache/airflow/tree/main/airflow/providers/amazon/aws/example_dags](https://github.com/apache/airflow/tree/main/airflow/providers/amazon/aws/example_dags) directory in the Apache Airflow GitHub repository\. 
 
 **Topics**
 + [Using a DAG to import variables in the CLI](samples-variables-import.md)
