@@ -608,6 +608,7 @@ You need to specify the version of your `plugins.zip` file on the Amazon MWAA co
 + Learn how to create a custom plugin in [Custom plugin with Apache Hive and Hadoop](samples-hive.md)\.
 + Learn how to create a custom plugin in [Custom plugin to patch PythonVirtualenvOperator ](samples-virtualenv.md)\.
 + Learn how to create a custom plugin in [Custom plugin with Oracle](samples-oracle.md)\.
++ Learn how to create a custom plugin in [Custom plugin to change the DAG schedule timezone](samples-plugins-timezone.md)\.
 
 ## What's next?<a name="configuring-dag-plugins-next-up"></a>
 + Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.

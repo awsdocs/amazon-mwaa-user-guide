@@ -197,7 +197,7 @@ The following list shows the Airflow web server configurations available in the 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v2\.0\.2  |  webserver\.default\_ui\_timezone  |  The default Apache Airflow UI datetime setting in [default\_ui\_timezone](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#default-ui-timezone)\.  |  America/New\_York  | 
+|  v2\.0\.2  |  webserver\.default\_ui\_timezone  |  The default Apache Airflow UI datetime setting in [default\_ui\_timezone](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#default-ui-timezone)\.   Setting the `default_ui_timezone` option does not change the time zone in which your DAGs are scheduled to run\. To change the time zone for your DAGs, you can use a custom plugin\. For more information, see [Custom plugin to change the DAG schedule timezone](samples-plugins-timezone.md)\.    |  America/New\_York  | 
 
 ------
 #### [ Airflow v1\.10\.12 ]

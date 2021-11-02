@@ -62,6 +62,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)
    + [Creating a custom plugin with Oracle](samples-oracle.md)
    + [Creating a custom plugin that generates runtime environment variables](samples-env-variables.md)
+   + [Custom plugin to change the DAG schedule timezone](samples-plugins-timezone.md)
    + [Using an AWS CodeArtifact token at runtime](samples-code-artifact.md)
    + [Creating a custom plugin with Apache Hive and Hadoop](samples-hive.md)
    + [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)

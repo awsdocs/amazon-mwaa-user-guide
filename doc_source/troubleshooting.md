@@ -15,6 +15,7 @@ This topic describes common issues and errors you may encounter when using Apach
     + [I see my tasks stuck or not completing](t-apache-airflow-202.md#stranded-tasks-202)
   + [CLI](t-apache-airflow-202.md#troubleshooting-cli-202)
     + [I see a '503' error when triggering a DAG in the CLI](t-apache-airflow-202.md#cli-toomany-202)
+    + [Why does the `dags backfill` Apache Airflow CLI command fail? Is there a workaround?](t-apache-airflow-202.md#troubleshooting-cli-backfill)
   + [Operators](t-apache-airflow-202.md#troubleshooting-operators-202)
     + [I received a `PermissionError: [Errno 13] Permission denied` error using the S3Transform operator](t-apache-airflow-202.md#op-s3-transform)
 + [Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v1\.10\.12](t-apache-airflow-11012.md)

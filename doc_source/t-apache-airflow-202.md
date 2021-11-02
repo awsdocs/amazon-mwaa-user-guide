@@ -14,6 +14,7 @@ The topics on this page describe resolutions to Apache Airflow v2\.0\.2 Python d
   + [I see my tasks stuck or not completing](#stranded-tasks-202)
 + [CLI](#troubleshooting-cli-202)
   + [I see a '503' error when triggering a DAG in the CLI](#cli-toomany-202)
+  + [Why does the `dags backfill` Apache Airflow CLI command fail? Is there a workaround?](#troubleshooting-cli-backfill)
 + [Operators](#troubleshooting-operators-202)
   + [I received a `PermissionError: [Errno 13] Permission denied` error using the S3Transform operator](#op-s3-transform)
 
@@ -193,6 +194,24 @@ The following topic describes the errors you may receive when running Airflow CL
 ### I see a '503' error when triggering a DAG in the CLI<a name="cli-toomany-202"></a>
 
 The Airflow CLI runs on the Apache Airflow *Web server*, which has limited concurrency\. Typically a maximum of 4 CLI commands can run simultaneously\.
+
+### Why does the `dags backfill` Apache Airflow CLI command fail? Is there a workaround?<a name="troubleshooting-cli-backfill"></a>
+
+ The `backfill` command, like other Apache Airflow CLI commands, parses all DAGs locally before any DAGs are processed, regardless of which DAG the CLI operation applies to\. Because plugins and requirements are not yet installed on the web server by the time the CLI command runs, the parsing operation fails, and the `backfill` operation is not invoked\. If you did not have any requirements nor plugins in your environment, the `backfill` operation would succeed\. 
+
+ In order to be able to run the `backfill` CLI command, we recommend invoking it in a bash operator\. In a bash operator, `backfill` is initiated from the worker, allowing the DAGs to parse successfully as all necessary requirements and plguins are available and installed\. The following example shows how you can create a DAG with a `BashOperator` to run `backfill`\. 
+
+```
+from airflow import DAG
+from airflow.operators.bash_operator import BashOperator
+from airflow.utils.dates import days_ago
+
+with DAG(dag_id="backfill_dag", schedule_interval=None, catchup=False, start_date=days_ago(1)) as dag:
+    cli_command = BashOperator(
+        task_id="bash_command",
+        bash_command="airflow dags backfill my_dag_id"
+    )
+```
 
 ## Operators<a name="troubleshooting-operators-202"></a>
 

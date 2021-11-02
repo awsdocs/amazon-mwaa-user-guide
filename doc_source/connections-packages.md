@@ -23,11 +23,3 @@ When you create an Amazon MWAA environment in Apache Airflow v2\.0\.2, Amazon MW
 |  Oracle Connection  |  [apache\-airflow\-providers\-oracle==1\.1\.0](https://airflow.apache.org/docs/apache-airflow-providers-oracle/stable/index.html)  | 
 |  Presto Connection  |  [apache\-airflow\-providers\-presto==1\.0\.2](https://airflow.apache.org/docs/apache-airflow-providers-presto/stable/index.html)  | 
 |  SFTP Connection  |  [apache\-airflow\-providers\-sftp==1\.2\.0](https://airflow.apache.org/docs/apache-airflow-providers-sftp/stable/index.html)  | 
-|  Slack Connection  |  [apache\-airflow\-providers\-slack==3\.0\.0](https://airflow.apache.org/docs/apache-airflow-providers-slack/stable/index.html)  | 
-|  Celery Connection  |  [apache\-airflow\-providers\-celery==1\.0\.1](https://airflow.apache.org/docs/apache-airflow-providers-celery/stable/index.html)  | 
-|  Datadog Connection  |  [apache\-airflow\-providers\-datadog==1\.0\.1](https://airflow.apache.org/docs/apache-airflow-providers-datadog/stable/index.html)  | 
-|  Snowflake Connection  |  [apache\-airflow\-providers\-snowflake==1\.2\.0](https://airflow.apache.org/docs/apache-airflow-providers-snowflake/stable/index.html)  | 
-|  IMAP Connection  |  [apache\-airflow\-providers\-imap==1\.0\.1](https://airflow.apache.org/docs/apache-airflow-providers-imap/stable/index.html)  | 
-|  SQLite Connection  |  [apache\-airflow\-providers\-sqlite==1\.0\.2 ](https://airflow.apache.org/docs/apache-airflow-providers-sqlite/stable/index.html)  | 
-|  OpenSearch Connection  |  [apache\-airflow\-providers\-elasticsearch==1\.0\.3](https://airflow.apache.org/docs/apache-airflow-providers-elasticsearch/stable/index.html)  | 
-|  Exasol Connection  |  [apache\-airflow\-providers\-exasol==1\.1\.1](https://airflow.apache.org/docs/apache-airflow-providers-exasol/stable/index.html)  | 

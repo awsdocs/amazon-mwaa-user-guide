@@ -11,7 +11,7 @@ This page describes common questions you may encounter when using Amazon Managed
 + [Use cases](#t-common-questions)
   + [When should I use AWS Step Functions vs\. Amazon MWAA?](#t-step-functions)
 + [Environment specifications](#q-supported-features)
-  + [How much ephemeral storage is available to each environment?](#worker-storage)
+  + [How much task storage is available to each environment?](#worker-storage)
   + [What is the default operating system used for Amazon MWAA environments?](#default-os)
   + [Can I use a custom image for my Amazon MWAA environment?](#custom-image)
   + [Is MWAA HIPAA compliant?](#hipaa-compliance)
@@ -69,9 +69,9 @@ Yes\. Although you can specify up to 25 Apache Airflow *Workers* on the Amazon M
 
 ## Environment specifications<a name="q-supported-features"></a>
 
-### How much ephemeral storage is available to each environment?<a name="worker-storage"></a>
+### How much task storage is available to each environment?<a name="worker-storage"></a>
 
-The ephemeral storage \(RAM\) is determined by the environment class you specify\. To learn more, see [Amazon MWAA environment class](environment-class.md)\. 
+The task storage is limited to 10 GB, and is specified by [Amazon ECS Fargate 1\.3](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-storage.html#fargate-task-storage-pv13)\. The amount of RAM is determined by the environment class you specify\. For more information about environment classes, see [Amazon MWAA environment class](environment-class.md)\.
 
 ### What is the default operating system used for Amazon MWAA environments?<a name="default-os"></a>
 
@@ -127,11 +127,11 @@ You can limit access by specifying an environment name in AWS Identity and Acces
 Your Apache Airflow Operators can store temporary data on the *Workers*\. Apache Airflow *Workers* can access temporary files in the `/tmp` on the Fargate containers for your environment\.
 
 **Note**  
-Total ephemeral storage is limited to 4 GB\. There's no guarantee that subsequent tasks will be run on the same Fargate container instance, which might use a different `/tmp` folder\.
+Total task storage is limited to 10 GB, according to [Amazon ECS Fargate 1\.3](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-storage.html#fargate-task-storage-pv13)\. There's no guarantee that subsequent tasks will run on the same Fargate container instance, which might use a different `/tmp` folder\.
 
 ### Does Amazon MWAA support shared Amazon VPCs or shared subnets?<a name="shared-vpc"></a>
 
-Amazon MWAA doesn't currently support shared Amazon VPCs or shared subnets\. The VPC you select when you create an environment should be owned by the account that is attempting to create environment\. To learn more, see [Work with shared VPCs](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html#vpc-share-unsupported-services)\.
+ Amazon MWAA does not support shared Amazon VPCs or shared subnets\. The Amazon VPC you select when you create an environment should be owned by the account that is attempting to create the environment\. However, you can route traffic from an Amazon VPC in the Amazon MWAA account to a shared VPC\. For more information, and to see an example of routing traffic to a shared Amazon VPC, see [Centralized outbound routing to the internet](https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-nat-igw.html) in the *Amazon VPC Transit Gateways Guide*\. 
 
 ## Metrics<a name="q-metrics"></a>
 
