@@ -49,7 +49,7 @@ The following example uses a curl script to call the [create\-web\-login\-token]
 After copying it to your clipboard, you may need to use **Edit > Paste** from your shell menu\.
 
    ```
-   CLI_JSON=$(aws mwaa --region YOUR_REGION create-cli-token --name YOUR_HOST_NAME) \
+   CLI_JSON=$(aws mwaa --region YOUR_REGION create-cli-token --name YOUR_ENVIRONMENT_NAME) \
      && CLI_TOKEN=$(echo $CLI_JSON | jq -r '.CliToken') \
      && WEB_SERVER_HOSTNAME=$(echo $CLI_JSON | jq -r '.WebServerHostname') \
      && CLI_RESULTS=$(curl --request POST "https://$WEB_SERVER_HOSTNAME/aws_mwaa/cli" \
@@ -85,7 +85,7 @@ After copying it to your clipboard, you may need to use **Edit > Paste** from yo
 After copying it to your clipboard, you may need to use **Edit > Paste** from your shell menu\.
 
    ```
-   CLI_JSON=$(aws mwaa --region YOUR_REGION create-cli-token --name YOUR_HOST_NAME) \
+   CLI_JSON=$(aws mwaa --region YOUR_REGION create-cli-token --name YOUR_ENVIRONMENT_NAME) \
      && CLI_TOKEN=$(echo $CLI_JSON | jq -r '.CliToken') \
      && WEB_SERVER_HOSTNAME=$(echo $CLI_JSON | jq -r '.WebServerHostname') \
      && CLI_RESULTS=$(curl --request POST "https://$WEB_SERVER_HOSTNAME/aws_mwaa/cli" \
