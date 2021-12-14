@@ -6,7 +6,7 @@ AWS Secrets Manager is a supported alternative Apache Airflow backend on an Amaz
 [AWS Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) Parameter Store is not a supported backend at this time on Amazon MWAA\.
 
 **Contents**
-+ [Step one: Permit access of the secret keys to Amazon MWAA](#connections-sm-policy)
++ [Step one: Provide Amazon MWAA with permission to access Secrets Manager secret keys](#connections-sm-policy)
 + [Step two: Create the Secrets Manager backend as an Apache Airflow configuration option](#connections-sm-aa-configuration)
 + [Step three: Generate an Apache Airflow AWS connection URI string](#connections-sm-aa-uri)
 + [Step four: Add the variables in Secrets Manager](#connections-sm-createsecret-variables)
@@ -15,7 +15,7 @@ AWS Secrets Manager is a supported alternative Apache Airflow backend on an Amaz
 + [Using AWS blogs and tutorials](#connections-sm-blogs)
 + [What's next?](#connections-sm-next-up)
 
-## Step one: Permit access of the secret keys to Amazon MWAA<a name="connections-sm-policy"></a>
+## Step one: Provide Amazon MWAA with permission to access Secrets Manager secret keys<a name="connections-sm-policy"></a>
 
 The [execution role](mwaa-create-role.md) for your Amazon MWAA environment needs read access to the secret key in AWS Secrets Manager\. The following IAM policy allows read\-write access using the AWS managed [SecretsManagerReadWrite](https://console.aws.amazon.com/iam/home?#/policies/arn:aws:iam::aws:policy/SecretsManagerReadWrite$jsonEditor) policy\.
 
@@ -32,6 +32,32 @@ The [execution role](mwaa-create-role.md) for your Amazon MWAA environment needs
 1. Type `SecretsManagerReadWrite` in the **Filter policies** text field\.
 
 1. Choose **Attach policy**\.
+
+ If you do not want to use an AWS managed permission policy, you can directly update your environment's execution role to allow any level of access to your Secrets Manager resources\. For example, the following policy statement grants read access to all secrets you create in a specific AWS Region in Secrets Manager\. 
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:GetResourcePolicy",
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret",
+                "secretsmanager:ListSecretVersionIds"
+            ],
+            "Resource": "arn:aws:secretsmanager:us-west-2:012345678910:secret:*",
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": "secretsmanager:ListSecrets",
+            "Resource": "*"
+        }
+    ]
+}
+```
 
 ## Step two: Create the Secrets Manager backend as an Apache Airflow configuration option<a name="connections-sm-aa-configuration"></a>
 

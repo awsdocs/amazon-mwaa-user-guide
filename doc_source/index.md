@@ -51,6 +51,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Tutorial: Configuring the aws-mwaa-local-runner in a Continuous Delivery (CD) pipeline](tutorials-docker.md)
    + [Tutorial: Configuring private network access using an AWS Client VPN](tutorials-private-network-vpn-client.md)
    + [Tutorial: Configuring private network access using a Linux Bastion Host](tutorials-private-network-bastion.md)
+   + [Tutorial: Restricting an Amazon MWAA user's access to a subset of DAGs](limit-access-to-dags.md)
 + [Code examples for Amazon Managed Workflows for Apache Airflow (MWAA)](sample-code.md)
    + [Using a DAG to import variables in the CLI](samples-variables-import.md)
    + [Creating an SSH connection using the SSHOperator](samples-ssh.md)

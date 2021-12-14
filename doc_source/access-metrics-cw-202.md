@@ -77,7 +77,7 @@ The Apache Airflow metrics in this section contain data about [Apache Airflow *C
 |  DagBagSize  |  dagbag\_size  |  Count  |  Function, DAG Processing  | 
 |  DagCallbackExceptions  |  dag\.callback\_exceptions  |  Count  |  DAG, All  | 
 |  FailedSLAEmailAttempts  |  sla\_email\_notification\_failure  |  Count  |  Function, Scheduler  | 
-|  FinishedTaskInstances  |  ti\.finish\.\{dag\_id\}\.\{task\_id\}\.\{state\}  |  Count  |  DAG, All Task, All State, \{state\}  | 
+|  TaskInstanceFinished  |  ti\.finish\.\{dag\_id\}\.\{task\_id\}\.\{state\}  |  Count  |  DAG, All Task, All State, \{state\}  | 
 |  JobEnd  |  \{job\_name\}\_end  |  Count  |  Job, \{job\_name\}  | 
 |  JobHeartbeatFailure  |  \{job\_name\}\_heartbeat\_failure   |  Count  |  Job, \{job\_name\}  | 
 |  JobStart  |  \{job\_name\}\_start  |  Count  |  Job, \{job\_name\}  | 

@@ -5,6 +5,7 @@ The topics on this page describe resolutions to Apache Airflow v2\.0\.2 Python d
 **Contents**
 + [Connections](#troubleshooting-conn-202)
   + [I can't connect to Secrets Manager](#access-secrets-manager-202)
+  + [How do I configure `secretsmanager:ResourceTag/<tag-key>` secrets manager conditions or a resource restriction in my execution role policy?](#access-secrets-manager-condition-keys-202)
   + [I can't connect to Snowflake](#missing-snowflake)
   + [I can't see my connection in the Airflow UI](#connection-type-missing)
 + [Web server](#troubleshooting-webserver-202)
@@ -31,6 +32,13 @@ We recommend the following steps:
 1. Learn how to use the secret key for an Apache Airflow variable \(`test-variable`\) in [Using a secret key in AWS Secrets Manager for an Apache Airflow variable](samples-secrets-manager-var.md)\.
 
 1. Learn how to use the secret key for an Apache Airflow connection \(`myconn`\) in [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)\.
+
+### How do I configure `secretsmanager:ResourceTag/<tag-key>` secrets manager conditions or a resource restriction in my execution role policy?<a name="access-secrets-manager-condition-keys-202"></a>
+
+**Note**  
+ Applies to Apache Airflow version 2\.0 and earlier\. 
+
+ Currently, you cannot limit access to Secrets Manager secrets by using condition keys or other resource restrictions in your environment's execution role, due to a known issue in Apache Airflow\. 
 
 ### I can't connect to Snowflake<a name="missing-snowflake"></a>
 

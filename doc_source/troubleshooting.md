@@ -6,6 +6,7 @@ This topic describes common issues and errors you may encounter when using Apach
 + [Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v2\.0\.2](t-apache-airflow-202.md)
   + [Connections](t-apache-airflow-202.md#troubleshooting-conn-202)
     + [I can't connect to Secrets Manager](t-apache-airflow-202.md#access-secrets-manager-202)
+    + [How do I configure `secretsmanager:ResourceTag/<tag-key>` secrets manager conditions or a resource restriction in my execution role policy?](t-apache-airflow-202.md#access-secrets-manager-condition-keys-202)
     + [I can't connect to Snowflake](t-apache-airflow-202.md#missing-snowflake)
     + [I can't see my connection in the Airflow UI](t-apache-airflow-202.md#connection-type-missing)
   + [Web server](t-apache-airflow-202.md#troubleshooting-webserver-202)

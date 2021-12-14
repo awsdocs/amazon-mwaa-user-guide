@@ -39,7 +39,7 @@ To learn more, see [Apache Airflow configuration options](configuring-env-variab
 
 ## Airflow Scheduler<a name="best-practices-tuning-scheduler"></a>
 
-The Apache Airflow *Scheduler* is a core component of Apache Airflow\. An issue with the *Scheduler* can prevent DAGs from being parsed and tasks from being scheduled\. 
+The Apache Airflow *Scheduler* is a core component of Apache Airflow\. An issue with the *Scheduler* can prevent DAGs from being parsed and tasks from being scheduled\. For more information about Apache Airflow *Scheduler* tuning, see [Scheduler Tunables](https://airflow.apache.org/docs/apache-airflow/2.0.2/scheduler.html#scheduler-ha-tunables) in the Apache Airflow documentation website\.
 
 **Note**  
 We recommend exercising caution when changing the default values for the parameters in this section\.
@@ -83,7 +83,7 @@ Two threads are allowed per vCPU for an environment class\. At least one thread 
 
 ## DAG folders<a name="best-practices-tuning-dag-folders"></a>
 
-The Apache Airflow *Scheduler* continuously scans the DAGs folder on your environment\. Any contained `plugins.zip` files, or Python \(`.py`\) files containing “airflow” import statements\. Any resulting Python DAG objects are then placed into a *DagBag* for that file to be processed by the *Scheduler* to determine what, if any, tasks need to be scheduled\. Dag file parsing occurs regardless of whether the files contain any viable DAG objects\.
+The Apache Airflow *Scheduler* continuously scans the DAGs folder on your environment\. Any contained `plugins.zip` files, or Python \(`.py`\) files containing “airflow” import statements\. Any resulting Python DAG objects are then placed into a *DagBag* for that file to be processed by the *Scheduler* to determine what, if any, tasks need to be scheduled\. Dag file parsing occurs regardless of whether the files contain any viable DAG objects\. 
 
 **Note**  
 We recommend exercising caution when changing the default values for the parameters in this section\.
@@ -99,7 +99,7 @@ This section describes the configuration options available for the *DAGs folder*
 | Airflow version | Airflow configuration option | Default | Description | Use case | 
 | --- | --- | --- | --- | --- | 
 |  v2\.0\.2  |  [scheduler\.dag\_dir\_list\_interval](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#dag-dir-list-interval)  |  300 seconds  |  The number of seconds the DAGs folder should be scanned for new files\.  |  You can use this option to free up resources by **increasing** the number of seconds to parse the DAGs folder\. We recommend increasing this value if you're seeing long parsing times in `total_parse_time metrics`, which may be due to a large number of files in your DAGs folder\.  | 
-|  v2\.0\.2  |  [scheduler\.min\_file\_process\_interval](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#min-file-process-interval)  |  30 seconds  |  The number of seconds a DAG file is parsed\.  |  You can use this option to free up resources by **decreasing** the number of seconds to parse a DAG file\. For example, if you specify a value of `30`, the DAG file is parsed every thirty seconds\. After which, an update to the DAG is reflected after thirty seconds\. We recommend keeping this number low to increase the CPU usage available on your environment\.  | 
+|  v2\.0\.2  |  [scheduler\.min\_file\_process\_interval](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#min-file-process-interval)  |  30 seconds  |  The number of seconds after which the scheduler parses a DAG and updates to the DAG are reflected\.  |  You can use this option to free up resources by **increasing** the number of seconds that the scheduler waits before parsing a DAG\. For example, if you specify a value of `30`, the DAG file is parsed after every 30 seconds\. We recommend keeping this number high to increase the CPU usage available on your environment\.  | 
 
 ------
 #### [ Airflow v1\.10\.12 ]
@@ -108,7 +108,7 @@ This section describes the configuration options available for the *DAGs folder*
 | Airflow version | Airflow configuration option | Default | Description | Use case | 
 | --- | --- | --- | --- | --- | 
 |  v1\.10\.12  |  [scheduler\.dag\_dir\_list\_interval](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#dag-dir-list-interval)  |  300 seconds  |  The number of seconds the DAGs folder should be scanned for new files\.  |  You can use this option to free up resources by **increasing** the number of seconds to parse the DAGs folder\. We recommend increasing this value if you're seeing long parsing times in `total_parse_time metrics`, which may be due to a large number of files in your DAGs folder\.  | 
-|  v1\.10\.12  |  [scheduler\.min\_file\_process\_interval](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#min-file-process-interval)  |  30 seconds  |  The number of seconds a DAG file is parsed\.  |  You can use this option to free up resources by **decreasing** the number of seconds to parse a DAG file\. For example, if you specify a value of `30`, the DAG file is parsed every thirty seconds\. After which, an update to the DAG is reflected after thirty seconds\. We recommend keeping this number low to increase the CPU usage available on your environment\.  | 
+|  v1\.10\.12  |  [scheduler\.min\_file\_process\_interval](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#min-file-process-interval)  |  30 seconds  |  The number of seconds after which the scheduler parses a DAG and updates to the DAG are reflected\.  |  You can use this option to free up resources by **increasing** the number of seconds that the scheduler waits before parsing a DAG\. For example, if you specify a value of `30`, the DAG file is parsed after every 30 seconds\. We recommend keeping this number high to increase the CPU usage available on your environment\.  | 
 
 ------
 
