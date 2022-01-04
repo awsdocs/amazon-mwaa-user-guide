@@ -139,7 +139,7 @@ We recommend the following steps:
  The Aurora PostgreSQL metadatabase is part of the [Amazon MWAA service architecture](what-is-mwaa.md#architecture-mwaa) and is not visible in your AWS account\. 
  Database\-related errors are usually a symptom of scheduler failure and not the root cause\. 
 
-1.  If the scheduler is not running, it might be due to a number of factors such as [dependency installation failures](best-practices-dependencies.md), or an [oroverloaded scheduler](best-practices-tuning.md)\. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\. To learn more, see [Monitoring and metrics for Amazon Managed Workflows for Apache Airflow \(MWAA\)](cw-metrics.md)\.
+1.  If the scheduler is not running, it might be due to a number of factors such as [dependency installation failures](best-practices-dependencies.md), or an [overloaded scheduler](best-practices-tuning.md)\. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\. To learn more, see [Monitoring and metrics for Amazon Managed Workflows for Apache Airflow \(MWAA\)](cw-metrics.md)\.
 
 ## Tasks<a name="troubleshooting-tasks-202"></a>
 
