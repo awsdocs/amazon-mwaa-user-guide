@@ -325,7 +325,7 @@ The following example shows an execution role policy you can use for an [AWS own
                 "logs:GetQueryResults"
             ],
             "Resource": [
-                "arn:aws:logs:{{region}}:{{accountId}}:log-group:airflow-{{envName}}-*"
+                "arn:aws:logs:{your-region}:{your-account-id}:log-group:airflow-{your-environment-name}-*"
             ]
         },
         {
