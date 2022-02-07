@@ -30,19 +30,19 @@ The following section describes the different ways to install Python dependencie
 The following section describes how to specify Python dependencies from the [Python Package Index](https://pypi.org/) in a `requirements.txt` file\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 1. **Test locally**\. Add additional libraries iteratively to find the right combination of packages and their versions, before creating a `requirements.txt` file\. To run the Amazon MWAA CLI utility, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
-1. **Review the Airflow package extras**\. For example, the [core extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#core-airflow-extras), [provider extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#providers-extras), [locally installed software extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#locally-installed-software-extras), [external service extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#external-services-extras), ["other" extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#other-extras), [bundle extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#bundle-extras), [doc extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#doc-extras), and [software extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#apache-software-extras) have changed\. To view a list of the packages installed for Apache Airflow v2\.0\.2 on Amazon MWAA, see [https://github\.com/aws/aws\-mwaa\-local\-runner/blob/main/docker/config/requirements\.txt](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt)\.
+1. **Review the Apache Airflow package extras**\. For example, the [core extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#core-airflow-extras), [provider extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#providers-extras), [locally installed software extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#locally-installed-software-extras), [external service extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#external-services-extras), ["other" extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#other-extras), [bundle extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#bundle-extras), [doc extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#doc-extras), and [software extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#apache-software-extras) have changed\. To view a list of the packages installed for Apache Airflow v2 on Amazon MWAA, see [Amazon MWAA local runner `requirements.txt`](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on the GitHub website\.
 
-1. **Add the constraints file**\. Add the constraints file for Apache Airflow v2\.0\.2 to the top of your `requirements.txt` file\. If the constraints file determines that `xyz==1.0` package is not compatible with other packages on your environment, the `pip3 install` will fail to prevent incompatible libraries from being installed to your environment\. 
+1. **Add the constraints file**\. Add the constraints file for your Apache Airflow v2 environment to the top of your `requirements.txt` file\. If the constraints file determines that `xyz==1.0` package is not compatible with other packages on your environment, the `pip3 install` will fail to prevent incompatible libraries from being installed to your environment\. In the following example, replace `{Airflow-version}` with your environment's version number\.
 
    ```
-   --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt"
+   --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-{Airflow-version}/constraints-3.7.txt"
    ```
 
-1. **Apache Airflow packages**\. Add the [Apache Airflow v2\.0\.2 package extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html) and the version \(`==`\)\. This helps to prevent packages of the same name, but different version, from being installed on your environment\.
+1. **Apache Airflow packages**\. Add the [Apache Airflow v2 package extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html) and the version \(`==`\)\. This helps to prevent packages of the same name, but different version, from being installed on your environment\.
 
    ```
    apache-airflow[package-extra]==2.0.2
@@ -55,7 +55,7 @@ The following section describes how to specify Python dependencies from the [Pyt
    ```  
 **Example Boto3 and psycopg2\-binary**  
 
-   This example is provided for demonstration purposes\. The boto and psycopg2\-binary libraries are included with the Apache Airflow v2\.0\.2 base install and don't need to be specified in a `requirements.txt` file\.
+   This example is provided for demonstration purposes\. The boto and psycopg2\-binary libraries are included with the Apache Airflow v2 base install and don't need to be specified in a `requirements.txt` file\.
 
    ```
    boto3==1.17.54
@@ -67,7 +67,7 @@ The following section describes how to specify Python dependencies from the [Pyt
    If a package is specified without a version, Amazon MWAA installs the latest version of the package from [PyPi\.org](https://pypi.org)\. This version may conflict with other packages in your `requirements.txt`\.
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 1. **Test locally**\. Add additional libraries iteratively to find the right combination of packages and their versions, before creating a `requirements.txt` file\. To run the Amazon MWAA CLI utility, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 

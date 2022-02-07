@@ -13,7 +13,7 @@ The following sample walks you through the steps to create a custom plugin that 
 + [What's next?](#samples-env-variables-next-up)
 
 ## Version<a name="samples-env-variables-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-env-variables-prereqs"></a>
 
@@ -24,7 +24,7 @@ To use the sample code on this page, you'll need the following:
 + No additional permissions are required to use the sample code on this page\.
 
 ## Requirements<a name="samples-env-variables-dependencies"></a>
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1\.10\.12 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
++ To use with Apache Airflow v1, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
 
 ## Custom plugin<a name="samples-env-variables-plugins-code"></a>
 
@@ -67,7 +67,7 @@ The following steps show how to create `plugins.zip`\. The contents of this exam
 
 ## Airflow configuration options<a name="samples-env-variables-airflow-config"></a>
 
-If you're using Apache Airflow v2\.0\.2, add `core.lazy_load_plugins : False` as an Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2\.0](configuring-env-variables.md#configuring-2.0-airflow-override)\.
+If you're using Apache Airflow v2, add `core.lazy_load_plugins : False` as an Apache Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2](configuring-env-variables.md#configuring-2.0-airflow-override)\.
 
 ## What's next?<a name="samples-env-variables-next-up"></a>
 + Learn how to upload the `requirements.txt` file in this example to your Amazon S3 bucket in [Installing Python dependencies](working-dags-dependencies.md)\.

@@ -9,5 +9,5 @@ Monitoring is an important part of maintaining the reliability, availability, an
 + [Viewing audit logs in AWS CloudTrail](monitoring-cloudtrail.md)
 + [Viewing Airflow logs in Amazon CloudWatch](monitoring-airflow.md)
 + [Monitoring dashboards and alarms on Amazon MWAA](monitoring-dashboard.md)
-+ [Apache Airflow v2\.0\.2 environment metrics in CloudWatch](access-metrics-cw-202.md)
-+ [Apache Airflow v1\.10\.12 environment metrics in CloudWatch](access-metrics-cw-110.md)
++ [Apache Airflow v2 environment metrics in CloudWatch](access-metrics-cw-202.md)
++ [Apache Airflow v1 environment metrics in CloudWatch](access-metrics-cw-110.md)

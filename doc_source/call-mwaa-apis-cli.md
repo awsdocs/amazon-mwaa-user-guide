@@ -42,14 +42,14 @@ aws mwaa create-cli-token --name YOUR_ENVIRONMENT_NAME
 The following example uses a curl script to call the [create\-web\-login\-token](https://docs.aws.amazon.com/cli/latest/reference/mwaa/create-cli-token.html) command in the AWS CLI to invoke the Apache Airflow CLI via an endpoint on the Apache Airflow web server\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
-1. Copy the cURL statement from your text file and paste it in your command shell\.
+1. Copy the curl statement from your text file and paste it in your command shell\.
 **Note**  
 After copying it to your clipboard, you may need to use **Edit > Paste** from your shell menu\.
 
    ```
-   CLI_JSON=$(aws mwaa --region YOUR_REGION create-cli-token --name YOUR_HOST_NAME) \
+   CLI_JSON=$(aws mwaa --region YOUR_REGION create-cli-token --name YOUR_ENVIRONMENT_NAME) \
      && CLI_TOKEN=$(echo $CLI_JSON | jq -r '.CliToken') \
      && WEB_SERVER_HOSTNAME=$(echo $CLI_JSON | jq -r '.WebServerHostname') \
      && CLI_RESULTS=$(curl --request POST "https://$WEB_SERVER_HOSTNAME/aws_mwaa/cli" \
@@ -78,14 +78,14 @@ After copying it to your clipboard, you may need to use **Edit > Paste** from yo
    ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 1. Copy the cURL statement from your text file and paste it in your command shell\.
 **Note**  
 After copying it to your clipboard, you may need to use **Edit > Paste** from your shell menu\.
 
    ```
-   CLI_JSON=$(aws mwaa --region YOUR_REGION create-cli-token --name YOUR_HOST_NAME) \
+   CLI_JSON=$(aws mwaa --region YOUR_REGION create-cli-token --name YOUR_ENVIRONMENT_NAME) \
      && CLI_TOKEN=$(echo $CLI_JSON | jq -r '.CliToken') \
      && WEB_SERVER_HOSTNAME=$(echo $CLI_JSON | jq -r '.WebServerHostname') \
      && CLI_RESULTS=$(curl --request POST "https://$WEB_SERVER_HOSTNAME/aws_mwaa/cli" \
@@ -122,7 +122,7 @@ After copying it to your clipboard, you may need to use **Edit > Paste** from yo
 The following example uses a bash script to call the [create\-cli\-token](https://docs.aws.amazon.com/cli/latest/reference/mwaa/create-cli-token.html) command in the AWS CLI to create an Apache Airflow CLI token\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 1. Copy the contents of the following code sample and save locally as `get-cli-token.sh`\.
 
@@ -153,7 +153,7 @@ The following example uses a bash script to call the [create\-cli\-token](https:
    ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 1. Copy the contents of the following code sample and save locally as `get-cli-token.sh`\.
 
@@ -190,7 +190,7 @@ The following example uses a bash script to call the [create\-cli\-token](https:
 The following example uses the [boto3 create\_cli\_token](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/mwaa.html#MWAA.Client.create_cli_token) method in a Python script to create an Apache Airflow CLI token and trigger a DAG\. You can run this script outside of Amazon MWAA\. The only thing you need to do is install the boto3 library\. You may want to create a virtual environment to install the library\. It assumes you have [configured AWS authentication credentials](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html#configuration) for your account\. 
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 1. Copy the contents of the following code sample and save locally as `create-cli-token.py`\.
 
@@ -256,7 +256,7 @@ The following example uses the [boto3 create\_cli\_token](https://boto3.amazonaw
    ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 1. Copy the contents of the following code sample and save locally as `create-cli-token.py`\.
 

@@ -5,7 +5,7 @@ Apache Airflow configuration options can be attached to your Amazon Managed Work
 **Contents**
 + [Prerequisites](#configuring-env-variables-prereqs)
 + [How it works](#configuring-env-variables-how)
-+ [Using configuration options to load plugins in 2\.0](#configuring-2.0-airflow-override)
++ [Using configuration options to load plugins in Apache Airflow v2](#configuring-2.0-airflow-override)
 + [Configuration options overview](#configuring-env-variables-customizing)
   + [Apache Airflow configuration options](#configuring-env-variables-airflow-ref)
   + [Apache Airflow reference](#configuring-env-variables-reference-options)
@@ -37,9 +37,9 @@ When you create an environment, Amazon MWAA attaches the configuration settings 
 
 While we don't expose the `airflow.cfg` in the Apache Airflow UI of an Amazon MWAA environment, you can change the Apache Airflow configuration options directly on the Amazon MWAA console and continue using all other settings in `airflow.cfg`\.
 
-## Using configuration options to load plugins in 2\.0<a name="configuring-2.0-airflow-override"></a>
+## Using configuration options to load plugins in Apache Airflow v2<a name="configuring-2.0-airflow-override"></a>
 
-By default in Apache Airflow 2\.0, plugins are configured to be "lazily" loaded using the `core.lazy_load_plugins : True` setting\. If you're using custom plugins in Apache Airflow v2\.0\.2, you must add `core.lazy_load_plugins : False` as an Airflow configuration option to load plugins at the start of each Airflow process to override the default setting\.
+By default in Apache Airflow v2, plugins are configured to be "lazily" loaded using the `core.lazy_load_plugins : True` setting\. If you're using custom plugins in Apache Airflow v2, you must add `core.lazy_load_plugins : False` as an Apache Airflow configuration option to load plugins at the start of each Airflow process to override the default setting\.
 
 ## Configuration options overview<a name="configuring-env-variables-customizing"></a>
 
@@ -56,6 +56,7 @@ The following image shows where you can customize the **Apache Airflow configura
 ### Apache Airflow reference<a name="configuring-env-variables-reference-options"></a>
 
 The following section contains links to the list of available Apache Airflow configuration options in the *Apache Airflow reference guide*\.
++ **v2\.2\.2**: [Apache Airflow v2\.2\.2 configuration options](https://airflow.apache.org/docs/apache-airflow/2.2.2/configurations-ref.html)
 + **v2\.0\.2**: [Apache Airflow v2\.0\.2 configuration options](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html)
 + **v1\.10\.12**: [Apache Airflow v1\.10\.12 configuration options](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html)
 
@@ -90,30 +91,30 @@ The following list shows the Airflow email notification configuration options av
 We recommend using port 587 for SMTP traffic\. By default, AWS blocks outbound SMTP traffic on port 25 of all Amazon EC2 instances\. If you want to send outbound traffic on port 25, you can [request for this restriction to be removed](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-port-25-throttle/)\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v2\.0\.2  |  email\.email\_backend  |  The Apache Airflow utility used for email notifications in [email\_backend](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#email-backend)\.  |  airflow\.utils\.email\.send\_email\_smtp  | 
-|  v2\.0\.2  |  smtp\.smtp\_host  |  The name of the outbound server used for the email address in [smtp\_host](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-host)\.  |  localhost  | 
-|  v2\.0\.2  |  smtp\.smtp\_starttls  |  Transport Layer Security \(TLS\) is used to encrypt the email over the Internet in [smtp\_starttls](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-starttls)\.  |  False  | 
-|  v2\.0\.2  |  smtp\.smtp\_ssl  |  Secure Sockets Layer \(SSL\) is used to connect the server and email client in [smtp\_ssl](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-ssl)\.  |  True  | 
-|  v2\.0\.2  |  smtp\.smtp\_port  |  The Transmission Control Protocol \(TCP\) port designated to the server in [smtp\_port](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-port)\.  |  587  | 
-|  v2\.0\.2  |  smtp\.smtp\_mail\_from  |  The outbound email address in [smtp\_mail\_from](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-mail-from)\.  |  myemail@domain\.com  | 
+|  v2  |  email\.email\_backend  |  The Apache Airflow utility used for email notifications in [email\_backend](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#email-backend)\.  |  airflow\.utils\.email\.send\_email\_smtp  | 
+|  v2  |  smtp\.smtp\_host  |  The name of the outbound server used for the email address in [smtp\_host](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-host)\.  |  localhost  | 
+|  v2  |  smtp\.smtp\_starttls  |  Transport Layer Security \(TLS\) is used to encrypt the email over the Internet in [smtp\_starttls](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-starttls)\.  |  False  | 
+|  v2  |  smtp\.smtp\_ssl  |  Secure Sockets Layer \(SSL\) is used to connect the server and email client in [smtp\_ssl](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-ssl)\.  |  True  | 
+|  v2  |  smtp\.smtp\_port  |  The Transmission Control Protocol \(TCP\) port designated to the server in [smtp\_port](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-port)\.  |  587  | 
+|  v2  |  smtp\.smtp\_mail\_from  |  The outbound email address in [smtp\_mail\_from](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#smtp-mail-from)\.  |  myemail@domain\.com  | 
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v1\.10\.12  |  email\.email\_backend  |  The Apache Airflow utility used for email notifications in [email\_backend](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#email-backend)\.  |  airflow\.utils\.email\.send\_email\_smtp  | 
-|  v1\.10\.12  |  smtp\.smtp\_host  |  The name of the outbound server used for the email address in [smtp\_host](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-host)\.  |  localhost  | 
-|  v1\.10\.12  |  smtp\.smtp\_starttls  |  Transport Layer Security \(TLS\) is used to encrypt the email over the Internet in [smtp\_starttls](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-starttls)\.  |  False  | 
-|  v1\.10\.12  |  smtp\.smtp\_ssl  |  Secure Sockets Layer \(SSL\) is used to connect the server and email client in [smtp\_ssl](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-ssl)\.  |  True  | 
-|  v1\.10\.12  |  smtp\.smtp\_port  |  The Transmission Control Protocol \(TCP\) port designated to the server in [smtp\_port](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-port)\.  |  587  | 
-|  v1\.10\.12  |  smtp\.smtp\_mail\_from  |  The outbound email address in [smtp\_mail\_from](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-mail-from)\.  |  myemail@domain\.com  | 
+|  v1  |  email\.email\_backend  |  The Apache Airflow utility used for email notifications in [email\_backend](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#email-backend)\.  |  airflow\.utils\.email\.send\_email\_smtp  | 
+|  v1  |  smtp\.smtp\_host  |  The name of the outbound server used for the email address in [smtp\_host](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-host)\.  |  localhost  | 
+|  v1  |  smtp\.smtp\_starttls  |  Transport Layer Security \(TLS\) is used to encrypt the email over the Internet in [smtp\_starttls](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-starttls)\.  |  False  | 
+|  v1  |  smtp\.smtp\_ssl  |  Secure Sockets Layer \(SSL\) is used to connect the server and email client in [smtp\_ssl](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-ssl)\.  |  True  | 
+|  v1  |  smtp\.smtp\_port  |  The Transmission Control Protocol \(TCP\) port designated to the server in [smtp\_port](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-port)\.  |  587  | 
+|  v1  |  smtp\.smtp\_mail\_from  |  The outbound email address in [smtp\_mail\_from](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#smtp-mail-from)\.  |  myemail@domain\.com  | 
 
 ------
 
@@ -122,22 +123,22 @@ We recommend using port 587 for SMTP traffic\. By default, AWS blocks outbound S
 The following list shows the configurations available in the dropdown list for Airflow tasks on Amazon MWAA\. 
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v2\.0\.2  |  core\.default\_task\_retries  |  The number of times to retry an Apache Airflow task in [default\_task\_retries](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#default-task-retries)\.  |  3  | 
-|  v2\.0\.2  |  core\.parallelism  |  The maximum number of task instances that can run simultaneously across the entire environment in parallel \([parallelism](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#parallelism)\)\.  |  40  | 
+|  v2  |  core\.default\_task\_retries  |  The number of times to retry an Apache Airflow task in [default\_task\_retries](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#default-task-retries)\.  |  3  | 
+|  v2  |  core\.parallelism  |  The maximum number of task instances that can run simultaneously across the entire environment in parallel \([parallelism](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#parallelism)\)\.  |  40  | 
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v1\.10\.12  |  core\.default\_task\_retries  |  The number of times to retry an Apache Airflow task in [default\_task\_retries](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#default-task-retries)\.  |  3  | 
-|  v1\.10\.12  |  core\.parallelism  |  The maximum number of task instances that can run simultaneously across the entire environment in parallel \([parallelism](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#parallelism)\)\.  |  40  | 
+|  v1  |  core\.default\_task\_retries  |  The number of times to retry an Apache Airflow task in [default\_task\_retries](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#default-task-retries)\.  |  3  | 
+|  v1  |  core\.parallelism  |  The maximum number of task instances that can run simultaneously across the entire environment in parallel \([parallelism](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#parallelism)\)\.  |  40  | 
 
 ------
 
@@ -146,22 +147,22 @@ The following list shows the configurations available in the dropdown list for A
 The following list shows the Airflow scheduler configurations available in the dropdown list on Amazon MWAA\. 
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v2\.0\.2  |  scheduler\.catchup\_by\_default  |  Tells the scheduler to create a DAG run to "catch up" to the specific time interval in [catchup\_by\_default](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#catchup-by-default)\.  |  False  | 
-|  v2\.0\.2  |  scheduler\.scheduler\_zombie\_task\_threshold  |  Tells the scheduler whether to mark the task instance as failed and reschedule the task in [scheduler\_zombie\_task\_threshold](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#scheduler-zombie-task-threshold)\.  |  300  | 
+|  v2  |  scheduler\.catchup\_by\_default  |  Tells the scheduler to create a DAG run to "catch up" to the specific time interval in [catchup\_by\_default](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#catchup-by-default)\.  |  False  | 
+|  v2  |  scheduler\.scheduler\_zombie\_task\_threshold  |  Tells the scheduler whether to mark the task instance as failed and reschedule the task in [scheduler\_zombie\_task\_threshold](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#scheduler-zombie-task-threshold)\.  |  300  | 
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v1\.10\.12  |  scheduler\.catchup\_by\_default  |  Tells the scheduler to create a DAG run to "catch up" to the specific time interval in [catchup\_by\_default](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#catchup-by-default)\.  |  False  | 
-|  v1\.10\.12  |  scheduler\.scheduler\_zombie\_task\_threshold  |  Tells the scheduler whether to mark the task instance as failed and reschedule the task in [scheduler\_zombie\_task\_threshold](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#scheduler-zombie-task-threshold)\.  |  300  | 
+|  v1  |  scheduler\.catchup\_by\_default  |  Tells the scheduler to create a DAG run to "catch up" to the specific time interval in [catchup\_by\_default](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#catchup-by-default)\.  |  False  | 
+|  v1  |  scheduler\.scheduler\_zombie\_task\_threshold  |  Tells the scheduler whether to mark the task instance as failed and reschedule the task in [scheduler\_zombie\_task\_threshold](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#scheduler-zombie-task-threshold)\.  |  300  | 
 
 ------
 
@@ -170,20 +171,20 @@ The following list shows the Airflow scheduler configurations available in the d
 The following list shows the Airflow worker configurations available in the dropdown list on Amazon MWAA\. 
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v2\.0\.2  |  celery\.worker\_autoscale  |  The maximum and minimum number of tasks that can run concurrently on any worker using the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/2.0.2/executor/celery.html) in [worker\_autoscale](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#worker-autoscale)\. Value must be comma\-separated in the following order: `max_concurrency,min_concurrency`\.  |  16,12  | 
+|  v2  |  celery\.worker\_autoscale  |  The maximum and minimum number of tasks that can run concurrently on any worker using the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/2.0.2/executor/celery.html) in [worker\_autoscale](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#worker-autoscale)\. Value must be comma\-separated in the following order: `max_concurrency,min_concurrency`\.  |  16,12  | 
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v1\.10\.12  |  celery\.worker\_autoscale  |  The maximum and minimum number of tasks that can run concurrently on any worker using the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/1.10.12/executor/celery.html) in [worker\_autoscale](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#worker-autoscale)\. Value must be comma\-separated in the following order: `max_concurrency,min_concurrency`\.  |  16,12  | 
+|  v1  |  celery\.worker\_autoscale  |  The maximum and minimum number of tasks that can run concurrently on any worker using the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/1.10.12/executor/celery.html) in [worker\_autoscale](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#worker-autoscale)\. Value must be comma\-separated in the following order: `max_concurrency,min_concurrency`\.  |  16,12  | 
 
 ------
 
@@ -192,20 +193,20 @@ The following list shows the Airflow worker configurations available in the drop
 The following list shows the Airflow web server configurations available in the dropdown list on Amazon MWAA\. 
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v2\.0\.2  |  webserver\.default\_ui\_timezone  |  The default Apache Airflow UI datetime setting in [default\_ui\_timezone](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#default-ui-timezone)\.   Setting the `default_ui_timezone` option does not change the time zone in which your DAGs are scheduled to run\. To change the time zone for your DAGs, you can use a custom plugin\. For more information, see [Custom plugin to change the DAG schedule timezone](samples-plugins-timezone.md)\.    |  America/New\_York  | 
+|  v2  |  webserver\.default\_ui\_timezone  |  The default Apache Airflow UI datetime setting in [default\_ui\_timezone](https://airflow.apache.org/docs/apache-airflow/2.0.2/configurations-ref.html#default-ui-timezone)\.   Setting the `default_ui_timezone` option does not change the time zone in which your DAGs are scheduled to run\. To change the time zone for your DAGs, you can use a custom plugin\. For more information, see [Custom plugin to change the DAG schedule timezone](samples-plugins-timezone.md)\.    |  America/New\_York  | 
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v1\.10\.12  |  webserver\.default\_ui\_timezone  |  The default Apache Airflow UI datetime setting in [default\_ui\_timezone](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#default-ui-timezone)\.  |  America/New\_York  | 
+|  v1  |  webserver\.default\_ui\_timezone  |  The default Apache Airflow UI datetime setting in [default\_ui\_timezone](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#default-ui-timezone)\.  |  America/New\_York  | 
 
 ------
 

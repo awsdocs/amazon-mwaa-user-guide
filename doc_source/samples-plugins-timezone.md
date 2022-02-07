@@ -11,8 +11,8 @@
 + [What's next?](#samples-plugins-timezone-plugins-next-up)
 
 ## Version<a name="samples-plugins-timezone-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-plugins-timezone-prerequisites"></a>
 

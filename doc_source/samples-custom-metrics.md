@@ -11,8 +11,8 @@ The following sample shows how to write a DAG that runs a `PythonOperator` to re
 + [What's next?](#samples-custom-metrics-next-up)
 
 ## Version<a name="samples-custom-metrics-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-custom-metrics-prereqs"></a>
 
@@ -23,8 +23,8 @@ To use the sample code on this page, you'll need the following:
 + No additional permissions are required to use the sample code on this page\.
 
 ## Dependencies<a name="samples-custom-metrics-dependencies"></a>
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1\.10\.12 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2\.0\.2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
++ To use with Apache Airflow v1, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
++ To use with Apache Airflow v2, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
 
 ## Code sample<a name="samples-custom-metrics-code"></a>
 

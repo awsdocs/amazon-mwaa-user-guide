@@ -8,8 +8,8 @@ This topic provides a basic overview of how Amazon MWAA uses AWS Identity and Ac
 + [Audience](#security_iam_audience)
 + [Authenticating With Identities](#security_iam_authentication)
 + [Managing Access Using Policies](#security_iam_access-manage)
-+ [Troubleshooting Amazon Managed Workflows for Apache Airflow identity and access](security_iam_troubleshoot.md)
 + [Allowing users to view their own permissions](#security_iam_id-based-policy-examples-view-own-permissions)
++ [Troubleshooting Amazon Managed Workflows for Apache Airflow identity and access](security_iam_troubleshoot.md)
 + [How Amazon MWAA works with IAM](security_iam_service-with-iam.md)
 
 ## Audience<a name="security_iam_audience"></a>

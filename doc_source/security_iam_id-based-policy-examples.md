@@ -13,7 +13,7 @@ To learn how to create an IAM identity\-based policy using these example JSON po
 + [Using the Amazon MWAA console](#security_iam_id-based-policy-examples-console)
 + [Allowing users to view their own permissions](#security_iam_id-based-policy-examples-view-own-permissions)
 
-### Policy best practices<a name="security_iam_service-with-iam-policy-best-practices"></a>
+## Policy best practices<a name="security_iam_service-with-iam-policy-best-practices"></a>
 
 Identity\-based policies are very powerful\. They determine whether someone can create, access, or delete Amazon MWAA resources in your account\. These actions can incur costs for your AWS account\. When you create or edit identity\-based policies, follow these guidelines and recommendations:
 + **Get started using AWS managed policies** – To start using Amazon MWAA quickly, use AWS managed policies to give your employees the permissions they need\. These policies are already available in your account and are maintained and updated by AWS\. For more information, see [Get started using permissions with AWS managed policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#bp-use-aws-defined-policies) in the *IAM User Guide*\.
@@ -21,13 +21,13 @@ Identity\-based policies are very powerful\. They determine whether someone can 
 + **Enable MFA for sensitive operations** – For extra security, require IAM users to use multi\-factor authentication \(MFA\) to access sensitive resources or API operations\. For more information, see [Using multi\-factor authentication \(MFA\) in AWS](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html) in the *IAM User Guide*\.
 + **Use policy conditions for extra security** – To the extent that it's practical, define the conditions under which your identity\-based policies allow access to a resource\. For example, you can write conditions to specify a range of allowable IP addresses that a request must come from\. You can also write conditions to allow requests only within a specified date or time range, or to require the use of SSL or MFA\. For more information, see [IAM JSON policy elements: Condition](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html) in the *IAM User Guide*\.
 
-### Using the Amazon MWAA console<a name="security_iam_id-based-policy-examples-console"></a>
+## Using the Amazon MWAA console<a name="security_iam_id-based-policy-examples-console"></a>
 
 To use the Amazon MWAA console, the user or role must have access to the relevant actions, which match corresponding actions in the API\.
 
 To view the Amazon MWAA policies, see [Managing access to an Amazon MWAA environment](manage-access.md)\.
 
-### Allowing users to view their own permissions<a name="security_iam_id-based-policy-examples-view-own-permissions"></a>
+## Allowing users to view their own permissions<a name="security_iam_id-based-policy-examples-view-own-permissions"></a>
 
 This example shows how you might create a policy that allows IAM users to view the inline and managed policies that are attached to their user identity\. This policy includes permissions to complete this action on the console or programmatically using the AWS CLI or AWS API\.
 

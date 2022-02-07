@@ -5,7 +5,7 @@ Directed Acyclic Graphs \(DAGs\) are defined within a Python file that defines t
 **Topics**
 + [Prerequisites](#configuring-dag-folder-prereqs)
 + [How it works](#configuring-dag-folder-how)
-+ [What's changed in v2\.0\.2](#configuring-dag-folder-changed)
++ [What's changed in v2](#configuring-dag-folder-changed)
 + [Testing DAGs using the Amazon MWAA CLI utility](#working-dag-folder-cli-utility)
 + [Uploading DAG code to Amazon S3](#configuring-dag-folder-uploading)
 + [Specifying the path to your DAGs folder on the Amazon MWAA console \(the first time\)](#configuring-dag-folder-mwaaconsole)
@@ -43,8 +43,8 @@ dags/
 **Note**  
 You do not need to include the `airflow.cfg` configuration file in your DAG folder\. You can override the default Apache Airflow configurations from the Amazon MWAA console\. For more information, see [Apache Airflow configuration options](configuring-env-variables.md)\.
 
-## What's changed in v2\.0\.2<a name="configuring-dag-folder-changed"></a>
-+ **New: Operators, Hooks, and Executors**\. The import statements in your DAGs, and the custom plugins you specify in a `plugins.zip` on Amazon MWAA have changed between Apache Airflow v1\.10\.12 and Apache Airflow v2\.0\.2\. For example, `from airflow.contrib.hooks.aws_hook import AwsHook` in Apache Airflow v1\.10\.12 has changed to `from airflow.providers.amazon.aws.hooks.base_aws import AwsBaseHook` in Apache Airflow v2\.0\.2\. To learn more, see [Python API Reference](https://airflow.apache.org/docs/apache-airflow/2.0.2/python-api-ref.html) in the *Apache Airflow reference guide*\.
+## What's changed in v2<a name="configuring-dag-folder-changed"></a>
++ **New: Operators, Hooks, and Executors**\. The import statements in your DAGs, and the custom plugins you specify in a `plugins.zip` on Amazon MWAA have changed between Apache Airflow v1 and Apache Airflow v2\. For example, `from airflow.contrib.hooks.aws_hook import AwsHook` in Apache Airflow v1 has changed to `from airflow.providers.amazon.aws.hooks.base_aws import AwsBaseHook` in Apache Airflow v2\. To learn more, see [Python API Reference](https://airflow.apache.org/docs/apache-airflow/2.2.2/python-api-ref.html) in the *Apache Airflow reference guide*\.
 
 ## Testing DAGs using the Amazon MWAA CLI utility<a name="working-dag-folder-cli-utility"></a>
 + The command line interface \(CLI\) utility replicates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment locally\.

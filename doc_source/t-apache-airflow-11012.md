@@ -1,4 +1,4 @@
-# Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v1\.10\.12<a name="t-apache-airflow-11012"></a>
+# Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v1<a name="t-apache-airflow-11012"></a>
 
 The topics on this page contains resolutions to Apache Airflow v1\.10\.12 Python dependencies, custom plugins, DAGs, Operators, Connections, tasks, and *Web server* issues you may encounter on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
@@ -32,7 +32,7 @@ The following topic describes the errors you may receive when updating your `req
 
 ### Adding `apache-airflow-providers-amazon` causes my environment to fail<a name="t-requirements"></a>
 
-`apache-airflow-providers-xyz` is only compatible with Apache Airflow 2\.0\. `apache-airflow-backport-providers-xyz` is compatible with Apache Airflow 1\.10\.12\.
+`apache-airflow-providers-xyz` is only compatible with Apache Airflow v2\. `apache-airflow-backport-providers-xyz` is compatible with Apache Airflow 1\.10\.12\.
 
 ## Broken DAG<a name="troubleshooting-broken-dags"></a>
 
@@ -274,7 +274,7 @@ We recommend the following steps:
  The Aurora PostgreSQL metadatabase is part of the [Amazon MWAA service architecture](what-is-mwaa.md#architecture-mwaa) and is not visible in your AWS account\. 
  Database\-related errors are usually a symptom of scheduler failure and not the root cause\. 
 
-1.  If the scheduler is not running, it might be due to a number of factors such as [dependency installation failures](best-practices-dependencies.md), or an [oroverloaded scheduler](best-practices-tuning.md)\. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\. To learn more, see [Monitoring and metrics for Amazon Managed Workflows for Apache Airflow \(MWAA\)](cw-metrics.md)\.
+1.  If the scheduler is not running, it might be due to a number of factors such as [dependency installation failures](best-practices-dependencies.md), or an [overloaded scheduler](best-practices-tuning.md)\. Confirm that your DAGs, plugins, and requirements are working correctly by viewing the corresponding log groups in CloudWatch Logs\. To learn more, see [Monitoring and metrics for Amazon Managed Workflows for Apache Airflow \(MWAA\)](cw-metrics.md)\.
 
 ## Tasks<a name="troubleshooting-tasks"></a>
 

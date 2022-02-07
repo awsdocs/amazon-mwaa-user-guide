@@ -19,7 +19,7 @@
 + [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)
 + [Invoking DAGs with an AWS Lambda function](samples-lambda.md)
 + [Invoking DAGs in different Amazon MWAA environments](samples-trigger-dag-envab.xml.md)
-+ [Using Amazon MWAA with Amazon RDS Microsoft SQL Server](samples-sql-server.md)
++ [Using Amazon MWAA with Amazon RDS for MySQL server](samples-sql-server.md)
 + [Using Amazon MWAA with Amazon EMR](samples-emr.md)
 + [Using Amazon MWAA with Amazon EKS](mwaa-eks-example.md)
 + [Amazon ECS operator on Amazon MWAA](samples-ecs-operator.md)

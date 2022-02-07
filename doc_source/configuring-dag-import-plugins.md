@@ -5,7 +5,7 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) supports Apache Airflow's b
 **Contents**
 + [Prerequisites](#configuring-dag-plugins-prereqs)
 + [How it works](#configuring-dag-plugins-how)
-+ [What's changed in v2\.0\.2](#configuring-dag-plugins-changed)
++ [What's changed in v2](#configuring-dag-plugins-changed)
 + [Custom plugins overview](#configuring-dag-plugins-overview)
   + [Custom plugins directory and size limits](#configuring-dag-plugins-quota)
 + [Examples of custom plugins](#configuring-dag-plugins-airflow-ex)
@@ -46,9 +46,9 @@ To run custom plugins on your environment, you must do three things:
 **Note**  
 If this is the first time you're uploading a `plugins.zip` to your Amazon S3 bucket, you also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
-## What's changed in v2\.0\.2<a name="configuring-dag-plugins-changed"></a>
-+ **New: Operators, Hooks, and Executors**\. The import statements in your DAGs, and the custom plugins you specify in a `plugins.zip` on Amazon MWAA have changed between Apache Airflow v1\.10\.12 and Apache Airflow v2\.0\.2\. For example, `from airflow.contrib.hooks.aws_hook import AwsHook` in Apache Airflow v1\.10\.12 has changed to `from airflow.providers.amazon.aws.hooks.base_aws import AwsBaseHook` in Apache Airflow v2\.0\.2\. To learn more, see [Python API Reference](https://airflow.apache.org/docs/apache-airflow/2.0.2/python-api-ref.html) in the *Apache Airflow reference guide*\.
-+ **New: Imports in plugins**\. Importing operators, sensors, hooks added in plugins using `airflow.{operators,sensors,hooks}.<plugin_name>` is no longer supported\. These extensions should be imported as regular Python modules\. In v2\.0\+, the recommended approach is to place them in the DAGs directory and create and use an *\.airflowignore* file to exclude them from being parsed as DAGs\. To learn more, see [Modules Management](https://airflow.apache.org/docs/apache-airflow/stable/modules_management.html) and [Creating a custom Operator](https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html) in the *Apache Airflow reference guide*\.
+## What's changed in v2<a name="configuring-dag-plugins-changed"></a>
++ **New: Operators, Hooks, and Executors**\. The import statements in your DAGs, and the custom plugins you specify in a `plugins.zip` on Amazon MWAA have changed between Apache Airflow v1 and Apache Airflow v2\. For example, `from airflow.contrib.hooks.aws_hook import AwsHook` in Apache Airflow v1 has changed to `from airflow.providers.amazon.aws.hooks.base_aws import AwsBaseHook` in Apache Airflow v2\. To learn more, see [Python API Reference](https://airflow.apache.org/docs/apache-airflow/2.2.2/python-api-ref.html) in the *Apache Airflow reference guide*\.
++ **New: Imports in plugins**\. Importing operators, sensors, hooks added in plugins using `airflow.{operators,sensors,hooks}.<plugin_name>` is no longer supported\. These extensions should be imported as regular Python modules\. In v2 and above, the recommended approach is to place them in the DAGs directory and create and use an *\.airflowignore* file to exclude them from being parsed as DAGs\. To learn more, see [Modules Management](https://airflow.apache.org/docs/apache-airflow/stable/modules_management.html) and [Creating a custom Operator](https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html) in the *Apache Airflow reference guide*\.
 
 ## Custom plugins overview<a name="configuring-dag-plugins-overview"></a>
 
@@ -70,9 +70,9 @@ The following section uses sample code in the *Apache Airflow reference guide* t
 ### Example using a flat directory structure in plugins\.zip<a name="configuring-dag-plugins-overview-simple"></a>
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
-The following example shows a `plugins.zip` file with a flat directory structure for Apache Airflow v2\.0\.2\.
+The following example shows a `plugins.zip` file with a flat directory structure for Apache Airflow v2\.
 
 **Example flat directory with PythonVirtualenvOperator plugins\.zip**  
 The following example shows the top\-level tree of a plugins\.zip file for the PythonVirtualenvOperator custom plugin in [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)\.   
@@ -120,9 +120,9 @@ class VirtualPythonPlugin(AirflowPlugin):
 ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
-The following example shows a `plugins.zip` file with a flat directory structure for Apache Airflow v1\.10\.12\.
+The following example shows a `plugins.zip` file with a flat directory structure for Apache Airflow v1\.
 
 **Example flat directory with PythonVirtualenvOperator plugins\.zip**  
 The following example shows the top\-level tree of a plugins\.zip file for the PythonVirtualenvOperator custom plugin in [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)\.   
@@ -156,9 +156,9 @@ class EnvVarPlugin(AirflowPlugin):
 ### Example using a nested directory structure in plugins\.zip<a name="configuring-dag-plugins-overview-complex"></a>
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
-The following example shows a `plugins.zip` file with separate directories for `hooks`, `operators`, and a `sensors` directory for Apache Airflow v2\.0\.2\.
+The following example shows a `plugins.zip` file with separate directories for `hooks`, `operators`, and a `sensors` directory for Apache Airflow v2\.
 
 **Example plugins\.zip**  
 
@@ -317,7 +317,7 @@ class HelloOperator(BaseOperator):
 Follow the steps in [Testing custom plugins using the Amazon MWAA CLI utility](#configuring-dag-plugins-cli-utility), and then [Creating a plugins\.zip file](#configuring-dag-plugins-zip) to zip the contents **within** your `plugins` directory\. For example, `cd plugins`\.
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 The following example shows a `plugins.zip` file with separate directories for `hooks`, `operators`, and a `sensors` directory for Apache Airflow v1\.10\.12\.
 

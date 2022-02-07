@@ -4,7 +4,7 @@ This page describes common questions you may encounter when using Amazon Managed
 
 **Contents**
 + [Supported versions](#q-supported-versions)
-  + [What does Amazon MWAA support for Apache Airflow v2\.0\.2?](#airflow-support)
+  + [What does Amazon MWAA support for Apache Airflow v2?](#airflow-support)
   + [Why are older versions of Apache Airflow not supported?](#airflow-version)
   + [What Python version should I use?](#python-version)
   + [Can I specify more than 25 Apache Airflow Workers?](#scaling-quota)
@@ -30,14 +30,14 @@ This page describes common questions you may encounter when using Amazon Managed
   + [How long does it take Amazon MWAA to recognize a new DAG file?](#recog-dag)
   + [Why is my DAG file not picked up by Apache Airflow?](#dag-file-error)
   + [Can I remove a `plugins.zip` or `requirements.txt` from an environment?](#remove-plugins-reqs)
-  + [Why don't I see my plugins in the Airflow 2\.0 Admin > Plugins menu?](#view-plugins-ui)
+  + [Why don't I see my plugins in the Apache Airflow v2\.0\.2 Admin Plugins menu?](#view-plugins-ui)
   + [Can I use AWS Database Migration Service \(DMS\) Operators?](#ops-dms)
 + [Migrating](#q-migrating)
   + [How do I migrate to Amazon MWAA from an on\-premises or a self\-managed Apache Airflow deployment?](#migrate-from-onprem)
 
 ## Supported versions<a name="q-supported-versions"></a>
 
-### What does Amazon MWAA support for Apache Airflow v2\.0\.2?<a name="airflow-support"></a>
+### What does Amazon MWAA support for Apache Airflow v2?<a name="airflow-support"></a>
 
 To learn what Amazon MWAA supports, see [Apache Airflow versions on Amazon Managed Workflows for Apache Airflow \(MWAA\)](airflow-versions.md)\.
 
@@ -50,14 +50,15 @@ We are only supporting the latest \(as of launch\) Apache Airflow version Apache
 The following Apache Airflow versions are supported on Amazon Managed Workflows for Apache Airflow \(MWAA\)\.
 
 
-| Airflow version | Airflow guide | Airflow constraints | Python version | 
+| Apache Airflow version | Apache Airflow guide | Apache Airflow constraints | Python version | 
 | --- | --- | --- | --- | 
-|  v2\.0\.2  |  [Apache Airflow v2\.0\.2 reference guide](http://airflow.apache.org/docs/apache-airflow/2.0.2/index.html)  |  [https://raw\.githubusercontent\.com/apache/airflow/constraints\-2\.0\.2/constraints\-3\.7\.txt](https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
-|  v1\.10\.12  |  [Apache Airflow v1\.10\.12 reference guide](https://airflow.apache.org/docs/apache-airflow/1.10.12/)  |  [https://raw\.githubusercontent\.com/apache/airflow/constraints\-1\.10\.12/constraints\-3\.7\.txt](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
+|  v2\.2\.2  |  [Apache Airflow v2\.2\.2 reference guide](https://airflow.apache.org/docs/apache-airflow/2.2.2/index.html)  |  [Apache Airflow v2\.2\.2 constraints file](https://raw.githubusercontent.com/apache/airflow/constraints-2.2.2/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
+|  v2\.0\.2  |  [Apache Airflow v2\.0\.2 reference guide](http://airflow.apache.org/docs/apache-airflow/2.0.2/index.html)  |  [Apache Airflow v2\.0\.2 constraints file](https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
+|  v1\.10\.12  |  [Apache Airflow v1\.10\.12 reference guide](https://airflow.apache.org/docs/apache-airflow/1.10.12/)  |  [Apache Airflow v1\.10\.12 constraints file](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
 
 ### Can I specify more than 25 Apache Airflow Workers?<a name="scaling-quota"></a>
 
-Yes\. Although you can specify up to 25 Apache Airflow *Workers* on the Amazon MWAA console, you can configure up to 50 on an environment by requesting a quota increase\. We recommend using Apache Airflow v2\.0\.2 for an environment with more than 25 *Workers*\. To learn more, see [Requesting a quota increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html)\.
+Yes\. Although you can specify up to 25 Apache Airflow *Workers* on the Amazon MWAA console, you can configure up to 50 on an environment by requesting a quota increase\. We recommend using Apache Airflow v2\.2\.2 for an environment with more than 25 *Workers*\. To learn more, see [Requesting a quota increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html)\.
 
 ## Use cases<a name="t-common-questions"></a>
 
@@ -169,9 +170,11 @@ The following are possible solutions for this issue:
 
 Currently, there is no way to remove a plugins\.zip or requirements\.txt from an environment once they’ve been added, but we're working on the issue\. In the interim, a workaround is to point to an empty text or zip file, respectively\. To learn more, see [Deleting files on Amazon S3](working-dags-delete.md)\.
 
-### Why don't I see my plugins in the Airflow 2\.0 Admin > Plugins menu?<a name="view-plugins-ui"></a>
+### Why don't I see my plugins in the Apache Airflow v2\.0\.2 Admin Plugins menu?<a name="view-plugins-ui"></a>
 
-For security reasons, the Apache Airflow Web server on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the Apache Airflow *Web server*\. The plugin that's shown allows Amazon MWAA to authenticate your Apache Airflow users in AWS Identity and Access Management \(IAM\)\.
+For security reasons, the Apache Airflow Web server on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the Apache Airflow *web server* for version 2\.0\.2 environments\. The plugin that's shown allows Amazon MWAA to authenticate your Apache Airflow users in AWS Identity and Access Management \(IAM\)\.
+
+ To be able to install plugins and Python dependencies directly on the web server, we recommend creaing a new environemnt with Apache Airflow v2\.2 and above\. Amazon MWAA installs Python dependencies and and custom plugins directly on the web server for Apache Airflow v2\.2 and above\. 
 
 ### Can I use AWS Database Migration Service \(DMS\) Operators?<a name="ops-dms"></a>
 

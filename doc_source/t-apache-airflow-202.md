@@ -1,6 +1,6 @@
-# Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v2\.0\.2<a name="t-apache-airflow-202"></a>
+# Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v2<a name="t-apache-airflow-202"></a>
 
-The topics on this page describe resolutions to Apache Airflow v2\.0\.2 Python dependencies, custom plugins, DAGs, Operators, Connections, tasks, and *Web server* issues you may encounter on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
+The topics on this page describe resolutions to Apache Airflow v2 Python dependencies, custom plugins, DAGs, Operators, Connections, tasks, and *Web server* issues you may encounter on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
 **Contents**
 + [Connections](#troubleshooting-conn-202)
@@ -108,7 +108,7 @@ Apache Airflow provides connection templates in the Apache Airflow UI\. It uses 
 
 We recommend the following steps:
 
-1. View the connection types Amazon MWAA's providing in the Apache Airflow UI at [Airflow 2\.0\+ provider packages installed on Amazon MWAA environments](connections-packages.md)\.
+1. View the connection types Amazon MWAA's providing in the Apache Airflow UI at [Apache Airflow v2 provider packages installed on Amazon MWAA environments](connections-packages.md)\.
 
 1. View the commands to create an Apache Airflow connection in the CLI at [Apache Airflow CLI command reference](airflow-cli-command-reference.md)\.
 
@@ -205,7 +205,10 @@ The Airflow CLI runs on the Apache Airflow *Web server*, which has limited concu
 
 ### Why does the `dags backfill` Apache Airflow CLI command fail? Is there a workaround?<a name="troubleshooting-cli-backfill"></a>
 
- The `backfill` command, like other Apache Airflow CLI commands, parses all DAGs locally before any DAGs are processed, regardless of which DAG the CLI operation applies to\. Because plugins and requirements are not yet installed on the web server by the time the CLI command runs, the parsing operation fails, and the `backfill` operation is not invoked\. If you did not have any requirements nor plugins in your environment, the `backfill` operation would succeed\. 
+**Note**  
+ The following applies only to Apache Airflow v2\.0\.2 environments\. 
+
+ The `backfill` command, like other Apache Airflow CLI commands, parses all DAGs locally before any DAGs are processed, regardless of which DAG the CLI operation applies to\. In Amazon MWAA environments using Apache Airflow v2\.0\.2, because plugins and requirements are not yet installed on the web server by the time the CLI command runs, the parsing operation fails, and the `backfill` operation is not invoked\. If you did not have any requirements nor plugins in your environment, the `backfill` operation would succeed\. 
 
  In order to be able to run the `backfill` CLI command, we recommend invoking it in a bash operator\. In a bash operator, `backfill` is initiated from the worker, allowing the DAGs to parse successfully as all necessary requirements and plguins are available and installed\. The following example shows how you can create a DAG with a `BashOperator` to run `backfill`\. 
 

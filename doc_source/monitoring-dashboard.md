@@ -18,8 +18,8 @@ Apache Airflow exposes metrics for a number of processes, including the number o
 ## Metrics<a name="monitoring-dashboard-metrics"></a>
 
 You can create a custom dashboard and alarm for any of the metrics available for your Apache Airflow version\. Each metric corresponds to an Airflow key performance indicator \(KPI\)\. To view a list of metrics, see:
-+ [Apache Airflow v2\.0\.2 environment metrics in CloudWatch](access-metrics-cw-202.md)
-+ [Apache Airflow v1\.10\.12 environment metrics in CloudWatch](access-metrics-cw-110.md)
++ [Apache Airflow v2 environment metrics in CloudWatch](access-metrics-cw-202.md)
++ [Apache Airflow v1 environment metrics in CloudWatch](access-metrics-cw-110.md)
 
 ## Alarm states overview<a name="monitoring-dashboard-states"></a>
 

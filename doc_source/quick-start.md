@@ -17,7 +17,7 @@ This quick start tutorial uses an AWS CloudFormation template that creates the A
 This tutorial walks you through three AWS Command Line Interface \(AWS CLI\) commands to upload a DAG to Amazon S3, run the DAG in Apache Airflow, and view logs in CloudWatch\. It concludes by walking you through the steps to create an IAM policy for an Apache Airflow development team\.
 
 **Note**  
-The AWS CloudFormation template on this page creates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment for the latest version of Apache Airflow available in AWS CloudFormation\. The latest version available \(as of "today"\) is Apache Airflow v2\.0\.2\.
+The AWS CloudFormation template on this page creates an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment for the latest version of Apache Airflow available in AWS CloudFormation\. The latest version available is Apache Airflow v2\.2\.2\.
 
 The AWS CloudFormation template on this page creates the following:
 + **VPC infrastructure**\. The template uses [Public routing over the Internet](networking-about.md#networking-about-overview-public)\. It uses the [Public network access mode](configuring-networking.md#access-overview-public) for the Apache Airflow *Web server* in `WebserverAccessMode: PUBLIC_ONLY`\.
@@ -26,7 +26,7 @@ The AWS CloudFormation template on this page creates the following:
 + **CloudWatch Logs**\. The template enables Apache Airflow logs in CloudWatch at the "INFO" level and up for the *Airflow scheduler log group*, *Airflow web server log group*, *Airflow worker log group*, *Airflow DAG processing log group*, and the *Airflow task log group*, as defined in [Viewing Airflow logs in Amazon CloudWatch](monitoring-airflow.md)\.
 
 In this tutorial, you'll complete the following tasks:
-+ **Upload and run a DAG**\. Upload Apache Airflow's tutorial DAG for Apache Airflow v2\.0\.2 to Amazon S3, and then run in the Apache Airflow UI, as defined in [Adding or updating DAGs](configuring-dag-folder.md)\.
++ **Upload and run a DAG**\. Upload Apache Airflow's tutorial DAG for the latest Amazon MWAA supported Apache Airflow version to Amazon S3, and then run in the Apache Airflow UI, as defined in [Adding or updating DAGs](configuring-dag-folder.md)\.
 + **View logs**\. View the *Airflow web server log group* in CloudWatch Logs, as defined in [Viewing Airflow logs in Amazon CloudWatch](monitoring-airflow.md)\.
 + **Create an access control policy**\. Create an access control policy in IAM for your Apache Airflow development team, as defined in [Accessing an Amazon MWAA environment](access-policies.md)\.
 
@@ -485,7 +485,7 @@ It takes over 30 minutes to create the Amazon VPC infrastructure, Amazon S3 buck
 
 ## Step three: Upload a DAG to Amazon S3 and run in the Apache Airflow UI<a name="quick-start-upload-dag"></a>
 
-1. Copy the contents of the `tutorial.py` file for [Apache Airflow v2\.0\.2](http://airflow.apache.org/docs/apache-airflow/2.0.2/tutorial.html) and save locally as `tutorial.py`\.
+1. Copy the contents of the `tutorial.py` file for the [latest supported Apache Airflow version](https://airflow.apache.org/docs/apache-airflow/2.2.2/tutorial.html) and save locally as `tutorial.py`\.
 
 1. In your command prompt, navigate to the directory where `tutorial.py` is stored\. For example:
 

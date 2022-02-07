@@ -13,7 +13,7 @@ The following sample walks you through the steps on how to create a DAG that cre
 + [What's next?](#samples-ssh-next-up)
 
 ## Version<a name="samples-ssh-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-ssh-prereqs"></a>
 

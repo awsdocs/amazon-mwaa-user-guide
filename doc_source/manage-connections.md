@@ -4,7 +4,7 @@ This section describes the different ways to configure an Apache Airflow connect
 
 **Topics**
 + [Overview of Apache Airflow variables and connections](#manage-connections-t-overview)
-+ [Airflow 2\.0\+ provider packages installed on Amazon MWAA environments](connections-packages.md)
++ [Apache Airflow v2 provider packages installed on Amazon MWAA environments](connections-packages.md)
 + [Overview of connection types](manage-connection-types.md)
 + [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)
 

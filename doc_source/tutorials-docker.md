@@ -233,7 +233,7 @@ After you complete this step, keep the AWS CloudFormation console open to copy t
 
 ## Step two: Build the Docker image<a name="tutorials-docker-local-build"></a>
 
-The following steps show how to fork the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) repository on *GitHub*\. By default, it uses the `main` branch of the local runner, which is the latest version of Apache Airflow\. The latest version available \(as of "today"\) is Apache Airflow v2\.0\.2\. A fork is a copy of a repository\. Forking a repository allows you to freely experiment with and push your DAGs, Python dependencies, and custom plugins to your repository without affecting the original project\. 
+The following steps show how to fork the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) repository on *GitHub*\. By default, it uses the `main` branch of the local runner, which is the latest version of Apache Airflow\. The latest version available is Apache Airflow v2\.2\.2\. A fork is a copy of a repository\. Forking a repository allows you to freely experiment with and push your DAGs, Python dependencies, and custom plugins to your repository without affecting the original project\. 
 
 1. Open [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner), choose **Fork**\.
 

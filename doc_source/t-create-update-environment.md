@@ -48,7 +48,9 @@ If it takes more than twenty minutes for your environment to install a new versi
 
 ### Does Amazon MWAA support implementing custom UI?<a name="custom-ui"></a>
 
-Currently, Amazon MWAA does not support implementing custom UI changes\.
+Starting with Apache Airflow v2\.2\.2, Amazon MWAA supports installing plugins on the Apache Airflow web server, and implementing custom UI\. If your Amazon MWAA environment is running Apache Airflow v2\.0\.2 or older, you will not be able to implement custom UI\. 
+
+ For more information about version management, and upgrading your existing environments, see [Apache Airflow versions on Amazon Managed Workflows for Apache Airflow \(MWAA\)](airflow-versions.md)\. 
 
 ### I am able to implement custom UI changes on the [Amazon MWAA local runner](https://github.com/aws/aws-mwaa-local-runner) via plugins, yet when I try to do the same on Amazon MWAA, I do not see my changes nor any errors\. Why is this happening?<a name="custom-ui-local-runner"></a>
 

@@ -1,35 +1,35 @@
-# Using Amazon MWAA with Amazon RDS Microsoft SQL Server<a name="samples-sql-server"></a>
+# Using Amazon MWAA with Amazon RDS for MySQL server<a name="samples-sql-server"></a>
 
-You can use Amazon Managed Workflows for Apache Airflow \(MWAA\) to connect to an [Amazon RDS Microsoft SQL Server](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SQLServer.html)\. The following sample code uses DAGs on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment to connect to and execute queries on an Amazon RDS Microsoft SQL Server\.
+You can use Amazon Managed Workflows for Apache Airflow \(MWAA\) to connect to an [RDS for MySQL server](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SQLServer.html)\. The following sample code uses DAGs on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment to connect to and execute queries on an Amazon RDS Microsoft SQL Server\.
 
 **Topics**
 + [Version](#samples-sql-server-version)
 + [Prerequisites](#samples-sql-server-prereqs)
 + [Dependencies](#samples-sql-server-dependencies)
-+ [Apache Airflow v2\.0\.2 connection](#samples-sql-server-conn)
++ [Apache Airflow v2 connection](#samples-sql-server-conn)
 + [Code sample](#samples-sql-server-code)
 + [What's next?](#samples-sql-server-next-up)
 
 ## Version<a name="samples-sql-server-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-sql-server-prereqs"></a>
 
 To use the sample code on this page, you'll need the following:
 + An [Amazon MWAA environment](get-started.md)\.
-+ Amazon MWAA and the RDS Microsoft SQL Server are running in the same VPC
++ Amazon MWAA and the RDS for MySQL are running in the same Amazon VPC/
 + VPC security groups of Amazon MWAA and the server are configured with the following connections:
-  + An inbound rule for the port `1433` open for RDS in Amazon MWAA's security group
+  + An inbound rule for the port `1433` open for Amazon RDS in Amazon MWAA's security group
   + Or an outbound rule for the port of `1433` open from Amazon MWAA to RDS
-+ Airflow Connection for MSSQL reflects the hostname, port, username and password from the RDS SQL Server DB created in previous process
++ Apache Airflow Connection for RDS for MySQL reflects the hostname, port, username and password from the Amazon RDS SQL server database created in previous process\.
 
 ## Dependencies<a name="samples-sql-server-dependencies"></a>
 
 To use the sample code in this section, add the following dependency to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 ```
 apache-airflow-providers-microsoft-mssql==1.0.1
@@ -38,7 +38,7 @@ pymssql==2.2.1
 ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 ```
 apache-airflow[mssql]==1.10.12
@@ -46,9 +46,9 @@ apache-airflow[mssql]==1.10.12
 
 ------
 
-## Apache Airflow v2\.0\.2 connection<a name="samples-sql-server-conn"></a>
+## Apache Airflow v2 connection<a name="samples-sql-server-conn"></a>
 
-If you're using an Airflow connection in Apache Airflow v2\.0\.2, ensure the Apache Airflow connection object includes the following key\-value pairs:
+If you're using a connection in Apache Airflow v2, ensure the Airflow connection object includes the following key\-value pairs:
 
 1. **Conn Id: ** mssql\_default
 

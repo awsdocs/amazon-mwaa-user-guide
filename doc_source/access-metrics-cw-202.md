@@ -1,6 +1,6 @@
-# Apache Airflow v2\.0\.2 environment metrics in CloudWatch<a name="access-metrics-cw-202"></a>
+# Apache Airflow v2 environment metrics in CloudWatch<a name="access-metrics-cw-202"></a>
 
-Apache Airflow v2\.0\.2 is already set\-up to collect and send [StatsD](https://github.com/etsy/statsd) metrics for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment to Amazon CloudWatch\. The complete list of metrics sent is available on the [Apache Airflow v2\.0\.2 metrics](https://airflow.apache.org/docs/apache-airflow/2.0.2/logging-monitoring/metrics.html) in the *Apache Airflow reference guide*\. This page describes the Apache Airflow metrics available in CloudWatch, and how to access metrics in the CloudWatch console\.
+Apache Airflow v2 is already set\-up to collect and send [StatsD](https://github.com/etsy/statsd) metrics for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment to Amazon CloudWatch\. The complete list of metrics Apache Airflow sends is available on the [Metrics](https://airflow.apache.org/docs/apache-airflow/2.2.2/logging-monitoring/metrics.html) page in the *Apache Airflow reference guide*\. This page describes the Apache Airflow metrics available in CloudWatch, and how to access metrics in the CloudWatch console\.
 
 **Contents**
 + [Terms](#access-metrics-cw-terms-v202)
@@ -21,7 +21,7 @@ A namespace is a container for the CloudWatch metrics of an AWS service\. For Am
 A CloudWatch metric represents a time\-ordered set of data points that are specific to CloudWatch\. 
 
 **Apache Airflow metrics**  
-The [Apache Airflow v2\.0\.2 metrics](https://airflow.apache.org/docs/apache-airflow/2.0.2/logging-monitoring/metrics.html ) specific to Apache Airflow\. 
+The [Metrics](https://airflow.apache.org/docs/apache-airflow/2.2.2/logging-monitoring/metrics.html ) specific to Apache Airflow\. 
 
 **Dimension**  
 A dimension is a name/value pair that is part of the identity of a metric\. 
@@ -68,7 +68,7 @@ This section describes the Apache Airflow metrics and dimensions sent to CloudWa
 
 ### Apache Airflow Counters<a name="counters-metrics-v202"></a>
 
-The Apache Airflow metrics in this section contain data about [Apache Airflow *Counters*](https://airflow.apache.org/docs/apache-airflow/2.0.2/logging-monitoring/metrics.html#counters)\. 
+The Apache Airflow metrics in this section contain data about [Apache Airflow *Counters*](https://airflow.apache.org/docs/apache-airflow/2.2.2/logging-monitoring/metrics.html#counters)\. 
 
 
 | CloudWatch metric | Apache Airflow metric | Unit | Dimension | 
@@ -99,7 +99,7 @@ The Apache Airflow metrics in this section contain data about [Apache Airflow *C
 
 ### Apache Airflow Gauges<a name="gauges-metrics-v202"></a>
 
-The Apache Airflow metrics in this section contain data about [Apache Airflow *Gauges*](https://airflow.apache.org/docs/apache-airflow/2.0.2/logging-monitoring/metrics.html#gauges)\. 
+The Apache Airflow metrics in this section contain data about [Apache Airflow *Gauges*](https://airflow.apache.org/docs/apache-airflow/2.2.2/logging-monitoring/metrics.html#gauges)\. 
 
 
 | CloudWatch metric | Apache Airflow metric | Unit | Dimension | 
@@ -134,7 +134,7 @@ The Apache Airflow metrics in this section contain data about [Apache Airflow *G
 
 ### Apache Airflow Timers<a name="timers-metrics-v202"></a>
 
-The Apache Airflow metrics in this section contain data about [Apache Airflow *Timers*](https://airflow.apache.org/docs/apache-airflow/2.0.2/logging-monitoring/metrics.html#timers)\. 
+The Apache Airflow metrics in this section contain data about [Apache Airflow *Timers*](https://airflow.apache.org/docs/apache-airflow/2.2.2/logging-monitoring/metrics.html#timers)\. 
 
 
 | CloudWatch metric | Apache Airflow metric | Unit | Dimension | 

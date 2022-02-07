@@ -15,8 +15,8 @@ Amazon MWAA extracts the contents of a `plugins.zip` to `/usr/local/airflow/plug
 + [What's next?](#samples-hive-next-up)
 
 ## Version<a name="samples-hive-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-hive-prereqs"></a>
 
@@ -31,7 +31,7 @@ To use the sample code on this page, you'll need the following:
 To use the sample code on this page, add the following dependencies to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 ```
 -c https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt
@@ -39,7 +39,7 @@ apache-airflow-providers-amazon[apache.hive]
 ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 ```
 apache-airflow[hive]==1.10.12
@@ -154,7 +154,7 @@ The following steps describe how to create the DAG code that will test the custo
 
 ## Airflow configuration options<a name="samples-hive-airflow-config"></a>
 
-If you're using Apache Airflow v2\.0\.2, add `core.lazy_load_plugins : False` as an Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2\.0](configuring-env-variables.md#configuring-2.0-airflow-override)\.
+If you're using Apache Airflow v2, add `core.lazy_load_plugins : False` as an Apache Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2](configuring-env-variables.md#configuring-2.0-airflow-override)\.
 
 ## What's next?<a name="samples-hive-next-up"></a>
 + Learn how to upload the `requirements.txt` file in this example to your Amazon S3 bucket in [Installing Python dependencies](working-dags-dependencies.md)\.

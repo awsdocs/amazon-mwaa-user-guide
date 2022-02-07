@@ -87,7 +87,7 @@ If you're creating an Amazon MWAA environment and an Amazon S3 bucket using the 
 ### I see a 'Cannot locate a 64\-bit Oracle Client library: "libclntsh\.so: cannot open shared object file: No such file or directory' in Apache Airflow logs<a name="t-plugins-logs"></a>
 + We recommend the following steps:
 
-  1. If you're using Apache Airflow v2\.0\.2, add `core.lazy_load_plugins : False` as an Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2\.0](configuring-env-variables.md#configuring-2.0-airflow-override)\.
+  1. If you're using Apache Airflow v2, add `core.lazy_load_plugins : False` as an Apache Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2](configuring-env-variables.md#configuring-2.0-airflow-override)\.
 
 ### I see psycopg2 'server closed the connection unexpectedly' in my Scheduler logs<a name="scheduler-postgres-library"></a>
 

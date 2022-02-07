@@ -1,6 +1,6 @@
 # Tutorial: Restricting an Amazon MWAA user's access to a subset of DAGs<a name="limit-access-to-dags"></a>
 
- Amazon MWAA manages access to your environment by mapping your IAM principles to one or more of Apache Airflow's [default roles](https://airflow.apache.org/docs/apache-airflow/stable/security/access-control.html#default-roles)\. The following tutorial shows how you can restrict individual Amazon MWAA users to only view and interact with a specific DAG or a set of DAGs\. 
+ Amazon MWAA manages access to your environment by mapping your IAM principals to one or more of Apache Airflow's [default roles](https://airflow.apache.org/docs/apache-airflow/stable/security/access-control.html#default-roles)\. The following tutorial shows how you can restrict individual Amazon MWAA users to only view and interact with a specific DAG or a set of DAGs\. 
 
 **Note**  
  The steps in this tutorial can be completed using federated access, as long as the IAM roles can be assumed\. 
@@ -17,7 +17,7 @@
 
  To complete the steps in this this tutorial, you'll need the following: 
 +  An [Amazon MWAA environment with multiple DAGs](get-started.md) 
-+  An IAM principle, `Admin` with [AdministratorAccess](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AdministratorAccess$jsonEditor) permissions, and an IAM user, `MWAAUser`, as the principle for which you can limit DAG access\. For more information about admin users, see [Administrator job function](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html#jf_administrator) in the *IAM User Guide* 
++  An IAM principal, `Admin` with [AdministratorAccess](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AdministratorAccess$jsonEditor) permissions, and an IAM user, `MWAAUser`, as the principal for which you can limit DAG access\. For more information about admin users, see [Administrator job function](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html#jf_administrator) in the *IAM User Guide* 
 +  [AWS Command Line Interface version 2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install) installed\. 
 
 ## Step one: Provide Amazon MWAA web server access to your IAM user with the default `Public` Apache Airflow role\.<a name="limit-access-to-dags-apply-public-access"></a>
@@ -103,7 +103,7 @@
 **Note**  
  The **Last Name** field is required, but a space satisfies the requirement\. 
 
-    The IAM `Public` principle grants the `MWAAUser` permission to access the Apache Airflow UI, while the new role provides the additional permissions needed to see their DAGs\. 
+    The IAM `Public` principal grants the `MWAAUser` permission to access the Apache Airflow UI, while the new role provides the additional permissions needed to see their DAGs\. 
 
 **Important**  
  Any of the 5 default roles \(such as `Admin`\) not authorized by IAM which are added using the Apache Airflow UI will be removed on next user login\. 

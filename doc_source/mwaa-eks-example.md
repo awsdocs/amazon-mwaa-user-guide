@@ -5,7 +5,7 @@ The following sample demonstrates how to use Amazon Managed Workflows for Apache
 **Topics**
 + [Version](#mwaa-eks-example-version)
 + [Prerequisites](#eksctl-prereqs)
-+ [Create a public key for EC2](#eksctl-create-key)
++ [Create a public key for Amazon EC2](#eksctl-create-key)
 + [Create the cluster](#create-cluster-eksctl)
 + [Create a mwaa namespace](#eksctl-namespace)
 + [Create a role for the mwaa namespace](#eksctl-role)
@@ -18,8 +18,8 @@ The following sample demonstrates how to use Amazon Managed Workflows for Apache
 + [Enable and trigger the example](#eksctl-trigger-pod)
 
 ## Version<a name="mwaa-eks-example-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="eksctl-prereqs"></a>
 
@@ -32,7 +32,7 @@ To use the example in this topic, you'll need the following:
 **Note**  
 When you use an `eksctl` command, you can include a `--profile` to specify a profile other than the default\.
 
-## Create a public key for EC2<a name="eksctl-create-key"></a>
+## Create a public key for Amazon EC2<a name="eksctl-create-key"></a>
 
 Use the following command to create a public key from your private key pair\.
 
@@ -267,7 +267,7 @@ After you create role, edit your Amazon MWAA environment to use the role you cre
 To use the sample code in this section, ensure you've added one of the following database options to your `requirements.txt`\. To learn more, see [Installing Python dependencies](working-dags-dependencies.md)\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 ```
 kubernetes
@@ -275,7 +275,7 @@ apache-airflow[cncf.kubernetes]==2.0.2
 ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 ```
 awscli
@@ -321,7 +321,7 @@ env:
 Use the following code example to create a \.py file, such as mwaa\_pod\_example\.py, for the DAG\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 ```
 """
@@ -373,7 +373,7 @@ podRun = KubernetesPodOperator(
 ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 ```
 """

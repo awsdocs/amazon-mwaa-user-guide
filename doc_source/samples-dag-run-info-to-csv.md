@@ -12,7 +12,7 @@
 + [Code sample](#samples-dag-run-info-to-csv-code)
 
 ## Version<a name="samples-dag-run-info-to-csv-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-dag-run-info-to-csv-prereqs"></a>
 
@@ -23,7 +23,7 @@ To use the sample code on this page, you'll need the following:
 + No additional permissions are required to use the sample code on this page\.
 
 ## Dependencies<a name="samples-dag-run-info-to-csv-dependencies"></a>
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2\.0\.2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
++ To use with Apache Airflow v2, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
 
 ## Code sample<a name="samples-dag-run-info-to-csv-code"></a>
 

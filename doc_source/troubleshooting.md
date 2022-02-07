@@ -3,7 +3,7 @@
 This topic describes common issues and errors you may encounter when using Apache Airflow on Amazon Managed Workflows for Apache Airflow \(MWAA\) and recommended steps to resolve these errors\.
 
 **Contents**
-+ [Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v2\.0\.2](t-apache-airflow-202.md)
++ [Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v2](t-apache-airflow-202.md)
   + [Connections](t-apache-airflow-202.md#troubleshooting-conn-202)
     + [I can't connect to Secrets Manager](t-apache-airflow-202.md#access-secrets-manager-202)
     + [How do I configure `secretsmanager:ResourceTag/<tag-key>` secrets manager conditions or a resource restriction in my execution role policy?](t-apache-airflow-202.md#access-secrets-manager-condition-keys-202)
@@ -19,7 +19,7 @@ This topic describes common issues and errors you may encounter when using Apach
     + [Why does the `dags backfill` Apache Airflow CLI command fail? Is there a workaround?](t-apache-airflow-202.md#troubleshooting-cli-backfill)
   + [Operators](t-apache-airflow-202.md#troubleshooting-operators-202)
     + [I received a `PermissionError: [Errno 13] Permission denied` error using the S3Transform operator](t-apache-airflow-202.md#op-s3-transform)
-+ [Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v1\.10\.12](t-apache-airflow-11012.md)
++ [Troubleshooting: DAGs, Operators, Connections, and other issues in Apache Airflow v1](t-apache-airflow-11012.md)
   + [Updating requirements\.txt](t-apache-airflow-11012.md#troubleshooting-dependencies)
     + [Adding `apache-airflow-providers-amazon` causes my environment to fail](t-apache-airflow-11012.md#t-requirements)
   + [Broken DAG](t-apache-airflow-11012.md#troubleshooting-broken-dags)

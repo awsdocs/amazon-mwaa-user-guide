@@ -5,7 +5,7 @@ A Python dependency is any package or distribution that is not included in the A
 **Contents**
 + [Prerequisites](#working-dags-dependencies-prereqs)
 + [How it works](#working-dags-dependencies-how)
-+ [What's changed in v2\.0\.2](#working-dags-dependencies-changed)
++ [What's changed in v2](#working-dags-dependencies-changed)
 + [Python dependencies overview](#working-dags-dependencies-overview)
   + [Python dependencies location and size limits](#working-dags-dependencies-quota)
 + [Creating a requirements\.txt file](#working-dags-dependencies-test-create)
@@ -45,8 +45,8 @@ To run Python dependencies on your environment, you must do three things:
 **Note**  
 If this is the first time you're creating and uploading a `requirements.txt` to your Amazon S3 bucket, you also need to specify the path to the file on the Amazon MWAA console\. You only need to complete this step once\.
 
-## What's changed in v2\.0\.2<a name="working-dags-dependencies-changed"></a>
-+ **New: Airflow package extras**\. The Python dependencies that you specify in a `requirements.txt` on Amazon MWAA have changed in Apache Airflow v2\.0\.2\. For example, the [core extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#core-airflow-extras), [provider extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#providers-extras), [locally installed software extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#locally-installed-software-extras), [external service extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#external-services-extras), ["other" extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#other-extras), [bundle extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#bundle-extras), [doc extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#doc-extras), and [software extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#apache-software-extras) have changed\. To view a list of the packages installed for Apache Airflow v2\.0\.2 on Amazon MWAA, see [https://github\.com/aws/aws\-mwaa\-local\-runner/blob/main/docker/config/requirements\.txt](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt)\.
+## What's changed in v2<a name="working-dags-dependencies-changed"></a>
++ **New: Airflow package extras**\. The Python dependencies that you specify in a `requirements.txt` on Amazon MWAA have changed in Apache Airflow v2\. For example, the [core extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#core-airflow-extras), [provider extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#providers-extras), [locally installed software extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#locally-installed-software-extras), [external service extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#external-services-extras), ["other" extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#other-extras), [bundle extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#bundle-extras), [doc extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#doc-extras), and [software extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#apache-software-extras) have changed\. To view a list of the packages installed for Apache Airflow v2 on Amazon MWAA, see [Amazon MWAA local runner `requirements.txt`](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on the GitHub website\.
 
 ## Python dependencies overview<a name="working-dags-dependencies-overview"></a>
 
@@ -58,7 +58,7 @@ The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during 
 + **Size limit**\. We recommend a `requirements.txt` file that references libraries whose combined size is less than than 1 GB\. The more libraries Amazon MWAA needs to install, the longer the *startup* time on an environment\. Although Amazon MWAA doesn't limit the size of installed libraries explicitly, if dependencies can't be installed within ten minutes, the Fargate service will time\-out and attempt to rollback the environment to a stable state\.
 
 **Note**  
-For security reasons, the Apache Airflow *Web server* on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the *Web server*\.
+Beginning with Apache Airflow v2\.2\.2, Amazon MWAA will install Python requirements, provider packages, and custom plugins on the Airflow web server\.
 
 ## Creating a requirements\.txt file<a name="working-dags-dependencies-test-create"></a>
 
@@ -74,19 +74,19 @@ The following steps describe the steps we recommend to create a requirements\.tx
 The following section describes how to specify Python dependencies from the [Python Package Index](https://pypi.org/) in a `requirements.txt` file\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 1. **Test locally**\. Add additional libraries iteratively to find the right combination of packages and their versions, before creating a `requirements.txt` file\. To run the Amazon MWAA CLI utility, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
-1. **Review the Airflow package extras**\. For example, the [core extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#core-airflow-extras), [provider extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#providers-extras), [locally installed software extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#locally-installed-software-extras), [external service extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#external-services-extras), ["other" extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#other-extras), [bundle extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#bundle-extras), [doc extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#doc-extras), and [software extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html#apache-software-extras) have changed\. To view a list of the packages installed for Apache Airflow v2\.0\.2 on Amazon MWAA, see [https://github\.com/aws/aws\-mwaa\-local\-runner/blob/main/docker/config/requirements\.txt](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt)\.
+1. **Review the Apache Airflow package extras**\. For example, the [core extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#core-airflow-extras), [provider extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#providers-extras), [locally installed software extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#locally-installed-software-extras), [external service extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#external-services-extras), ["other" extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#other-extras), [bundle extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#bundle-extras), [doc extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#doc-extras), and [software extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html#apache-software-extras) have changed\. To view a list of the packages installed for Apache Airflow v2 on Amazon MWAA, see [Amazon MWAA local runner `requirements.txt`](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on the GitHub website\.
 
-1. **Add the constraints file**\. Add the constraints file for Apache Airflow v2\.0\.2 to the top of your `requirements.txt` file\. If the constraints file determines that `xyz==1.0` package is not compatible with other packages on your environment, the `pip3 install` will fail to prevent incompatible libraries from being installed to your environment\. 
+1. **Add the constraints file**\. Add the constraints file for your Apache Airflow v2 environment to the top of your `requirements.txt` file\. If the constraints file determines that `xyz==1.0` package is not compatible with other packages on your environment, the `pip3 install` will fail to prevent incompatible libraries from being installed to your environment\. In the following example, replace `{Airflow-version}` with your environment's version number\.
 
    ```
-   --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt"
+   --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-{Airflow-version}/constraints-3.7.txt"
    ```
 
-1. **Apache Airflow packages**\. Add the [Apache Airflow v2\.0\.2 package extras](http://airflow.apache.org/docs/apache-airflow/2.0.2/extra-packages-ref.html) and the version \(`==`\)\. This helps to prevent packages of the same name, but different version, from being installed on your environment\.
+1. **Apache Airflow packages**\. Add the [Apache Airflow v2 package extras](http://airflow.apache.org/docs/apache-airflow/2.2.2/extra-packages-ref.html) and the version \(`==`\)\. This helps to prevent packages of the same name, but different version, from being installed on your environment\.
 
    ```
    apache-airflow[package-extra]==2.0.2
@@ -99,7 +99,7 @@ The following section describes how to specify Python dependencies from the [Pyt
    ```  
 **Example Boto3 and psycopg2\-binary**  
 
-   This example is provided for demonstration purposes\. The boto and psycopg2\-binary libraries are included with the Apache Airflow v2\.0\.2 base install and don't need to be specified in a `requirements.txt` file\.
+   This example is provided for demonstration purposes\. The boto and psycopg2\-binary libraries are included with the Apache Airflow v2 base install and don't need to be specified in a `requirements.txt` file\.
 
    ```
    boto3==1.17.54
@@ -111,7 +111,7 @@ The following section describes how to specify Python dependencies from the [Pyt
    If a package is specified without a version, Amazon MWAA installs the latest version of the package from [PyPi\.org](https://pypi.org)\. This version may conflict with other packages in your `requirements.txt`\.
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 1. **Test locally**\. Add additional libraries iteratively to find the right combination of packages and their versions, before creating a `requirements.txt` file\. To run the Amazon MWAA CLI utility, see the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.
 
@@ -235,7 +235,7 @@ You need to specify the version of your `requirements.txt` file on the Amazon MW
 
 1. Choose **Edit**\.
 
-1. On the **DAG code in Amazon S3** pane, choose a `requirements.txt` version in the dropdown list\.
+1. On the **DAG code in Amazon S3 ** pane, choose a `requirements.txt` version in the dropdown list\.
 
 1. Choose **Next**, **Update environment**\.
 

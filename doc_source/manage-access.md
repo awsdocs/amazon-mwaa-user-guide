@@ -5,4 +5,5 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) needs to be permitted to us
 **Topics**
 + [Amazon MWAA Service\-linked role policy](mwaa-slr.md)
 + [Amazon MWAA execution role](mwaa-create-role.md)
++ [Apache Airflow access modes](configuring-networking.md)
 + [Accessing an Amazon MWAA environment](access-policies.md)

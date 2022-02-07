@@ -11,8 +11,8 @@ The following sample calls AWS Secrets Manager to get a secret key for an Apache
 + [What's next?](#samples-secrets-manager-next-up)
 
 ## Version<a name="samples-secrets-manager-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-secrets-manager-prereqs"></a>
 
@@ -24,15 +24,15 @@ To use the sample code on this page, you'll need the following:
 + Secrets Manager permissions as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
 
 ## Requirements<a name="samples-hive-dependencies"></a>
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1\.10\.12 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
-+ No additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2\.0\.2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
++ To use with Apache Airflow v1, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
++ To use with Apache Airflow v2, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
 
 ## Code sample<a name="samples-secrets-manager-code"></a>
 
 The following steps describe how to create the DAG code that calls Secrets Manager to get the secret\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 1. In your command prompt, navigate to the directory where your DAG code is stored\. For example:
 
@@ -103,7 +103,7 @@ The following steps describe how to create the DAG code that calls Secrets Manag
    ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 1. In your command prompt, navigate to the directory where your DAG code is stored\. For example:
 

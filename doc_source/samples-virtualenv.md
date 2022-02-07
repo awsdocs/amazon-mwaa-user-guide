@@ -14,8 +14,8 @@ The following sample shows how to patch the Apache Airflow PythonVirtualenvOpera
 + [What's next?](#samples-virtualenv-next-up)
 
 ## Version<a name="samples-virtualenv-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1\.10\.12** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-virtualenv-prereqs"></a>
 
@@ -35,10 +35,10 @@ virtualenv
 
 ## Custom plugin sample code<a name="samples-virtualenv-plugins-code"></a>
 
-Apache Airflow will execute the contents of Python files in the plugins folder at startup\. This plugin will patch the built\-in PythonVirtualenvOperater during that startup process to make it compatible with Amazon MWAA\. The following steps show the sample code for the custom plugin\.
+Apache Airflow will execute the contents of Python files in the plugins folder at startup\. This plugin will patch the built\-in `PythonVirtualenvOperater` during that startup process to make it compatible with Amazon MWAA\. The following steps show the sample code for the custom plugin\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 1. In your command prompt, navigate to the `plugins` directory above\. For example:
 
@@ -84,7 +84,7 @@ Apache Airflow will execute the contents of Python files in the plugins folder a
    ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 1. In your command prompt, navigate to the `plugins` directory above\. For example:
 
@@ -134,7 +134,7 @@ The following steps show how to create the `plugins.zip`\.
 The following steps describe how to create the DAG code for the custom plugin\.
 
 ------
-#### [ Airflow v2\.0\.2 ]
+#### [ Apache Airflow v2 ]
 
 1. In your command prompt, navigate to the directory where your DAG code is stored\. For example:
 
@@ -180,7 +180,7 @@ The following steps describe how to create the DAG code for the custom plugin\.
    ```
 
 ------
-#### [ Airflow v1\.10\.12 ]
+#### [ Apache Airflow v1 ]
 
 1. In your command prompt, navigate to the directory where your DAG code is stored\. For example:
 
@@ -213,7 +213,7 @@ The following steps describe how to create the DAG code for the custom plugin\.
 
 ## Airflow configuration options<a name="samples-virtualenv-airflow-config"></a>
 
-If you're using Apache Airflow v2\.0\.2, add `core.lazy_load_plugins : False` as an Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2\.0](configuring-env-variables.md#configuring-2.0-airflow-override)\.
+If you're using Apache Airflow v2, add `core.lazy_load_plugins : False` as an Apache Airflow configuration option\. To learn more, see [Using configuration options to load plugins in 2](configuring-env-variables.md#configuring-2.0-airflow-override)\.
 
 ## What's next?<a name="samples-virtualenv-next-up"></a>
 + Learn how to upload the `requirements.txt` file in this example to your Amazon S3 bucket in [Installing Python dependencies](working-dags-dependencies.md)\.

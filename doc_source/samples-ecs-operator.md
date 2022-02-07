@@ -9,7 +9,7 @@ The following sample code uses an Amazon Elastic Container Service \(Amazon ECS\
 + [Code sample](#samples-ecs-operator-code)
 
 ## Version<a name="samples-ecs-operator-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v2\.0\.2** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-ecs-operator-prereqs"></a>
 

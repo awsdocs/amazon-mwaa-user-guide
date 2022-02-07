@@ -21,10 +21,11 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) sets up Apache Airflow on a
 The following Apache Airflow versions are supported on Amazon Managed Workflows for Apache Airflow \(MWAA\)\.
 
 
-| Airflow version | Airflow guide | Airflow constraints | Python version | 
+| Apache Airflow version | Apache Airflow guide | Apache Airflow constraints | Python version | 
 | --- | --- | --- | --- | 
-|  v2\.0\.2  |  [Apache Airflow v2\.0\.2 reference guide](http://airflow.apache.org/docs/apache-airflow/2.0.2/index.html)  |  [https://raw\.githubusercontent\.com/apache/airflow/constraints\-2\.0\.2/constraints\-3\.7\.txt](https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
-|  v1\.10\.12  |  [Apache Airflow v1\.10\.12 reference guide](https://airflow.apache.org/docs/apache-airflow/1.10.12/)  |  [https://raw\.githubusercontent\.com/apache/airflow/constraints\-1\.10\.12/constraints\-3\.7\.txt](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
+|  v2\.2\.2  |  [Apache Airflow v2\.2\.2 reference guide](https://airflow.apache.org/docs/apache-airflow/2.2.2/index.html)  |  [Apache Airflow v2\.2\.2 constraints file](https://raw.githubusercontent.com/apache/airflow/constraints-2.2.2/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
+|  v2\.0\.2  |  [Apache Airflow v2\.0\.2 reference guide](http://airflow.apache.org/docs/apache-airflow/2.0.2/index.html)  |  [Apache Airflow v2\.0\.2 constraints file](https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
+|  v1\.10\.12  |  [Apache Airflow v1\.10\.12 reference guide](https://airflow.apache.org/docs/apache-airflow/1.10.12/)  |  [Apache Airflow v1\.10\.12 constraints file](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
 
 ## Create an environment<a name="create-environment-start"></a>
 
@@ -46,7 +47,7 @@ The following section describes the steps to create an Amazon MWAA environment\.
 
    1. Choose the Apache Airflow version in **Airflow version**\. 
 **Note**  
-If no value is specified, defaults to the latest Airflow version\. The latest version available \(as of "today"\) is Apache Airflow v2\.0\.2\.
+If no value is specified, defaults to the latest Airflow version\. The latest version available is Apache Airflow v2\.2\.2\.
 
 1. Under **DAG code in Amazon S3**:
 

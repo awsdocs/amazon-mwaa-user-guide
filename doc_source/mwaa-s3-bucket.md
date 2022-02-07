@@ -1,6 +1,6 @@
 # Create an Amazon S3 bucket for Amazon MWAA<a name="mwaa-s3-bucket"></a>
 
-This guide describes the steps create an Amazon S3 bucket to store your Apache Airflow Directed Acyclic Graphs \(DAGs\), custom plugins in a `plugins.zip` file, and Python dependencies in a `requirements.txt` file\. 
+This guide describes the steps to create an Amazon S3 bucket to store your Apache Airflow Directed Acyclic Graphs \(DAGs\), custom plugins in a `plugins.zip` file, and Python dependencies in a `requirements.txt` file\. 
 
 **Contents**
 + [Before you begin](#mwaa-s3-bucket-before)
