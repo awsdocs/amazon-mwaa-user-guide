@@ -184,7 +184,7 @@ The following list shows the Airflow worker configurations available in the drop
 
 | Airflow version | Airflow configuration option | Description | Example value | 
 | --- | --- | --- | --- | 
-|  v1  |  celery\.worker\_autoscale  |  The maximum and minimum number of tasks that can run concurrently on any worker using the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/1.10.12/executor/celery.html) in [worker\_autoscale](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#worker-autoscale)\. Value must be comma\-separated in the following order: `max_concurrency,min_concurrency`\.  |  16,12  | 
+|  v1  |  celery\.worker\_autoscale  |  The maximum and minimum number of tasks that can run concurrently on any worker using the [Celery Executor](https://airflow.apache.org/docs/apache-airflow/1.10.12/executor/celery.html) in [worker\_autoscale](https://airflow.apache.org/docs/apache-airflow/1.10.12/configurations-ref.html#worker-autoscale)\. Value must be comma\-separated in the following order: `max_concurrency,min_concurrency`\. For better performance, please refer to [Performance tuning for Apache Airflow](https://docs.aws.amazon.com/mwaa/latest/userguide/best-practices-tuning.html).  |  16,12  | 
 
 ------
 
