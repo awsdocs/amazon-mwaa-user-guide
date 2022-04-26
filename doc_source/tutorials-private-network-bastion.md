@@ -81,13 +81,9 @@ The simplest way to identify a range is to use the same CIDR range as your publi
 
    1. Enter a name in **Bastion Host Name**\.
 
-   1. Leave the remaining options blank, or set to their default values\.
-
    1. Choose **true** for **TCP forwarding**\.
 **Warning**  
 TCP forwarding must be set to **true** in this step\. Otherwise, you won't be able to create an SSH tunnel in the next step\.
-
-   1. Leave the remaining options blank, or set to their default values\.
 
 1. Choose **Next**, **Next**\.
 

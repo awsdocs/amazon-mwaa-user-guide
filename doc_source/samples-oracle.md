@@ -23,7 +23,7 @@ The following sample walks you through the steps to create a custom plugin using
 
 To use the sample code on this page, you'll need the following:
 + An [Amazon MWAA environment](get-started.md)\.
-+  *Worker* logging enabled for your Amazon MWAA environment\. For more information about Amazon MWAA log types and how to manage your log groups, see [Viewing Airflow logs in Amazon CloudWatch](monitoring-airflow.md) 
++  *Worker* logging enabled at any log level, `CRITICAL` or above, for your environment\. For more information about Amazon MWAA log types and how to manage your log groups, see [Viewing Airflow logs in Amazon CloudWatch](monitoring-airflow.md) 
 
 ## Permissions<a name="samples-oracle-permissions"></a>
 + No additional permissions are required to use the sample code on this page\.

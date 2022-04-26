@@ -36,7 +36,9 @@ You can build a custom monitoring dashboard that displays charts of selected met
 
 The following list describes each of the metrics created in the custom dashboard by the tutorial and template definitions in this section\.
 + *QueuedTasks* \- The number of tasks with queued state\. Corresponds to the `executor.queued_tasks` Airflow metric\.
-+ *TasksPending* \- The number of tasks pending in executor\. Corresponds to the `scheduler.tasks.pending` Airflow metric\.
++  *TasksPending* \- The number of tasks pending in executor\. Corresponds to the `scheduler.tasks.pending` Airflow metric\. 
+**Note**  
+ Does not apply to Apache Airflow v2\.2 and above\. 
 + *RunningTasks* \- The number of tasks running in executor\. Corresponds to the `executor.running_tasks` Airflow metric\.
 + *SchedulerHeartbeat* \- The number of check\-ins Airflow performs on the scheduler job\. Corresponds to the `scheduler_heartbeat` Airflow metrics\.
 + *TotalParseTime* \- The number of seconds taken to scan and import all DAG files once\. Corresponds to the `dag_processing.total_parse_time` Airflow metric\.

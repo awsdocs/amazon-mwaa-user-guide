@@ -195,8 +195,6 @@ SecurityGroupIds:
 
 1. Choose **Choose file**, and select your `mwaa_vpn_client.yaml` file\.
 
-1. Leave the remaining options blank, or set to their default values\.
-
 1. Choose **Next**, **Next**\.
 
 1. Select the acknowledgement, and then choose **Create stack**\.

@@ -132,7 +132,7 @@ The following section contains links to tutorials in the *Apache Airflow referen
 
    1.  If you use `requirements.txt` in your environment, you'll need to update the `--constraint` to [v2\.2\.2 constraints](https://raw.githubusercontent.com/apache/airflow/constraints-2.2.2/constraints-3.7.txt) and verify that current libraries and packages are compatible with Apache Airflow v2\.2\.2 
 
-1.  Starting with Apache Airflow v2\.2\.2, the list of provider packages Amazon MWAA installs by default for your environment has changed, and you can now install dependencies and plugin on the Apache Airflow web server\. Compare the list of provider packages installed by default in Apache Airflow v2\.2\.2 and Apache Airflow v2\.0\.2, and configure any additional packages you might need for your new v2\.2\.2 environment\. 
+1.  Starting with Apache Airflow v2\.2\.2, the list of provider packages Amazon MWAA installs by default for your environment has changed, and you can now install dependencies and plugin on the Apache Airflow web server\. Compare the [list of provider packages installed by default](connections-packages.md) in Apache Airflow v2\.2\.2 and Apache Airflow v2\.0\.2, and configure any additional packages you might need for your new v2\.2\.2 environment\. 
 
 1.  Test your DAGs using the new v2\.2\.2 environment\. 
 
@@ -140,9 +140,9 @@ The following section contains links to tutorials in the *Apache Airflow referen
 
 ### Upgrading from Apache Airflow v1 to Apache Airflow v2<a name="v1-to-v2"></a>
 
- The following section shows how you can upgrade your Apache Airflow v1 environment to Apache Airflow v2\. The steps assume you are starting with an existing codebase in Apache Airflow v1\.10\.12 and are upgrading it to any of the supported Apache Airflow v2 minor version releases\. 
+ The following section shows how you can upgrade your Apache Airflow v1 environment to Apache Airflow v2\. For more information about migrating your self\-managed Apache Airflow deployments, or migrating an existing Amazon MWAA environment, including instructions for backing up your metadata database, see the [Amazon MWAA Migration Guide](https://docs.aws.amazon.com/https://docs.aws.amazon.com/mwaa/latest/migrationguide/index.html)\. 
 
- To upgrade to Apache Airflow v2, create a new environment using the latest supported version with the required [Apache Airflow configuration options](configuring-env-variables.md) from your existing environment, and follow the steps in this section to modify your DAGs, Python dependencies in `requirements.txt`, and custom plugins in `plugins.zip` for the new version\. After you have successfully migrated your workflows,you can delete the older environment\.
+ The steps in this section assume you are starting with an existing codebase in Apache Airflow v1\.10\.12 and are upgrading it to any of the supported Apache Airflow v2 minor version releases\.To upgrade to Apache Airflow v2, create a new environment using the latest supported version with the required [Apache Airflow configuration options](configuring-env-variables.md) from your existing environment, and follow the steps in this section to modify your DAGs, Python dependencies in `requirements.txt`, and custom plugins in `plugins.zip` for the new version\. After you have successfully migrated your workflows,you can delete the older environment\.
 
 1. Follow the steps to upgrade to the Apache Airflow v1 bridge release, run upgrade check scripts, and convert and test custom plugins and DAGs to Apache Airflow v2 locally, in [Upgrading from 1\.10 to 2](https://airflow.apache.org/docs/apache-airflow/2.2.2/upgrading-from-1-10/index.html) in the *Apache Airflow reference guide* and [Updating Airflow](https://github.com/apache/airflow/blob/master/UPDATING.md) on GitHub\.
 

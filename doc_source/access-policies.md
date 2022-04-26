@@ -299,7 +299,7 @@ A user may need access to the `AmazonMWAAWebServerAccess` permissions policy if 
 ```
 
 **Note**  
-Amazon MWAA does not support custom Apache Airflow role\-based access control \(RBAC\) roles as of yet\.
+ Amazon MWAA provides IAM integration with the five [default Apache Airflow role\-based access control \(RBAC\) roles](https://airflow.apache.org/docs/apache-airflow/stable/security/access-control.html?highlight=roles)\. For more information on working with custom Apache Airflow roles, see [Tutorial: Restricting an Amazon MWAA user's access to a subset of DAGs](limit-access-to-dags.md)\. 
 
 ## Apache Airflow CLI policy: AmazonMWAAAirflowCliAccess<a name="cli-access"></a>
 

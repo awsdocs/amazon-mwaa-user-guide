@@ -92,7 +92,9 @@ Amazon MWAA does not currently support on\-demand Amazon EC2 Spot Instance types
 
 ### Does Amazon MWAA support a custom domain?<a name="custom-dns"></a>
 
-Yes\. You can use a custom domain for your Apache Airflow host name using [Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html)\. Apply an [AWS Certificate Manager \(ACM\) certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs.html) to the Application Load Balancer, and then apply the Route 53 CNAME to the Application Load Balancer to match the fully qualified domain name \(FQDN\) of the certificate\.
+ To be able to use a custom domain for your Amazon MWAA hostname, do one of the following: 
++  For Amazon MWAA deployments with public web server access, you can use Amazon CloudFront with Lambda@Edge to direct traffic to your environment, and map a custom domain name to CloudFront\. For more information and an example of setting up a custom domain for a public environment, see the [Amazon MWAA custom domain for public web server](https://github.com/aws-samples/amazon-mwaa-examples/tree/main/usecases/mwaa-public-webserver-custom-domain) sample in the Amazon MWAA examples GitHub repository\. 
++  For Amazon MWAA deployments with private web server access, you can use an Application Load Balancer \(ALB\) to direct traffic to Amazon MWAA and map a custom domain name to the ALB\. For moren information, see [Using a Load Balancer \(advanced\)](vpc-vpe-access.md#vpc-vpe-access-load-balancer)\. 
 
 ### Can I SSH into my environment?<a name="ssh-dag"></a>
 
@@ -100,9 +102,9 @@ While SSH is not supported on a Amazon MWAA environment, it's possible to use a 
 
 ```
 from airflow import DAG
-  from airflow.operators.bash_operator import BashOperator
-  from airflow.utils.dates import days_ago
-  with DAG(dag_id="any_bash_command_dag", schedule_interval=None, catchup=False, start_date=days_ago(1)) as dag:
+from airflow.operators.bash_operator import BashOperator
+from airflow.utils.dates import days_ago
+with DAG(dag_id="any_bash_command_dag", schedule_interval=None, catchup=False, start_date=days_ago(1)) as dag:
       cli_command = BashOperator(
           task_id="bash_command",
           bash_command="{{ dag_run.conf['command'] }}"
@@ -142,9 +144,7 @@ Amazon MWAA monitors the **QueuedTasks** and **RunningTasks** in CloudWatch to d
 
 ### Can I create custom metrics in CloudWatch?<a name="metrics-custom"></a>
 
-Not on the CloudWatch console\. However, you can create a DAG that writes custom metrics in CloudWatch\. To learn more, see [Using a DAG to write custom metrics in CloudWatch](samples-custom-metrics.md)\. 
-
-We'll also be releasing a serverless\-native executor similar to the Kubernetes executor via Open Source in September 2021\.
+Not on the CloudWatch console\. However, you can create a DAG that writes custom metrics in CloudWatch\. To learn more, see [Using a DAG to write custom metrics in CloudWatch](samples-custom-metrics.md)\.
 
 ## DAGs, Operators, Connections, and other questions<a name="q-dags"></a>
 

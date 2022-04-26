@@ -32,7 +32,7 @@ The Apache Airflow *Web server* can be accessed either *over the Internet* by se
 **Note**  
 Multiple Apache Airflow *Schedulers* are only available with Apache Airflow v2 and above\. Learn more about the Apache Airflow task lifecycle at [Concepts](https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#task-lifecycle) in the *Apache Airflow reference guide*\.
 
-![\[This image shows the architecture of a Amazon MWAA environment.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-architecture.png)
+![\[This image shows the architecture of an Amazon MWAA environment.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-architecture.png)
 
 ## Integration<a name="integrations-mwaa"></a>
 

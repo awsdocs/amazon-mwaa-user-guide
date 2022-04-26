@@ -12,7 +12,7 @@ AWS Secrets Manager is a supported alternative Apache Airflow backend on an Amaz
 + [Step four: Add the variables in Secrets Manager](#connections-sm-createsecret-variables)
 + [Step five: Add the connection in Secrets Manager](#connections-sm-createsecret-connection)
 + [Sample code](#connections-sm-samples)
-+ [Using AWS blogs and tutorials](#connections-sm-blogs)
++ [Resources](#connections-sm-blogs)
 + [What's next?](#connections-sm-next-up)
 
 ## Step one: Provide Amazon MWAA with permission to access Secrets Manager secret keys<a name="connections-sm-policy"></a>
@@ -238,15 +238,15 @@ The following Python script does not require the Apache Airflow CLI\.
 
 The following section describes how to create the secret for a variable in Secrets Manager\.
 
-**To create the secret key**
+**To create the secret**
 
 1. Open the [AWS Secrets Manager console](https://console.aws.amazon.com/secretsmanager/home#/environments)\.
 
 1. Choose **Store a new secret**\.
 
-1. Choose **Other type of secrets**\.
+1. Choose **Other type of secret**\.
 
-1. Choose **Plaintext** on the **Specify the key/value pairs to be stored in this secret** pane\.
+1. On the **Specify the key/value pairs to be stored in this secret** pane, choose **Plaintext**\.
 
 1. Add the variable value as **Plaintext** in the following format\.
 
@@ -266,7 +266,7 @@ The following section describes how to create the secret for a variable in Secre
    "mystring"
    ```
 
-1. Choose an AWS KMS key option from the dropdown list\.
+1. For **Encryption key**, choose an AWS KMS key option from the dropdown list\.
 
 1. Enter a name in the text field for **Secret name** in the following format\.
 
@@ -280,25 +280,35 @@ The following section describes how to create the secret for a variable in Secre
    airflow/variables/test-variable
    ```
 
-1. Leave the remaining options blank, or set to their default values\.
+1.  Choose **Next**\. 
 
-1. Choose **Next**, **Next**, **Store**\.
+1.  On the **Configure secret** page, on the **Secret name and description** pane, do the following\. 
+
+   1.  For **Secret name**, provide a name for your secret\. 
+
+   1.  \(Optional\) For **Description**, provide a description for your secret\. 
+
+    Choose **Next**\. 
+
+1. On the **Configure rotation \- optional** leave the default options and choose **Next**\.
 
 1. Repeat these steps in Secrets Manager for any additional variables you want to add\.
+
+1.  On the **Review** page, review your secret, then choose **Store**\. 
 
 ## Step five: Add the connection in Secrets Manager<a name="connections-sm-createsecret-connection"></a>
 
 The following section describes how to create the secret for your connection string URI in Secrets Manager\.
 
-**To create the secret key**
+**To create the secret**
 
 1. Open the [AWS Secrets Manager console](https://console.aws.amazon.com/secretsmanager/home#/environments)\.
 
 1. Choose **Store a new secret**\.
 
-1. Choose **Other type of secrets**\.
+1. Choose **Other type of secret**\.
 
-1. Choose **Plaintext** on the **Specify the key/value pairs to be stored in this secret** pane\.
+1. On the **Specify the key/value pairs to be stored in this secret** pane, choose **Plaintext**\.
 
 1. Add the connection URI string as **Plaintext** in the following format\.
 
@@ -314,7 +324,7 @@ The following section describes how to create the secret for your connection str
 **Warning**  
 Apache Airflow parses each of the values in the connection string\. You must **not** use single nor double quotes, or it will parse the connection as a single string\.
 
-1. Choose an AWS KMS key option from the dropdown list\.
+1. For **Encryption key**, choose an AWS KMS key option from the dropdown list\.
 
 1. Enter a name in the text field for **Secret name** in the following format\.
 
@@ -328,15 +338,28 @@ Apache Airflow parses each of the values in the connection string\. You must **n
    airflow/connections/myconn
    ```
 
-1. Leave the remaining options blank, or set to their default values\.
+1.  Choose **Next**\. 
 
-1. Choose **Next**, **Next**, **Store**\.
+1.  On the **Configure secret** page, on the **Secret name and description** pane, do the following\. 
+
+   1.  For **Secret name**, provide a name for your secret\. 
+
+   1.  \(Optional\) For **Description**, provide a description for your secret\. 
+
+    Choose **Next**\. 
+
+1. On the **Configure rotation \- optional** leave the default options and choose **Next**\.
+
+1. Repeat these steps in Secrets Manager for any additional variables you want to add\.
+
+1.  On the **Review** page, review your secret, then choose **Store**\. 
 
 ## Sample code<a name="connections-sm-samples"></a>
 + Learn how to use the secret key for the Apache Airflow connection \(`myconn`\) on this page using the sample code at [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)\.
 + Learn how to use the secret key for the Apache Airflow variable \(`test-variable`\) on this page using the sample code at [Using a secret key in AWS Secrets Manager for an Apache Airflow variable](samples-secrets-manager-var.md)\.
 
-## Using AWS blogs and tutorials<a name="connections-sm-blogs"></a>
+## Resources<a name="connections-sm-blogs"></a>
++  For more information about configuring Secrets Manager secrets using the conosle and the AWS CLI, see [Create a secret](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html) in the *AWS Secrets Manager User Guide*\. 
 + Use a Python script to migrate a large volume of Apache Airflow variables and connections to Secrets Manager in [Move your Apache Airflow connections and variables to AWS Secrets Manager](https://aws.amazon.com/blogs/opensource/move-apache-airflow-connections-variables-aws-secrets-manager/)\.
 
 ## What's next?<a name="connections-sm-next-up"></a>

@@ -517,7 +517,9 @@ It takes over 30 minutes to create the Amazon VPC infrastructure, Amazon S3 buck
 
 1. Choose **Open Airflow UI**\.
 
-1. Choose the **tutorial** DAG\.
+1. On the Apache Airflow UI, from the list of available DAGs, choose the **tutorial** DAG\.
+
+1.  On the DAG details page, choose the **Pause/Unpause DAG** toggle next to your DAG name to unpause the DAG\. 
 
 1. Choose **Trigger DAG**\.
 

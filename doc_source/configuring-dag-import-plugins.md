@@ -61,7 +61,7 @@ The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during 
 + **Size limit**\. We recommend a `plugins.zip` file less than than 1 GB\. The larger the size of a `plugins.zip` file, the longer the startup time on an environment\. Although Amazon MWAA doesn't limit the size of a `plugins.zip` file explicitly, if dependencies can't be installed within ten minutes, the Fargate service will time\-out and attempt to rollback the environment to a stable state\. 
 
 **Note**  
-For security reasons, the Apache Airflow *Web server* on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the *Web server*\.
+For environments using Apache Airflow v1\.10\.12 or v2\.0\.2, Amazon MWAA limits outbound traffic on the Apache Airflow web server, and does not allow you to install plugins nor Python dependencies directly on the web server\. Starting, with Apache Airflow v2\.2\.2, you can install plugins and dependencies directly on the web server\.
 
 ## Examples of custom plugins<a name="configuring-dag-plugins-airflow-ex"></a>
 
@@ -608,7 +608,7 @@ You need to specify the version of your `plugins.zip` file on the Amazon MWAA co
 + Learn how to create a custom plugin in [Custom plugin with Apache Hive and Hadoop](samples-hive.md)\.
 + Learn how to create a custom plugin in [Custom plugin to patch PythonVirtualenvOperator ](samples-virtualenv.md)\.
 + Learn how to create a custom plugin in [Custom plugin with Oracle](samples-oracle.md)\.
-+ Learn how to create a custom plugin in [Custom plugin to change the DAG schedule timezone](samples-plugins-timezone.md)\.
++ Learn how to create a custom plugin in [Changing a DAG's timezone on Amazon MWAA](samples-plugins-timezone.md)\.
 
 ## What's next?<a name="configuring-dag-plugins-next-up"></a>
 + Test your DAGs, custom plugins, and Python dependencies locally using the [aws\-mwaa\-local\-runner](https://github.com/aws/aws-mwaa-local-runner) on GitHub\.

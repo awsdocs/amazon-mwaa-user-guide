@@ -54,7 +54,7 @@ You can install Apache Airflow extras and other Python dependencies from the Pyt
 
 ### Python dependencies location and size limits<a name="working-dags-dependencies-quota"></a>
 
-The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during startup on the AWS\-managed Fargate container for your environment at `/usr/local/airflow/requirements/requirements.txt`\. 
+The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during startup on the AWS\-managed Fargate container for your environment at `/usr/local/airflow/plugins`\.
 + **Size limit**\. We recommend a `requirements.txt` file that references libraries whose combined size is less than than 1 GB\. The more libraries Amazon MWAA needs to install, the longer the *startup* time on an environment\. Although Amazon MWAA doesn't limit the size of installed libraries explicitly, if dependencies can't be installed within ten minutes, the Fargate service will time\-out and attempt to rollback the environment to a stable state\.
 
 **Note**  
@@ -255,20 +255,20 @@ You can view Apache Airflow logs for the *Scheduler* scheduling your workflows a
 
 1. Choose the `requirements_install_ip` log in **Log streams**\.
 
-1. You should see the list of packages that were installed on the environment at `/usr/local/airflow/requirements/requirements.txt`\. For example:
+1. You should see the list of packages that were installed on the environment at `/usr/local/airflow/.local/bin`\. For example:
 
    ```
-   Collecting appdirs==1.4.4 (from -r /usr/local/airflow/requirements/requirements.txt (line 1))
+   Collecting appdirs==1.4.4 (from -r /usr/local/airflow/.local/bin (line 1))
    Downloading https://files.pythonhosted.org/packages/3b/00/2344469e2084fb28kjdsfiuyweb47389789vxbmnbjhsdgf5463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl  
-   Collecting astroid==2.4.2 (from -r /usr/local/airflow/requirements/requirements.txt (line 2))
+   Collecting astroid==2.4.2 (from -r /usr/local/airflow/.local/bin (line 2))
    ```
 
 1. Review the list of packages and whether any of these encountered an error during installation\. If something went wrong, you may see an error similar to the following:
 
    ```
    2021-03-05T14:34:42.731-07:00
-   No matching distribution found for LibraryName==1.0.0 (from -r /usr/local/airflow/requirements/requirements.txt (line 4))
-   No matching distribution found for LibraryName==1.0.0 (from -r /usr/local/airflow/requirements/requirements.txt (line 4))
+   No matching distribution found for LibraryName==1.0.0 (from -r /usr/local/airflow/.local/bin (line 4))
+   No matching distribution found for LibraryName==1.0.0 (from -r /usr/local/airflow/.local/bin (line 4))
    ```
 
 ## What's next?<a name="working-dags-dependencies-next-up"></a>

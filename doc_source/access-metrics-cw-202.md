@@ -10,6 +10,7 @@ Apache Airflow v2 is already set\-up to collect and send [StatsD](https://github
   + [Apache Airflow Counters](#counters-metrics-v202)
   + [Apache Airflow Gauges](#gauges-metrics-v202)
   + [Apache Airflow Timers](#timers-metrics-v202)
++ [Choosing which metrics are reported](#choosing-metrics)
 + [What's next?](#mwaa-metrics202-next-up)
 
 ## Terms<a name="access-metrics-cw-terms-v202"></a>
@@ -127,7 +128,7 @@ The Apache Airflow metrics in this section contain data about [Apache Airflow *G
 |  QueuedTasks  |  executor\.queued\_tasks  |  Count  |  Function, Executor  | 
 |  RunningTasks  |  executor\.running\_tasks  |  Count  |  Function, Executor  | 
 |  TasksExecutable  |  scheduler\.tasks\.executable  |  Count  |  Function, Scheduler  | 
-|  TasksPending  |  scheduler\.tasks\.pending  |  Count  |  Function, Scheduler  | 
+|  TasksPending   Does not apply to Apache Airflow v2\.2 and above\.    |  scheduler\.tasks\.pending  |  Count  |  Function, Scheduler  | 
 |  TasksRunning  |  scheduler\.tasks\.running  |  Count  |  Function, Scheduler  | 
 |  TasksStarving  |  scheduler\.tasks\.starving  |  Count  |  Function, Scheduler  | 
 |  TasksWithoutDagRun  |  scheduler\.tasks\.without\_dagrun  |  Count  |  Function, Scheduler  | 
@@ -148,6 +149,16 @@ The Apache Airflow metrics in this section contain data about [Apache Airflow *T
 |  DAGScheduleDelay  |  dagrun\.schedule\_delay\.\{dag\_id\}  |  Milliseconds  |  DAG, \{dag\_id\}  | 
 |  FirstTaskSchedulingDelay  |  dagrun\.\{dag\_id\}\.first\_task\_scheduling\_delay  |  Milliseconds  |  DAG, \{dag\_id\}  | 
 |  TaskInstanceDuration  |  dag\.\{dag\_id\}\.\{task\_id\}\.duration  |  Milliseconds  |  DAG, \{dag\_id\} Task, \{task\_id\}  | 
+
+## Choosing which metrics are reported<a name="choosing-metrics"></a>
+
+ You can choose which Apache Airflow metrics are sent to CloudWatch by using the Amazon MWAA [configuration option](configuring-env-variables.md) `metrics.statsd_allow_list`\. 
+
+ For example, applying the following configuration option will only report report Apache Airflow metrics with prefixes `scheduler` and `executor` from [counters](https://airflow.apache.org/docs/apache-airflow/2.2.2/logging-monitoring/metrics.html#counters), [gauges](https://airflow.apache.org/docs/apache-airflow/2.2.2/logging-monitoring/metrics.html#gauges), and [timers](https://airflow.apache.org/docs/apache-airflow/2.2.2/logging-monitoring/metrics.html#timers) such as `scheduler.tasks.executable` and `executor.running_tasks`: 
+
+```
+metrics.statsd_allow_list = scheduler,executor
+```
 
 ## What's next?<a name="mwaa-metrics202-next-up"></a>
 + Explore the Amazon MWAA API operation used to publish environment health metrics at [PublishMetrics](https://docs.aws.amazon.com/mwaa/latest/API/API_PublishMetrics.html)\.

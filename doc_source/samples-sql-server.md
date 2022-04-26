@@ -1,6 +1,6 @@
-# Using Amazon MWAA with Amazon RDS for MySQL server<a name="samples-sql-server"></a>
+# Using Amazon MWAA with Amazon RDS for Microsoft SQL Server<a name="samples-sql-server"></a>
 
-You can use Amazon Managed Workflows for Apache Airflow \(MWAA\) to connect to an [RDS for MySQL server](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SQLServer.html)\. The following sample code uses DAGs on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment to connect to and execute queries on an Amazon RDS Microsoft SQL Server\.
+You can use Amazon Managed Workflows for Apache Airflow \(MWAA\) to connect to an [RDS for SQL Server](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SQLServer.html)\. The following sample code uses DAGs on an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment to connect to and execute queries on an Amazon RDS for Microsoft SQL Server\.
 
 **Topics**
 + [Version](#samples-sql-server-version)
@@ -18,11 +18,11 @@ You can use Amazon Managed Workflows for Apache Airflow \(MWAA\) to connect to a
 
 To use the sample code on this page, you'll need the following:
 + An [Amazon MWAA environment](get-started.md)\.
-+ Amazon MWAA and the RDS for MySQL are running in the same Amazon VPC/
++ Amazon MWAA and the RDS for SQL Server are running in the same Amazon VPC/
 + VPC security groups of Amazon MWAA and the server are configured with the following connections:
   + An inbound rule for the port `1433` open for Amazon RDS in Amazon MWAA's security group
   + Or an outbound rule for the port of `1433` open from Amazon MWAA to RDS
-+ Apache Airflow Connection for RDS for MySQL reflects the hostname, port, username and password from the Amazon RDS SQL server database created in previous process\.
++ Apache Airflow Connection for RDS for SQL Server reflects the hostname, port, username and password from the Amazon RDS SQL server database created in previous process\.
 
 ## Dependencies<a name="samples-sql-server-dependencies"></a>
 

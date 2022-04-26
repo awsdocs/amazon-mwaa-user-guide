@@ -15,4 +15,4 @@ This documentation helps you understand how to apply the shared responsibility m
 + [Resilience](disaster-recovery-resiliency.md)
 + [Infrastructure Security](infrastructure-security.md)
 + [Configuration and Vulnerability Analysis](configuration-vulnerability-analysis.md)
-+ [Best Practices](security-best-practices.md)
++ [Best practices](security-best-practices.md)
