@@ -101,6 +101,7 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
+import os
 from airflow.plugins_manager import AirflowPlugin
 import airflow.utils.python_virtualenv 
 from typing import List
@@ -114,6 +115,7 @@ def _generate_virtualenv_cmd(tmp_dir: str, python_bin: str, system_site_packages
     return cmd
 
 airflow.utils.python_virtualenv._generate_virtualenv_cmd=_generate_virtualenv_cmd
+os.environ["PATH"] = f"/usr/local/airflow/.local/bin:{os.environ['PATH']}"
 
 class VirtualPythonPlugin(AirflowPlugin):                
     name = 'virtual_python_plugin'
