@@ -95,7 +95,7 @@ The following steps describe how to create the DAG code that calls Secrets Manag
            start_date=days_ago(1),
            schedule_interval=None
    ) as dag:
-       write_all_to_aws_sm = PythonOperator(
+       read_from_aws_sm = PythonOperator(
            task_id="read_from_aws_sm",
            python_callable=read_from_aws_sm_fn,
            provide_context=True
@@ -150,7 +150,7 @@ The following steps describe how to create the DAG code that calls Secrets Manag
            start_date=days_ago(1),
            schedule_interval=None
    ) as dag:
-       write_all_to_aws_sm = PythonOperator(
+       read_from_aws_sm = PythonOperator(
            task_id="read_from_aws_sm",
            python_callable=read_from_aws_sm_fn,
            provide_context=True
