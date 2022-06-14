@@ -57,7 +57,7 @@ def lambda_handler(event, context):
     )
     
     conn = http.client.HTTPSConnection(mwaa_cli_token['WebServerHostname'])
-    payload = "dags trigger " + dag_name
+    payload = " ".join([mwaa_cli_command, dag_name])
     headers = {
       'Authorization': 'Bearer ' + mwaa_cli_token['CliToken'],
       'Content-Type': 'text/plain'
@@ -91,7 +91,7 @@ def lambda_handler(event, context):
     )
     
     conn = http.client.HTTPSConnection(mwaa_cli_token['WebServerHostname'])
-    payload = "trigger_dag " + dag_name
+    payload = " ".join([mwaa_cli_command, dag_name])
     headers = {
       'Authorization': 'Bearer ' + mwaa_cli_token['CliToken'],
       'Content-Type': 'text/plain'
