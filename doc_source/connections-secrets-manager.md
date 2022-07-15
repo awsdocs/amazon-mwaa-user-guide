@@ -47,8 +47,7 @@ The [execution role](mwaa-create-role.md) for your Amazon MWAA environment needs
                 "secretsmanager:DescribeSecret",
                 "secretsmanager:ListSecretVersionIds"
             ],
-            "Resource": "arn:aws:secretsmanager:us-west-2:012345678910:secret:*",
-            }
+            "Resource": "arn:aws:secretsmanager:us-west-2:012345678910:secret:*"
         },
         {
             "Effect": "Allow",
