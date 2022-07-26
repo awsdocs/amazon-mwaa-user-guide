@@ -8,9 +8,10 @@ An execution role is an AWS Identity and Access Management \(IAM\) role with a p
   + [How to add permission to use other AWS services](#mwaa-create-role-how-adding)
   + [How to associate a new execution role](#mwaa-create-role-how-associating)
 + [Create a new role](#mwaa-create-role-mwaa-onconsole)
-+ [Viewing and updating an execution role policy](#mwaa-create-role-update)
-  + [Attaching a JSON policy to use other AWS services](#mwaa-create-role-attach-json-policy)
-+ [Using Apache Airflow connections](#mwaa-create-role-airflow-connections)
++ [View and update an execution role policy](#mwaa-create-role-update)
+  + [Attach a JSON policy to use other AWS services](#mwaa-create-role-attach-json-policy)
++ [Grant access to Amazon S3 bucket with account\-level public access block](#mwaa-create-role-s3-publicaccessblock)
++ [Use Apache Airflow connections](#mwaa-create-role-airflow-connections)
 + [Sample JSON policies for an execution role](#mwaa-create-role-json)
   + [Sample policy for a customer managed key](#mwaa-create-role-cmk)
   + [Sample policy for an AWS owned key](#mwaa-create-role-aocmk)
@@ -53,7 +54,7 @@ By default, Amazon MWAA creates an [AWS owned key](https://docs.aws.amazon.com/k
 
 ![\[This is an image with the default option to create a new role.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-permissions.png)
 
-## Viewing and updating an execution role policy<a name="mwaa-create-role-update"></a>
+## View and update an execution role policy<a name="mwaa-create-role-update"></a>
 
 You can view the execution role for your environment on the Amazon MWAA console, and update the JSON policy for the role on the IAM console\.
 
@@ -77,7 +78,7 @@ You can view the execution role for your environment on the Amazon MWAA console,
 
 1. Choose **Save changes**\.
 
-### Attaching a JSON policy to use other AWS services<a name="mwaa-create-role-attach-json-policy"></a>
+### Attach a JSON policy to use other AWS services<a name="mwaa-create-role-attach-json-policy"></a>
 
 You can create a JSON policy for an AWS service and attach it to your execution role\. For example, you can attach the following JSON policy to grant read\-only access to all resources in AWS Secrets Manager\.
 
@@ -123,7 +124,28 @@ You can create a JSON policy for an AWS service and attach it to your execution 
 
 1. Choose **Create policy**\.
 
-## Using Apache Airflow connections<a name="mwaa-create-role-airflow-connections"></a>
+## Grant access to Amazon S3 bucket with account\-level public access block<a name="mwaa-create-role-s3-publicaccessblock"></a>
+
+ You might want to block access to all buckets in your account by using the [https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_PutPublicAccessBlock.html](https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_PutPublicAccessBlock.html) Amazon S3 operation\. When you block access to all buckets in your account, your environment execution role must include the `s3:GetAccountPublicAccessBlock` action in a permission policy\. 
+
+ The following example demonstrates the policy you must attach to your execution role when blocking access to all Amazon S3 buckets in your account\. 
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+     {
+       "Effect": "Allow",
+       "Action": "s3:GetAccountPublicAccessBlock",
+       "Resource": "*"
+     }
+  ]
+}
+```
+
+ For more information about restricting access to your Amazon S3 buckets, see [Blocking public access to your Amazon S3 storage](https://docs.aws.amazon.com/) in the *Amazon Simple Storage Service User Guide*\. 
+
+## Use Apache Airflow connections<a name="mwaa-create-role-airflow-connections"></a>
 
 You can also create an Apache Airflow connection and specify your execution role and its ARN in your Apache Airflow connection object\. To learn more, see [Managing connections to Apache Airflow](manage-connections.md)\.
 

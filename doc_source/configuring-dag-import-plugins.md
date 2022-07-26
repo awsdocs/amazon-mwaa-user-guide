@@ -26,12 +26,9 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) supports Apache Airflow's b
 ## Prerequisites<a name="configuring-dag-plugins-prereqs"></a>
 
 You'll need the following before you can complete the steps on this page\.
-
-1. **Access**\. Your AWS account must have been granted access by your administrator to the [AmazonMWAAFullConsoleAccess](access-policies.md#console-full-access) access control policy for your environment\.
-
-1. **Amazon S3 configurations**\. The [Amazon S3 bucket](mwaa-s3-bucket.md) used to store your DAGs, custom plugins in `plugins.zip`, and Python dependencies in `requirements.txt` must be configured with *Public Access Blocked* and *Versioning Enabled*\.
-
-1. **Permissions**\. Your Amazon MWAA environment must be permitted by your [execution role](mwaa-create-role.md) to access the AWS resources used by your environment\.
++ **Permissions** — Your AWS account must have been granted access by your administrator to the [AmazonMWAAFullConsoleAccess](access-policies.md#console-full-access) access control policy for your environment\. In addition, your Amazon MWAA environment must be permitted by your [execution role](mwaa-create-role.md) to access the AWS resources used by your environment\.
++ **Access** — If you require access to public repositories to install dependencies directly on the web server, your environment must be configured with **public network** web server access\. For more information, see [Apache Airflow access modes](configuring-networking.md)\.
++ **Amazon S3 configuration** — The [Amazon S3 bucket](mwaa-s3-bucket.md) used to store your DAGs, custom plugins in `plugins.zip`, and Python dependencies in `requirements.txt` must be configured with *Public Access Blocked* and *Versioning Enabled*\.
 
 ## How it works<a name="configuring-dag-plugins-how"></a>
 
@@ -61,7 +58,7 @@ The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during 
 + **Size limit**\. We recommend a `plugins.zip` file less than than 1 GB\. The larger the size of a `plugins.zip` file, the longer the startup time on an environment\. Although Amazon MWAA doesn't limit the size of a `plugins.zip` file explicitly, if dependencies can't be installed within ten minutes, the Fargate service will time\-out and attempt to rollback the environment to a stable state\. 
 
 **Note**  
-For environments using Apache Airflow v1\.10\.12 or v2\.0\.2, Amazon MWAA limits outbound traffic on the Apache Airflow web server, and does not allow you to install plugins nor Python dependencies directly on the web server\. Starting, with Apache Airflow v2\.2\.2, you can install plugins and dependencies directly on the web server\.
+For environments using Apache Airflow v1\.10\.12 or v2\.0\.2, Amazon MWAA limits outbound traffic on the Apache Airflow web server, and does not allow you to install plugins nor Python dependencies directly on the web server\. Starting with Apache Airflow v2\.2\.2, Amazon MWAA can install plugins and dependencies directly on the web server\.
 
 ## Examples of custom plugins<a name="configuring-dag-plugins-airflow-ex"></a>
 

@@ -1,11 +1,12 @@
-# Amazon ECS operator on Amazon MWAA<a name="samples-ecs-operator"></a>
+# Connecting to Amazon ECS using the `ECSOperator`<a name="samples-ecs-operator"></a>
 
-The following sample code uses an Amazon Elastic Container Service \(Amazon ECS\) operator with a Docker container image in a [Amazon ECS private repository](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html)\. You can also use a Docker container image in a private repository, such as JFrog's Artifactory, then use the Amazon ECS operator with Fargate if you don't want to manage the underlying Amazon EC2 instances\.
+ The topic describes how you can use the `ECSOperator` to connect to an Amazon Elastic Container Service \(Amazon ECS\) container from Amazon MWAA\. In the following steps, you'll add the required permissions to your environment's execution role, use a AWS CloudFormation template to create an Amazon ECS Fargate cluster, and finally create and upload a DAG that connects to your new cluster\. 
 
 **Topics**
 + [Version](#samples-ecs-operator-version)
 + [Prerequisites](#samples-ecs-operator-prereqs)
 + [Permissions](#samples-ecs-operator-permissions)
++ [Create an Amazon ECS cluster](#create-cfn-template)
 + [Code sample](#samples-ecs-operator-code)
 
 ## Version<a name="samples-ecs-operator-version"></a>
@@ -47,165 +48,309 @@ To use the sample code on this page, you'll need the following:
       ]
   }
   ```
-+  In addition to adding the required premissions to run tasks in Amazon ECS, you must also modify the CloudWatch Logs policy statement in your Amazon MWAA execution role to allow access to the Amazon ECS task log group\. For example, given an Amazon ECS task log group named `hello-world`, you must add the log group ARN, `arn:aws:logs:*:*:log-group:/aws/ecs/hello-world:log-stream:/airflow/*`, to the execution role permission policy as shown in the following example\. 
++  In addition to adding the required premissions to run tasks in Amazon ECS, you must also modify the CloudWatch Logs policy statement in your Amazon MWAA execution role to allow access to the Amazon ECS task log group as shown in the following\. The Amazon ECS log group is created by the AWS CloudFormation template in [Create an Amazon ECS cluster](#create-cfn-template)\. 
 
   ```
   {
-              "Effect": "Allow",
-              "Action": [
-                  "logs:CreateLogStream",
-                  "logs:CreateLogGroup",
-                  "logs:PutLogEvents",
-                  "logs:GetLogEvents",
-                  "logs:GetLogRecord",
-                  "logs:GetLogGroupFields",
-                  "logs:GetQueryResults"
-              ],
-              "Resource": [
-                  "arn:aws:logs:{{region}}:{{accountId}}:log-group:airflow-{{envName}}-*",
-                  "arn:aws:logs:*:*:log-group:/aws/ecs/hello-world:log-stream:/airflow/*"
-              ]
-          }
+      "Effect": "Allow",
+      "Action": [
+          "logs:CreateLogStream",
+          "logs:CreateLogGroup",
+          "logs:PutLogEvents",
+          "logs:GetLogEvents",
+          "logs:GetLogRecord",
+          "logs:GetLogGroupFields",
+          "logs:GetQueryResults"
+      ],
+      "Resource": [
+          "arn:aws:logs:region:account-id:log-group:airflow-environment-name-*",
+          "arn:aws:logs:*:*:log-group:ecs-mwaa-group:*"
+      ]
+  }
   ```
 
  For more information about the Amazon MWAA execution role, and how to attach a policy, see [Execution role](mwaa-create-role.md)\. 
 
+## Create an Amazon ECS cluster<a name="create-cfn-template"></a>
+
+ Using the following AWS CloudFormation template, you will build an Amazon ECS Fargate cluster to use with your Amazon MWAA workflow\. For more information, see [Creating a task definition](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-task-definition) in the *Amazon Elastic Container Service Developer Guide*\. 
+
+1. Create a JSON file with the following code and save it as `ecs-mwaa-cfn.json`\.
+
+   ```
+   {
+       "AWSTemplateFormatVersion": "2010-09-09",
+       "Description": "This template deploys an ECS Fargate cluster with an Amazon Linux image as a test for MWAA.",
+       "Parameters": {
+           "VpcId": {
+               "Type": "AWS::EC2::VPC::Id",
+               "Description": "Select a VPC that allows instances access to ECR, as used with MWAA."
+           },
+           "SubnetIds": {
+               "Type": "List<AWS::EC2::Subnet::Id>",
+               "Description": "Select at two private subnets in your selected VPC, as used with MWAA."
+           },
+           "SecurityGroups": {
+               "Type": "List<AWS::EC2::SecurityGroup::Id>",
+               "Description": "Select at least one security group in your selected VPC, as used with MWAA."
+           }
+       },
+       "Resources": {
+           "Cluster": {
+               "Type": "AWS::ECS::Cluster",
+               "Properties": {
+                   "ClusterName": {
+                       "Fn::Sub": "${AWS::StackName}-cluster"
+                   }
+               }
+           },
+           "LogGroup": {
+               "Type": "AWS::Logs::LogGroup",
+               "Properties": {
+                   "LogGroupName": {
+                       "Ref": "AWS::StackName"
+                   },
+                   "RetentionInDays": 30
+               }
+           },
+           "ExecutionRole": {
+               "Type": "AWS::IAM::Role",
+               "Properties": {
+                   "AssumeRolePolicyDocument": {
+                       "Statement": [
+                           {
+                               "Effect": "Allow",
+                               "Principal": {
+                                   "Service": "ecs-tasks.amazonaws.com"
+                               },
+                               "Action": "sts:AssumeRole"
+                           }
+                       ]
+                   },
+                   "ManagedPolicyArns": [
+                       "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+                   ]
+               }
+           },
+           "TaskDefinition": {
+               "Type": "AWS::ECS::TaskDefinition",
+               "Properties": {
+                   "Family": {
+                       "Fn::Sub": "${AWS::StackName}-task"
+                   },
+                   "Cpu": 2048,
+                   "Memory": 4096,
+                   "NetworkMode": "awsvpc",
+                   "ExecutionRoleArn": {
+                       "Ref": "ExecutionRole"
+                   },
+                   "ContainerDefinitions": [
+                       {
+                           "Name": {
+                               "Fn::Sub": "${AWS::StackName}-container"
+                           },
+                           "Image": "137112412989.dkr.ecr.us-east-1.amazonaws.com/amazonlinux:latest",
+                           "PortMappings": [
+                               {
+                                   "Protocol": "tcp",
+                                   "ContainerPort": 8080,
+                                   "HostPort": 8080
+                               }
+                           ],
+                           "LogConfiguration": {
+                               "LogDriver": "awslogs",
+                               "Options": {
+                                   "awslogs-region": {
+                                       "Ref": "AWS::Region"
+                                   },
+                                   "awslogs-group": {
+                                       "Ref": "LogGroup"
+                                   },
+                                   "awslogs-stream-prefix": "ecs"
+                               }
+                           }
+                       }
+                   ],
+                   "RequiresCompatibilities": [
+                       "FARGATE"
+                   ]
+               }
+           },
+           "Service": {
+               "Type": "AWS::ECS::Service",
+               "Properties": {
+                   "ServiceName": {
+                       "Fn::Sub": "${AWS::StackName}-service"
+                   },
+                   "Cluster": {
+                       "Ref": "Cluster"
+                   },
+                   "TaskDefinition": {
+                       "Ref": "TaskDefinition"
+                   },
+                   "DesiredCount": 1,
+                   "LaunchType": "FARGATE",
+                   "PlatformVersion": "1.3.0",
+                   "NetworkConfiguration": {
+                       "AwsvpcConfiguration": {
+                           "AssignPublicIp": "ENABLED",
+                           "Subnets": {
+                               "Ref": "SubnetIds"
+                           },
+                           "SecurityGroups": {
+                               "Ref": "SecurityGroups"
+                           }
+                       }
+                   }
+               }
+           }
+       }
+   }
+   ```
+
+1.  In your command prompt, use the following AWS CLI command to create a new stack\. You must replace the values `SecurityGroups` and `SubnetIds` with values for your Amazon MWAA environment's security groups and subnets\. 
+
+   ```
+   $ aws cloudformation create-stack \
+   --stack-name my-ecs-stack --template-body file://ecs-mwaa-cfn.json \
+   --parameters ParameterKey=SecurityGroups,ParameterValue=your-mwaa-security-group \
+   ParameterKey=SubnetIds,ParameterValue=your-mwaa-subnet-1\\,your-mwaa-subnet-1 \
+   --capabilities CAPABILITY_IAM
+   ```
+
+    Alternatively, you can use the following shell script\. The script retrieves the required values for your environment's security groups, and subnets using the `[get\-environment](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/mwaa/get-environment.html)` AWS CLI command, then creates the stack accordingly\. To run the script, do the following\. 
+
+   1.  Copy, and save the script as `ecs-stack-helper.sh` in the same directory as your AWS CloudFormation template\. 
+
+      ```
+      #!/bin/bash
+      
+      joinByString() {
+        local separator="$1"
+        shift
+        local first="$1"
+        shift
+        printf "%s" "$first" "${@/#/$separator}"
+      }
+      
+      response=$(aws mwaa get-environment --name $1)
+      
+      securityGroupId=$(echo "$response" | jq -r '.Environment.NetworkConfiguration.SecurityGroupIds[]')
+      subnetIds=$(joinByString '\,' $(echo "$response" | jq -r '.Environment.NetworkConfiguration.SubnetIds[]'))
+      
+      aws cloudformation create-stack --stack-name $2 --template-body file://ecs-cfn.json \
+      --parameters ParameterKey=SecurityGroups,ParameterValue=$securityGroupId \
+      ParameterKey=SubnetIds,ParameterValue=$subnetIds \
+      --capabilities CAPABILITY_IAM
+      ```
+
+   1.  Run the script using the following commands\. Replace `environment-name` and `stack-name` with your information\. 
+
+      ```
+      $ chmod +x ecs-stack-helper.sh
+      $ ./ecs-stack-helper.bash environment-name stack-name
+      ```
+
+    If successful, you'll see the following output displaying your new AWS CloudFormation stack ID\. 
+
+   ```
+   {
+       "StackId": "arn:aws:cloudformation:us-west-2:123456789012:stack/my-ecs-stack/123456e7-8ab9-01cd-b2fb-36cce63786c9"
+   }
+   ```
+
+ After your AWS CloudFormation stack is completed and AWS has provisioned your Amazon ECS resources, you're ready to create and upload your DAG\. 
+
 ## Code sample<a name="samples-ecs-operator-code"></a>
 
-1.  Create an artifactory private repository with hello\-world docker image\. For more information about creating an artifactory private repository, see [Getting Started with Artifactory as a Docker Registry](https://www.jfrog.com/confluence/display/JFROG/Getting+Started+with+Artifactory+as+a+Docker+Registry) on the JFrog website\. 
-
-1.  Create a Secrets Manager secret for [authenticating to your private repository](http://aws.amazon.com/blogs/compute/introducing-private-registry-authentication-support-for-aws-fargate/)\. For more information about private registry authentication, see [Private registry authentication for tasks](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth)\. 
-
-1.  Create an Amazon ECS cluster named `democluster` and a Fargate task definition named `hello-world` For more information, see [Creating a task definition](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-task-definition)\. When creating the task definition, use the Secrets Manager ARN to point to your private repository\. You can use the following AWS CloudFormation template to create a cluster and task definition\. 
+1. Open a command prompt, and navigate to the directory where your DAG code is stored\. For example:
 
    ```
-   AWSTemplateFormatVersion: "2010-09-09"
-     Description:  This template deploys an ECS Fargate cluster.
-     Parameters:
-       VpcId:
-         Type: AWS::EC2::VPC::Id
-         Description: Select your VPC. If you are using the VPC from the CD tutorial, select the mwaa-cicd VPC.
-       SubnetIds:
-         Type: List<AWS::EC2::Subnet::Id>
-         Description: Select your subnet. If you are using the subnet from the CD tutorial, select mwaa-cicd-Public Subnet (AZ1).
-       SecurityGroups:
-         Type: List<AWS::EC2::SecurityGroup::Id>
-         Description: Select your security group. If you are using the security group from the CD tutorial, select the mwaa-cicd security group.
-     Resources:
-       Cluster:
-         Type: AWS::ECS::Cluster
-         Properties:
-           ClusterName: !Sub "${AWS::StackName}"
-   
-       LogGroup:
-         Type: AWS::Logs::LogGroup
-         Properties:
-           LogGroupName: !Ref AWS::StackName
-           RetentionInDays: 30
-   
-       ExecutionRole:
-         Type: AWS::IAM::Role
-         Properties:
-           AssumeRolePolicyDocument:
-             Statement:
-               - Effect: Allow
-                 Principal:
-                   Service: ecs-tasks.amazonaws.com
-                 Action: sts:AssumeRole
-           ManagedPolicyArns:
-             - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
-   
-       TaskDefinition:
-         Type: AWS::ECS::TaskDefinition
-         Properties:
-           Family: !Sub "${AWS::StackName}"
-           Cpu: 2048
-           Memory: 4096
-           NetworkMode: awsvpc
-           ExecutionRoleArn: !Ref ExecutionRole
-           ContainerDefinitions:
-             - Name: !Sub "${AWS::StackName}"
-               Image: YOUR_IMAGE_URL
-               PortMappings:
-                 - Protocol: tcp
-                   ContainerPort: YOUR_PORT
-                   HostPort: YOUR_PORT
-               LogConfiguration:
-                 LogDriver: awslogs
-                 Options:
-                   awslogs-region: !Ref AWS::Region
-                   awslogs-group: !Ref LogGroup
-                   awslogs-stream-prefix: ecs
-           RequiresCompatibilities:
-             - FARGATE
-   
-       Service:
-         Type: AWS::ECS::Service
-         Properties:
-           ServiceName: !Sub "${AWS::StackName}"
-           Cluster: !Ref Cluster
-           TaskDefinition: !Ref TaskDefinition
-           DesiredCount: 1
-           LaunchType: FARGATE
-           PlatformVersion: 1.3.0
-           NetworkConfiguration:
-             AwsvpcConfiguration:
-               AssignPublicIp: ENABLED
-               Subnets: !Ref SubnetIds
-               SecurityGroups: !Ref SecurityGroups
+   cd dags
    ```
 
-1.  Create a DAG and an Amazon ECS operator as shown in the following\. 
+1. Copy the contents of the following code sample and save locally as `mwaa-ecs-operator.py`, then upload your new DAG to Amazon S3\.
 
    ```
-   import datetime
-   import os
+   from http import client
    from airflow import DAG
-   from airflow.contrib.operators.ecs_operator import ECSOperator
-   dag = DAG(
-       dag_id="ecs_fargate_dag",
-       default_args={
-           "owner": "airflow",
-           "depends_on_past": False,
-           "email": ["airflow@example.com"],
-           "email_on_failure": False,
-           "email_on_retry": False,
-       },
-       default_view="graph",
+   from airflow.providers.amazon.aws.operators.ecs import ECSOperator
+   from airflow.utils.dates import days_ago
+   import boto3
+   
+   CLUSTER_NAME="mwaa-ecs-test-cluster" #Replace value for CLUSTER_NAME with your information.
+   CONTAINER_NAME="mwaa-ecs-test-container" #Replace value for CONTAINER_NAME with your information.
+   LAUNCH_TYPE="FARGATE"
+   
+   with DAG(
+       dag_id = "ecs_fargate_dag",
        schedule_interval=None,
-       start_date=datetime.datetime(2020, 1, 1),
-       tags=["example"],
-   )
-   # generate dag documentation
-   dag.doc_md = __doc__
-   # [START howto_operator_ecs]
-   hello_world = ECSOperator(
-       task_id="hello_world",
-       dag=dag,
-       cluster="c",
-       task_definition="hello-world",
-       launch_type="FARGATE",
-       overrides={
-           "containerOverrides": [ ],
-       },
-       network_configuration={
-           'awsvpcConfiguration': {
-               'securityGroups': ['sg-xxxx'],
-               'subnets': ['subnet-xxxx', 'subnet-yyyy'],
-               'assignPublicIp': "ENABLED"
+       catchup=False,
+       start_date=days_ago(1)
+   ) as dag:
+   
+       client=boto3.client('ecs')
+       services=client.list_services(cluster=CLUSTER_NAME,launchType=LAUNCH_TYPE)
+       service=client.describe_services(cluster=CLUSTER_NAME,services=services['serviceArns'])
+   
+       ecs_operator_task = ECSOperator(
+           task_id = "ecs_operator_task",
+           dag=dag,
+           cluster=CLUSTER_NAME,
+           task_definition=service['services'][0]['taskDefinition'],
+           launch_type=LAUNCH_TYPE,
+           overrides={
+               "containerOverrides":[
+                   {
+                       "name":CONTAINER_NAME,
+                       "command":["ls", "-l", "/"],
+                   },
+               ],
            },
-       },
-       tags={
-           "Customer": "X",
-           "Project": "Y",
-           "Application": "Z",
-           "Version": "0.0.1",
-           "Environment": "Development",
-       },
-       awslogs_group="/aws/ecs/hello-world",
-       awslogs_stream_prefix="/ecs/hello-world",  # replace with your container name
-   )
-   # [END howto_operator_ecs]
+   
+           network_configuration=service['services'][0]['networkConfiguration'],
+           awslogs_group="mwaa-ecs-zero",
+           awslogs_stream_prefix=f"ecs/{CONTAINER_NAME}",
+       )
    ```
 **Note**  
- In the example DAG, for `awslogs_group`, you might need to modify the log group with the name for your Amazon ECS task log group\. The example assumes a log group named `hello-world`\. For `awslogs_stream_prefix`, use the Amazon ECS task log stream prefix, and the name of your container\. The example assumes a log stream prefix, `ecs`, and a container named `hello-world`\. 
+ In the example DAG, for `awslogs_group`, you might need to modify the log group with the name for your Amazon ECS task log group\. The example assumes a log group named `mwaa-ecs-zero`\. For `awslogs_stream_prefix`, use the Amazon ECS task log stream prefix\. The example assumes a log stream prefix, `ecs`\. 
+
+1. If successful, you'll see output similar to the following in the task logs for `ecs_operator_task` in the `ecs_fargate_dag` DAG:
+
+   ```
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:300}} INFO - Running ECS Task -
+   Task definition: arn:aws:ecs:us-west-2:123456789012:task-definition/mwaa-ecs-test-task:1 - on cluster mwaa-ecs-test-cluster
+   [2022-01-01, 12:00:00 UTC] {{ecs-operator-test.py:302}} INFO - ECSOperator overrides:
+   {'containerOverrides': [{'name': 'mwaa-ecs-test-container', 'command': ['ls', '-l', '/']}]}
+   .
+   .
+   .
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:379}} INFO - ECS task ID is: e012340b5e1b43c6a757cf012c635935
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:313}} INFO - Starting ECS Task Log Fetcher
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] total 52
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] lrwxrwxrwx   1 root root    7 Jun 13 18:51 bin -> usr/bin
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] dr-xr-xr-x   2 root root 4096 Apr  9  2019 boot
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x   5 root root  340 Jul 19 17:54 dev
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x   1 root root 4096 Jul 19 17:54 etc
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x   2 root root 4096 Apr  9  2019 home
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] lrwxrwxrwx   1 root root    7 Jun 13 18:51 lib -> usr/lib
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] lrwxrwxrwx   1 root root    9 Jun 13 18:51 lib64 -> usr/lib64
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x   2 root root 4096 Jun 13 18:51 local
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x   2 root root 4096 Apr  9  2019 media
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x   2 root root 4096 Apr  9  2019 mnt
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x   2 root root 4096 Apr  9  2019 opt
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] dr-xr-xr-x 103 root root    0 Jul 19 17:54 proc
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] dr-xr-x-\-\-   2 root root 4096 Apr  9  2019 root
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x   2 root root 4096 Jun 13 18:52 run
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] lrwxrwxrwx   1 root root    8 Jun 13 18:51 sbin -> usr/sbin
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x   2 root root 4096 Apr  9  2019 srv
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] dr-xr-xr-x  13 root root    0 Jul 19 17:54 sys
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxrwxrwt   2 root root 4096 Jun 13 18:51 tmp
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x  13 root root 4096 Jun 13 18:51 usr
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:119}} INFO - [2022-07-19, 17:54:03 UTC] drwxr-xr-x  18 root root 4096 Jun 13 18:52 var
+   .
+   .
+   .
+   [2022-01-01, 12:00:00 UTC] {{ecs.py:328}} INFO - ECS Task has been successfully executed
+   ```

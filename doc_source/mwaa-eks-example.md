@@ -7,14 +7,14 @@ The following sample demonstrates how to use Amazon Managed Workflows for Apache
 + [Prerequisites](#eksctl-prereqs)
 + [Create a public key for Amazon EC2](#eksctl-create-key)
 + [Create the cluster](#create-cluster-eksctl)
-+ [Create a mwaa namespace](#eksctl-namespace)
-+ [Create a role for the mwaa namespace](#eksctl-role)
++ [Create a `mwaa` namespace](#eksctl-namespace)
++ [Create a role for the `mwaa` namespace](#eksctl-role)
 + [Create and attach an IAM role for the Amazon EKS cluster](#eksctl-iam-role)
 + [Create the requirements\.txt file](#eksctl-requirements)
-+ [Create an identity mapping for EKS](#eksctl-identity-map)
-+ [Create the kubeconfig](#eksctl-kube-config)
++ [Create an identity mapping for Amazon EKS](#eksctl-identity-map)
++ [Create the `kubeconfig`](#eksctl-kube-config)
 + [Create a DAG](#eksctl-create-dag)
-+ [Add the DAG and kube\_config\.yaml to the S3 bucket](#eksctl-dag-bucket)
++ [Add the DAG and `kube_config.yaml` to the Amazon S3 bucket](#eksctl-dag-bucket)
 + [Enable and trigger the example](#eksctl-trigger-pod)
 
 ## Version<a name="mwaa-eks-example-version"></a>
@@ -72,7 +72,7 @@ eksctl utils associate-iam-oidc-provider \
 --approve
 ```
 
-## Create a mwaa namespace<a name="eksctl-namespace"></a>
+## Create a `mwaa` namespace<a name="eksctl-namespace"></a>
 
 After confirming that the cluster was successfully created, use the following command to create a namespace for the pods\.
 
@@ -80,14 +80,14 @@ After confirming that the cluster was successfully created, use the following co
 kubectl create namespace mwaa
 ```
 
-## Create a role for the mwaa namespace<a name="eksctl-role"></a>
+## Create a role for the `mwaa` namespace<a name="eksctl-role"></a>
 
 After you create the namespace, create a role and role\-binding for an Amazon MWAA user on EKS that can run pods in a the MWAA namespace\. If you used a different name for the namespace, replace mwaa in `-n mwaa` with the name that you used\.
 
 ```
 cat << EOF | kubectl apply -f - -n mwaa
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: mwaa-role
 rules:
@@ -115,7 +115,7 @@ rules:
       - "update"
 ---
 kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: mwaa-role-binding
 subjects:
@@ -128,7 +128,7 @@ roleRef:
 EOF
 ```
 
-Confirm that the new role can access the EKS cluster by running the following command\. Be sure to use the correct name if you did not use *mwaa*:
+Confirm that the new role can access the Amazon EKS cluster by running the following command\. Be sure to use the correct name if you did not use *mwaa*:
 
 ```
 kubectl get pods -n mwaa --as mwaa-service
@@ -239,8 +239,8 @@ Create a new role for the Amazon MWAA environment using the steps in [Amazon MWA
 After you create role, edit your Amazon MWAA environment to use the role you created as the execution role for the environment\. To change the role, edit the environment to use\. You select the execution role under **Permissions**\.
 
 **Known issues:**
-+ There is a known issue with role ARNs with subpaths not being able to authenticate with EKS\. The workaround for this is to create the service role manually rather than using the one created by MWAA itself\. To learn more, see [Roles with paths do not work when the path is included in their ARN in the aws\-auth configmap](https://github.com/kubernetes-sigs/aws-iam-authenticator/issues/268)
-+ If MWAA service listing is not available in IAM you need to choose an alternate service policy, such as EC2, and then update the role’s trust policy to match the following:
++ There is a known issue with role ARNs with subpaths not being able to authenticate with Amazon EKS\. The workaround for this is to create the service role manually rather than using the one created by Amazon MWAA itself\. To learn more, see [Roles with paths do not work when the path is included in their ARN in the aws\-auth configmap](https://github.com/kubernetes-sigs/aws-iam-authenticator/issues/268)
++ If Amazon MWAA service listing is not available in IAM you need to choose an alternate service policy, such as Amazon EC2, and then update the role’s trust policy to match the following:
 
   ```
   {
@@ -271,7 +271,7 @@ To use the sample code in this section, ensure you've added one of the following
 
 ```
 kubernetes
-apache-airflow[cncf.kubernetes]==2.0.2
+apache-airflow[cncf.kubernetes]==3.0.0
 ```
 
 ------
@@ -284,21 +284,21 @@ kubernetes==12.0.1
 
 ------
 
-## Create an identity mapping for EKS<a name="eksctl-identity-map"></a>
+## Create an identity mapping for Amazon EKS<a name="eksctl-identity-map"></a>
 
-Use the ARN for the role you created in the following command to create an identity mapping for EKS\. Change the Region *us\-west\-2* to the Region where you created the environment\. Also replace the ARN for the role\. 
+Use the ARN for the role you created in the following command to create an identity mapping for Amazon EKS\. Change the Region *your\-region* to the Region where you created the environment\. Replace the ARN for the role, and finally, replace *mwaa\-execution\-role* with your environment's execution role\.
 
 ```
 eksctl create iamidentitymapping \
---region us-west-2 \
+--region your-region \
 --cluster mwaa-eks \
---arn arn:aws:iam::111222333444:role/myRoleName \
+--arn arn:aws:iam::111222333444:role/mwaa-execution-role \
 --username mwaa-service
 ```
 
-## Create the kubeconfig<a name="eksctl-kube-config"></a>
+## Create the `kubeconfig`<a name="eksctl-kube-config"></a>
 
-Use the following command to create the kube config:
+Use the following command to create the `kubeconfig`:
 
 ```
 aws eks update-kubeconfig \
@@ -318,7 +318,7 @@ env:
 
 ## Create a DAG<a name="eksctl-create-dag"></a>
 
-Use the following code example to create a \.py file, such as mwaa\_pod\_example\.py, for the DAG\.
+Use the following code example to create a Python file, such as `mwaa_pod_example.py` for the DAG\.
 
 ------
 #### [ Apache Airflow v2 ]
@@ -426,9 +426,9 @@ podRun = KubernetesPodOperator(
 
 ------
 
-## Add the DAG and kube\_config\.yaml to the S3 bucket<a name="eksctl-dag-bucket"></a>
+## Add the DAG and `kube_config.yaml` to the Amazon S3 bucket<a name="eksctl-dag-bucket"></a>
 
-Put the DAG you created and the kube\_config\.yaml file into the S3 bucket for the Amazon MWAA environment\. You can put the files into the bucket using either the S3 console or the AWS Command Line Interface\.
+Put the DAG you created and the `kube_config.yaml` file into the Amazon S3 bucket for the Amazon MWAA environment\. You can put files into your bucket using either the Amazon S3 console or the AWS Command Line Interface\.
 
 ## Enable and trigger the example<a name="eksctl-trigger-pod"></a>
 

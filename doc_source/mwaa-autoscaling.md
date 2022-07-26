@@ -70,7 +70,7 @@ For example, if `core.parallelism` was set to `100` and `core.dag_concurrency` w
 
 ### On an Amazon MWAA environment<a name="mwaa-autoscaling-high-volume-mwaa"></a>
 
-On an Amazon MWAA environment, you can configure these settings directly on the Amazon MWAA console using [](configuring-env-variables.md), [Amazon MWAA environment class](environment-class.md), and the **Maximum worker count** autoscaling mechanism\. While `core.dag_concurrency` is not available in the dropdown list as an **Apache Airflow configuration option** on the Amazon MWAA console, you can add it as a custom [Apache Airflow configuration option](configuring-env-variables.md)\.
+On an Amazon MWAA environment, you can configure these settings directly on the Amazon MWAA console using [Apache Airflow configuration options](configuring-env-variables.md), [Amazon MWAA environment class](environment-class.md), and the **Maximum worker count** autoscaling mechanism\. While `core.dag_concurrency` is not available in the dropdown list as an **Apache Airflow configuration option** on the Amazon MWAA console, you can add it as a custom [Apache Airflow configuration option](configuring-env-variables.md)\.
 
 Let's say, when you created your environment, you chose the following settings:
 

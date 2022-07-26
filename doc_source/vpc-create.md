@@ -2,6 +2,9 @@
 
 Amazon Managed Workflows for Apache Airflow \(MWAA\) requires an Amazon VPC and specific networking components to support an environment\. This guide describes the different options to create the Amazon VPC network for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment\.
 
+**Note**  
+ Apache Airflow works best in a low\-latency network environment\. If you are using an existing Amazon VPC which routes traffic to another region or to an on\-premise environment, we recommended adding AWS PrivateLink endpoints for Amazon SQS, CloudWatch, Amazon S3, AWS KMS, and Amazon ECR\. For more information about configuring AWS PrivateLink for Amazon MWAA, see [Creating an Amazon VPC network without internet access](#vpc-create-template-private-only)\. 
+
 **Contents**
 + [Prerequisites](#vpc-create-prereqs)
 + [Before you begin](#vpc-create-how-networking)

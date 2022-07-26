@@ -97,7 +97,7 @@ Apache Airflow will execute the contents of Python files in the plugins folder a
    cd hive_plugin
    ```
 
-1. Copy the contents of the following code sample and save locally as `hive_plugin.py` in the above folder\.
+1. Copy the contents of the following code sample and save locally as `hive_plugin.py` in the `hive_plugin` directory\.
 
    ```
    from airflow.plugins_manager import AirflowPlugin
@@ -110,6 +110,13 @@ Apache Airflow will execute the contents of Python files in the plugins folder a
    os.environ["CLASSPATH"] = os.getenv("CLASSPATH") + ":/usr/local/airflow/plugins/apache-hive-3.1.2-bin/lib" 
    class EnvVarPlugin(AirflowPlugin):                
        name = 'hive_plugin'
+   ```
+
+1.  Cope the content of the following text and save locally as `.airflowignore` in the `hive_plugin` directory\. 
+
+   ```
+   hadoop-3.3.0
+   apache-hive-3.1.2-bin
    ```
 
 ## Plugins\.zip<a name="samples-hive-pluginszip"></a>

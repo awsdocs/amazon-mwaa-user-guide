@@ -75,7 +75,7 @@ If no value is specified, defaults to the latest Airflow version\. The latest ve
 
    1. **Private network**\. This limits access of the Apache Airflow UI to users *within your Amazon VPC* that have been granted access to the [IAM policy for your environment](access-policies.md)\. You need permission to create Amazon VPC endpoints for this step\.
 **Note**  
-If you choose the **Private network** Apache Airflow access mode, you need to create a mechanism to access your Apache Airflow *Web server* in your Amazon VPC\. To learn more, see [Accessing the VPC endpoint for your Apache Airflow Web server \(private network access\)](vpc-vpe-access.md#vpc-vpe-access-endpoints)\.
+Choose the **Private network** option if your Apache Airflow UI is only accessed within a corporate network, and you do not require access to public repositories for web server requirements installation\. If you choose this access mode option, you need to create a mechanism to access your Apache Airflow *Web server* in your Amazon VPC\. For more information, see [Accessing the VPC endpoint for your Apache Airflow Web server \(private network access\)](vpc-vpe-access.md#vpc-vpe-access-endpoints)\.
 
    1. **Public network**\. This allows the Apache Airflow UI to be accessed *over the Internet* by users granted access to the [IAM policy for your environment](access-policies.md)\.
 

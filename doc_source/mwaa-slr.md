@@ -4,13 +4,12 @@ Amazon MWAA creates a [service\-linked role](https://docs.aws.amazon.com/IAM/lat
 
 **Topics**
 + [How it works](#mwaa-slr-iam-how)
-+ [Viewing the permissions policy](#mwaa-slr-iam-policy)
++ [The permissions policy](#mwaa-slr-iam-policy)
 + [What's next?](#mwaa-slr-next-up)
 
 ## How it works<a name="mwaa-slr-iam-how"></a>
 
 Amazon MWAA creates a service\-linked role in your account to allow Amazon MWAA to use other AWS services used by your environment during its provisioning\. The service role enables permission to the following AWS services:
-+ Amazon Elastic Container Registry \(Amazon ECR\) – where your environment's Apache Airflow image is hosted\.
 + Amazon CloudWatch Logs \(CloudWatch Logs\) – to create log groups for Apache Airflow logs\.
 + Amazon Elastic Compute Cloud \(Amazon EC2\) – to create the following resources:
   + An Amazon VPC endpoint in your VPC for an AWS\-managed Amazon Aurora PostgreSQL database cluster to be used by the Apache Airflow *Scheduler* and *Worker*\.
@@ -19,11 +18,94 @@ Amazon MWAA creates a service\-linked role in your account to allow Amazon MWAA 
 
 The **Private network** option for an Apache Airflow *Web server* requires additional setup to use an environment and the Apache Airflow UI\. To learn more, see [Apache Airflow access modes](configuring-networking.md)\.
 
-## Viewing the permissions policy<a name="mwaa-slr-iam-policy"></a>
+## The permissions policy<a name="mwaa-slr-iam-policy"></a>
 
-The service\-linked role enables permission to certain IAM actions in Amazon ECR, CloudWatch Logs, and Amazon EC2\. You can view the JSON policy and the IAM actions for the `AWSServiceRoleForAmazonMWAA` on the IAM console\. 
+ The service\-linked role enables permission to certain IAM actions in CloudWatch Logs, and Amazon EC2\. The following is the JSON policy attached to your environment's service\-linked role\. You can also view the JSON policy and the IAM actions for the `AWSServiceRoleForAmazonMWAA` on the IAM console\. 
 
-**To view the JSON policy**
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogGroups"
+            ],
+            "Resource": "arn:aws:logs:*:*:log-group:airflow-*:*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AttachNetworkInterface",
+                "ec2:CreateNetworkInterface",
+                "ec2:CreateNetworkInterfacePermission",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DeleteNetworkInterfacePermission",
+                "ec2:DescribeDhcpOptions",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeVpcEndpoints",
+                "ec2:DescribeVpcs",
+                "ec2:DetachNetworkInterface"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "ec2:CreateVpcEndpoint",
+            "Resource": "arn:aws:ec2:*:*:vpc-endpoint/*",
+            "Condition": {
+                "ForAnyValue:StringEquals": {
+                    "aws:TagKeys": "AmazonMWAAManaged"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:ModifyVpcEndpoint",
+                "ec2:DeleteVpcEndpoints"
+            ],
+            "Resource": "arn:aws:ec2:*:*:vpc-endpoint/*",
+            "Condition": {
+                "Null": {
+                    "aws:ResourceTag/AmazonMWAAManaged": false
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateVpcEndpoint",
+                "ec2:ModifyVpcEndpoint"
+            ],
+            "Resource": [
+                "arn:aws:ec2:*:*:vpc/*",
+                "arn:aws:ec2:*:*:security-group/*",
+                "arn:aws:ec2:*:*:subnet/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "ec2:CreateTags",
+            "Resource": "arn:aws:ec2:*:*:vpc-endpoint/*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:CreateAction": "CreateVpcEndpoint"
+                },
+                "ForAnyValue:StringEquals": {
+                    "aws:TagKeys": "AmazonMWAAManaged"
+                }
+            }
+        }
+    ]
+}
+```
+
+**To view the policy using the AWS Management Console**
 
 1. Open the [AWSServiceRoleForAmazonMWAA](https://console.aws.amazon.com/iam/home#/roles/AWSServiceRoleForAmazonMWAA) role on the IAM console\.
 

@@ -29,8 +29,6 @@ If you see blank logs, or the follow error when viewing *Task logs* in the Airfl
 
   1. Verify that your operator has the appropriate Python libraries to load\. You can try eliminating imports until you find the one that's causing the issue\.
 
-  1. Set the number of processes the Scheduler runs in `celery.sync_parallelism` to `1`\. To learn more, see [Performance tuning for Apache Airflow on Amazon MWAA](best-practices-tuning.md)\.
-
 ### I see a 'ResourceAlreadyExistsException' error in CloudTrail<a name="t-cloudtrail"></a>
 
 ```

@@ -1,6 +1,6 @@
 # Using a secret key in AWS Secrets Manager for an Apache Airflow Snowflake connection<a name="samples-sm-snowflake"></a>
 
-The following sample calls AWS Secrets Manager to get a secret key for an Apache Airflow Snowflake connection on Amazon Managed Workflows for Apache Airflow \(MWAA\)\. It assumes you've completed the steps in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
+The following sample calls AWS Secrets Manager to get a secret key for an Apache Airflow Snowflake connection on Amazon Managed Workflows for Apache Airflow \(MWAA\)\. It assumes you've completed the steps in [Configuring an Apache Airflow connection using a Secrets Manager secret](connections-secrets-manager.md)\.
 
 **Topics**
 + [Version](#samples-sm-snowflake-version)
@@ -16,11 +16,11 @@ The following sample calls AWS Secrets Manager to get a secret key for an Apache
 ## Prerequisites<a name="samples-sm-snowflake-prereqs"></a>
 
 To use the sample code on this page, you'll need the following:
-+ The Secrets Manager backend as an Apache Airflow configuration option as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
-+ An Apache Airflow connection string in Secrets Manager as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
++ The Secrets Manager backend as an Apache Airflow configuration option as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret](connections-secrets-manager.md)\.
++ An Apache Airflow connection string in Secrets Manager as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret](connections-secrets-manager.md)\.
 
 ## Permissions<a name="samples-sm-snowflake-permissions"></a>
-+ Secrets Manager permissions as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
++ Secrets Manager permissions as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret](connections-secrets-manager.md)\.
 
 ## Requirements<a name="samples-sm-snowflake-dependencies"></a>
 

@@ -1,6 +1,6 @@
 # Using a secret key in AWS Secrets Manager for an Apache Airflow connection<a name="samples-secrets-manager"></a>
 
-The following sample calls AWS Secrets Manager to get a secret key for an Apache Airflow connection on Amazon Managed Workflows for Apache Airflow \(MWAA\)\. It assumes you've completed the steps in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
+The following sample calls AWS Secrets Manager to get a secret key for an Apache Airflow connection on Amazon Managed Workflows for Apache Airflow \(MWAA\)\. It assumes you've completed the steps in [Configuring an Apache Airflow connection using a Secrets Manager secret](connections-secrets-manager.md)\.
 
 **Topics**
 + [Version](#samples-secrets-manager-version)
@@ -17,11 +17,11 @@ The following sample calls AWS Secrets Manager to get a secret key for an Apache
 ## Prerequisites<a name="samples-secrets-manager-prereqs"></a>
 
 To use the sample code on this page, you'll need the following:
-+ The Secrets Manager backend as an Apache Airflow configuration option as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
-+ An Apache Airflow connection string in Secrets Manager as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
++ The Secrets Manager backend as an Apache Airflow configuration option as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret](connections-secrets-manager.md)\.
++ An Apache Airflow connection string in Secrets Manager as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret](connections-secrets-manager.md)\.
 
 ## Permissions<a name="samples-secrets-manager-permissions"></a>
-+ Secrets Manager permissions as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
++ Secrets Manager permissions as shown in [Configuring an Apache Airflow connection using a Secrets Manager secret](connections-secrets-manager.md)\.
 
 ## Requirements<a name="samples-hive-dependencies"></a>
 + To use with Apache Airflow v1, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.

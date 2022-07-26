@@ -7,8 +7,9 @@ This page describes the best practices we recommend to install and manage Python
 + [Installing Python dependencies using PyPi\.org Requirements File Format](#best-practices-dependencies-different-ways)
   + [Option one: Python dependencies from the Python Package Index](#best-practices-dependencies-pip-extras)
   + [Option two: Python wheels \(\.whl\)](#best-practices-dependencies-python-wheels)
-    + [In the `plugins.zip` file on an Amazon S3 bucket](#best-practices-dependencies-python-wheels-s3)
-    + [Hosted on a URL](#best-practices-dependencies-python-wheels-url)
+    + [Using the `plugins.zip` file on an Amazon S3 bucket](#best-practices-dependencies-python-wheels-s3)
+    + [Using a WHL file hosted on a URL](#best-practices-dependencies-python-wheels-url)
+    + [Creating a WHL files from a DAG](#best-practices-dependencies-python-wheels-dag)
   + [Option three: Python dependencies hosted on a private PyPi/PEP\-503 Compliant Repo](#best-practices-dependencies-custom-auth-url)
 + [Enabling logs on the Amazon MWAA console](#best-practices-dependencies-troubleshooting-enable)
 + [Viewing logs on the CloudWatch Logs console](#best-practices-dependencies-troubleshooting-view)
@@ -111,41 +112,90 @@ The following section describes how to specify Python dependencies from the [Pyt
 
 ### Option two: Python wheels \(\.whl\)<a name="best-practices-dependencies-python-wheels"></a>
 
-A Python wheel is a package format designed to ship libraries with compiled artifacts\. We recommend the following practices to install Python dependencies from a Python wheel archive \(`.whl`\) in your `requirements.txt`\.
+ A Python wheel is a package format designed to ship libraries with compiled artifacts\. There are several benefits to wheel packages as a method to install dependencies in Amazon MWAA: 
++  **Faster installation** – the WHL files are copied to the container as a single ZIP, and then installed locally, without having to download each one\. 
++  **Fewer conflicts** – You can determine version compatibility for your packages in advance\. As a result, there is no need for `pip` to recursively work out compatible versions\. 
++  **More resilience** – With externally hosted libraries, downstream requirements can change, resulting in version incompatibility between containers on a Amazon MWAA environment\. By not depending on an external source for dependencies, every container on has have the same libraries regardless of when the each container is instantiated\. 
 
-#### In the `plugins.zip` file on an Amazon S3 bucket<a name="best-practices-dependencies-python-wheels-s3"></a>
+ We recommend the following methods to install Python dependencies from a Python wheel archive \(`.whl`\) in your `requirements.txt`\. 
 
-The Apache Airflow *Scheduler* and the *Workers* look for custom plugins during startup on the AWS\-managed Fargate container for your environment at `/usr/local/airflow/plugins/*`\. This process begins prior to Amazon MWAA's `pip3 install -r requirements.txt` for Python dependencies and Apache Airflow service startup\. A `plugins.zip` file be used for any files that you don't want continuously changed during environment execution, or that you may not want to grant access to users that write DAGs\. For example, Python library wheel files, certificate PEM files, and configuration YAML files\.
+**Topics**
++ [Using the `plugins.zip` file on an Amazon S3 bucket](#best-practices-dependencies-python-wheels-s3)
++ [Using a WHL file hosted on a URL](#best-practices-dependencies-python-wheels-url)
++ [Creating a WHL files from a DAG](#best-practices-dependencies-python-wheels-dag)
+
+#### Using the `plugins.zip` file on an Amazon S3 bucket<a name="best-practices-dependencies-python-wheels-s3"></a>
+
+The Apache Airflow scheduler, workers, and web server \(for Apache Airflow v2\.2\.2 and later\) look for custom plugins during startup on the AWS\-managed Fargate container for your environment at `/usr/local/airflow/plugins/*`\. This process begins prior to Amazon MWAA's `pip3 install -r requirements.txt` for Python dependencies and Apache Airflow service startup\. A `plugins.zip` file be used for any files that you don't want continuously changed during environment execution, or that you may not want to grant access to users that write DAGs\. For example, Python library wheel files, certificate PEM files, and configuration YAML files\.
 
 The following section describes how to install a wheel that's in the `plugins.zip` file on your Amazon S3 bucket\. 
-+ **Specify the path in your `requirements.txt`\.**\. Specify the `plugins` directory, and the full name of the wheel in your `requirements.txt`\. The format should look like this:
 
-  ```
-  /usr/local/airflow/plugins/YOUR_WHEEL_NAME.whl
-  ```  
-**Example Wheel in requirements\.txt**  
+1.  **Download the necessary WHL files** You can use [https://pip.pypa.io/en/stable/cli/pip_download/](https://pip.pypa.io/en/stable/cli/pip_download/) with your existing `requirements.txt` on the Amazon MWAA [local\-runner](https://github.com/aws/aws-mwaa-local-runner) or another [Amazon Linux 2](http://aws.amazon.com/https://aws.amazon.com/amazon-linux-2) container to resolve and download the necessary Python wheel files\. 
 
-  The following example assumes you've uploaded the wheel in a `plugins.zip` file at the root of your Amazon S3 bucket\. For example:
+   ```
+   $ pip3 download -r "$AIRFLOW_HOME/dags/requirements.txt" -d "$AIRFLOW_HOME/plugins"
+   $ cd "$AIRFLOW_HOME/plugins"
+   $ zip "$AIRFLOW_HOME/plugins.zip" *
+   ```
 
-  ```
-  /usr/local/airflow/plugins/numpy-1.20.1-cp37-cp37m-manylinux1_x86_64.whl
-  ```
+1. **Specify the path in your `requirements.txt`**\. Specify the plugins directory at the top of your requirements\.txt using [https://pip.pypa.io/en/stable/cli/pip_install/#install-find-links](https://pip.pypa.io/en/stable/cli/pip_install/#install-find-links) and instruct `pip` not to install from other sources using [https://pip.pypa.io/en/stable/cli/pip_install/#install-no-index](https://pip.pypa.io/en/stable/cli/pip_install/#install-no-index), as shown in the following 
 
-  Amazon MWAA fetches the `numpy-1.20.1-cp37-cp37m-manylinux1_x86_64.whl` wheel from the `plugins` folder and installs on your environment\.
+   ```
+   --find-links /usr/local/airflow/plugins
+   --no-index
+   ```  
+**Example wheel in requirements\.txt**  
 
-#### Hosted on a URL<a name="best-practices-dependencies-python-wheels-url"></a>
+   The following example assumes you've uploaded the wheel in a `plugins.zip` file at the root of your Amazon S3 bucket\. For example:
 
-The following section describes how to install a wheel that's hosted on a URL\. The URL must either be publicly\-accessible, or accessible from within the custom VPC you specified for your Amazon MWAA environment\.
-+ **Specify a URL**\. Specify the URL to a wheel in your `requirements.txt`\.   
-**Example Wheel Archive on a public URL**  
+   ```
+   --find-links /usr/local/airflow/plugins
+   --no-index
+   
+   numpy
+   ```
+
+   Amazon MWAA fetches the `numpy-1.20.1-cp37-cp37m-manylinux1_x86_64.whl` wheel from the `plugins` folder and installs it on your environment\.
+
+#### Using a WHL file hosted on a URL<a name="best-practices-dependencies-python-wheels-url"></a>
+
+ The following section describes how to install a wheel that's hosted on a URL\. The URL must either be publicly accessible, or accessible from within the custom Amazon VPC you specified for your Amazon MWAA environment\. 
++ **Provide a URL**\. Provide the URL to a wheel in your `requirements.txt`\.  
+**Example wheel archive on a public URL**  
 
   The following example downloads a wheel from a public site\.
 
   ```
-  https://files.pythonhosted.org/packages/nupic-1.0.5-py2-none-any.whl
+  --find-links https://files.pythonhosted.org/packages/
+  --no-index
   ```
 
-  Amazon MWAA fetches the wheel from the URL you specified and installs on your environment\.
+  Amazon MWAA fetches the wheel from the URL you specified and installs them on your environment\.
+**Note**  
+ URLs are not accessible from private web servers installing requirements in Amazon MWAA v2\.2\.2 and later\. 
+
+#### Creating a WHL files from a DAG<a name="best-practices-dependencies-python-wheels-dag"></a>
+
+If you have a private web server using Apache Airflow v2\.2\.2 or later and you're unable to install requirements because your environment does not have access to external repositories, you can use the following DAG to take your existing MAmazon MWAA requirements and package them on Amazon S3: 
+
+```
+from airflow import DAG
+from airflow.operators.bash_operator import BashOperator
+from airflow.utils.dates import days_ago
+
+S3_BUCKET = 'my-s3-bucket'
+S3_KEY = 'backup/plugins_whl.zip' 
+
+with DAG(dag_id="create_whl_file", schedule_interval=None, catchup=False, start_date=days_ago(1)) as dag:
+    cli_command = BashOperator(
+        task_id="bash_command",
+        bash_command=f"mkdir /tmp/whls;pip3 download -r /usr/local/airflow/requirements/requirements.txt -d /tmp/whls;zip -j /tmp/plugins.zip /tmp/whls/*;aws s3 cp /tmp/plugins.zip s3://{S3_BUCKET}/{S3_KEY}"
+    )
+```
+
+ After running the DAG, use this new file as your Amazon MWAA `plugins.zip`, optionally, packaged with other plugins\. Then, update your `requirements.txt` preceeded by `--find-links /usr/local/airflow/plugins` and `--no-index` without adding `--constraint`\. 
+
+ This method allows you to use the same libraries offline\. 
 
 ### Option three: Python dependencies hosted on a private PyPi/PEP\-503 Compliant Repo<a name="best-practices-dependencies-custom-auth-url"></a>
 

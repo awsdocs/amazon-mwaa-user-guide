@@ -221,7 +221,7 @@ For example:
 
 We recommend the following steps:
 
-1. Learn how to create secret keys for your Apache Airflow connection and variables in [Configuring an Apache Airflow connection using a Secrets Manager secret key](connections-secrets-manager.md)\.
+1. Learn how to create secret keys for your Apache Airflow connection and variables in [Configuring an Apache Airflow connection using a Secrets Manager secret](connections-secrets-manager.md)\.
 
 1. Learn how to use the secret key for an Apache Airflow variable \(`test-variable`\) in [Using a secret key in AWS Secrets Manager for an Apache Airflow variable](samples-secrets-manager-var.md)\.
 

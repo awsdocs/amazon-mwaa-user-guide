@@ -62,7 +62,7 @@ After copying it to your clipboard, you may need to use **Edit > Paste** from yo
      && echo $CLI_RESULTS | jq -r '.stderr' | base64 --decode
    ```
 
-1. Substitute the placeholders for `YOUR_REGION` with the AWS region for your environment, `YOUR_DAG_NAME`, and `YOUR_HOST_NAME`\. For example, a host name for a public network may look like this \(without the *https://\)*:
+1. Substitute the placeholders for `YOUR_REGION` with the AWS region for your environment, `YOUR_DAG_NAME`, and `YOUR_ENVIRONMENT_NAME`\. For example, a host name for a public network may look like this \(without the *https://\)*:
 
    ```
    123456a0-0101-2020-9e11-1b159eec9000.c2.us-east-1.airflow.amazonaws.com

@@ -78,7 +78,7 @@ If you choose to restrict traffic using this rule, you'll need to add another ru
 
 | Type | Protocol | Port range | Source type | Source | 
 | --- | --- | --- | --- | --- | 
-|  HTTPS  |  TCP  |  5432  |  Custom  |  sg\-0909e8e81919 / my\-mwaa\-vpc\-security\-group  | 
+|  Custom TCP  |  TCP  |  5432  |  Custom  |  sg\-0909e8e81919 / my\-mwaa\-vpc\-security\-group  | 
 
 ### \(Optional\) Example security group that restricts inbound access to port 443<a name="vpc-security-sg-example-port443"></a>
 
@@ -87,7 +87,7 @@ The following example shows the *inbound* security group rules that allow all TC
 
 | Type | Protocol | Port range | Source type | Source | 
 | --- | --- | --- | --- | --- | 
-|  Custom TCP  |  TCP  |  443  |  Custom  |  sg\-0909e8e81919 / my\-mwaa\-vpc\-security\-group  | 
+|  HTTPS  |  TCP  |  443  |  Custom  |  sg\-0909e8e81919 / my\-mwaa\-vpc\-security\-group  | 
 
 ## VPC endpoint policies \(private routing only\)<a name="vpc-external-vpce-policies"></a>
 

@@ -58,7 +58,7 @@ The following Apache Airflow versions are supported on Amazon Managed Workflows 
 
 ### Can I specify more than 25 Apache Airflow Workers?<a name="scaling-quota"></a>
 
-Yes\. Although you can specify up to 25 Apache Airflow *Workers* on the Amazon MWAA console, you can configure up to 50 on an environment by requesting a quota increase\. We recommend using Apache Airflow v2\.2\.2 for an environment with more than 25 *Workers*\. To learn more, see [Requesting a quota increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html)\.
+ Yes\. Although you can specify up to 25 Apache Airflow workers on the Amazon MWAA console, you can configure up to 50 on an environment by requesting a quota increase\. For more information, see [Requesting a quota increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html)\. 
 
 ## Use cases<a name="t-common-questions"></a>
 
@@ -94,7 +94,7 @@ Amazon MWAA does not currently support on\-demand Amazon EC2 Spot Instance types
 
  To be able to use a custom domain for your Amazon MWAA hostname, do one of the following: 
 +  For Amazon MWAA deployments with public web server access, you can use Amazon CloudFront with Lambda@Edge to direct traffic to your environment, and map a custom domain name to CloudFront\. For more information and an example of setting up a custom domain for a public environment, see the [Amazon MWAA custom domain for public web server](https://github.com/aws-samples/amazon-mwaa-examples/tree/main/usecases/mwaa-public-webserver-custom-domain) sample in the Amazon MWAA examples GitHub repository\. 
-+  For Amazon MWAA deployments with private web server access, you can use an Application Load Balancer \(ALB\) to direct traffic to Amazon MWAA and map a custom domain name to the ALB\. For moren information, see [Using a Load Balancer \(advanced\)](vpc-vpe-access.md#vpc-vpe-access-load-balancer)\. 
++  For Amazon MWAA deployments with private web server access, you can use an Application Load Balancer \(ALB\) to direct traffic to Amazon MWAA and map a custom domain name to the ALB\. For more information, see [Using a Load Balancer \(advanced\)](vpc-vpe-access.md#vpc-vpe-access-load-balancer)\. 
 
 ### Can I SSH into my environment?<a name="ssh-dag"></a>
 
@@ -154,7 +154,9 @@ The `PythonVirtualenvOperator` is not explicitly supported on Amazon MWAA, but y
 
 ### How long does it take Amazon MWAA to recognize a new DAG file?<a name="recog-dag"></a>
 
-DAGs are synchronized from the S3 bucket the environment\. If you add a new DAG file, it takes about a minute for Amazon MWAA to start *using* the new file\. If you update an existing DAG file, it takes Amazon MWAA about 10 seconds to recognize the updates\.
+ DAGs are periodically synchronized from the Amazon S3 bucket to your environment\. If you add a new DAG file, it takes about 300 seconds for Amazon MWAA to start *using* the new file\. If you update an existing DAG, it takes Amazon MWAA about 30 seconds to recognize your updates\. 
+
+ These values, 300 seconds for new DAGs, and 30 seconds for updates to existing DAGs, correspond to Apache Airflow configuration options [https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#dag-dir-list-interval](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#dag-dir-list-interval), and [https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#min-file-process-interval](https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#min-file-process-interval) respectively\. 
 
 ### Why is my DAG file not picked up by Apache Airflow?<a name="dag-file-error"></a>
 
