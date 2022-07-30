@@ -176,7 +176,7 @@ Currently, there is no way to remove a plugins\.zip or requirements\.txt from an
 
 For security reasons, the Apache Airflow Web server on Amazon MWAA has limited network egress, and does not install plugins nor Python dependencies directly on the Apache Airflow *web server* for version 2\.0\.2 environments\. The plugin that's shown allows Amazon MWAA to authenticate your Apache Airflow users in AWS Identity and Access Management \(IAM\)\.
 
- To be able to install plugins and Python dependencies directly on the web server, we recommend creaing a new environemnt with Apache Airflow v2\.2 and above\. Amazon MWAA installs Python dependencies and and custom plugins directly on the web server for Apache Airflow v2\.2 and above\. 
+ To be able to install plugins and Python dependencies directly on the web server, we recommend creaing a new environment with Apache Airflow v2\.2 and above\. Amazon MWAA installs Python dependencies and and custom plugins directly on the web server for Apache Airflow v2\.2 and above\. 
 
 ### Can I use AWS Database Migration Service \(DMS\) Operators?<a name="ops-dms"></a>
 
