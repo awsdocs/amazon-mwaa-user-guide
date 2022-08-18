@@ -23,7 +23,7 @@ Amazon Managed Workflows for Apache Airflow \(MWAA\) is a managed orchestration 
 
 ## Architecture<a name="architecture-mwaa"></a>
 
-All of the components contained in the outer box \(in the image below\) appear as a single Amazon MWAA environment in your account\. The Apache Airflow *Scheduler* and **Workers** are AWS Fargate \(Fargate\) containers that connect to the private subnets in the Amazon VPC for your environment\. Each environment has its own Apache Airflow metadatabase managed by AWS that is accessible to the *Scheduler* and **Workers** Fargate containers via a privately\-secured VPC endpoint\.
+All of the components contained in the outer box \(in the image below\) appear as a single Amazon MWAA environment in your account\. The Apache Airflow *Scheduler* and **Workers** are AWS Fargate \(Fargate\) containers that connect to the private subnets in the Amazon VPC for your environment\. Each environment has its own Apache Airflow meta database managed by AWS that is accessible to the *Scheduler* and **Workers** Fargate containers via a privately\-secured VPC endpoint\.
 
 Amazon CloudWatch, Amazon S3, Amazon SQS, Amazon ECR, and AWS KMS are separate from Amazon MWAA and need to be accessible from the Apache Airflow *Scheduler\(s\)* and **Workers** in the Fargate containers\. 
 
