@@ -66,7 +66,7 @@ The following Apache Airflow versions are supported on Amazon Managed Workflows 
 
 1. You can use Step Functions to process individual customer orders, since Step Functions can scale to meet demand for one order or one million orders\.
 
-1. If you’re running an overnight workflow that processes the previous day’s orders, you can use Step Functions or Amazon MWAA\. Amazon MWAA allows you an open source option to abstract the workflow from the AWS resources you're using\.
+1. If you’re running an overnight workflow that processes the previous day’s orders, you can use Step Functions or Amazon MWAA\. Amazon MWAA allows you to have an open source option to abstract the workflow from the AWS resources you're using\.
 
 ## Environment specifications<a name="q-supported-features"></a>
 
