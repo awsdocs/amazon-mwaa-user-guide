@@ -176,7 +176,7 @@ The following section describes how to install a wheel that's in the `plugins.zi
 
 #### Creating a WHL files from a DAG<a name="best-practices-dependencies-python-wheels-dag"></a>
 
-If you have a private web server using Apache Airflow v2\.2\.2 or later and you're unable to install requirements because your environment does not have access to external repositories, you can use the following DAG to take your existing MAmazon MWAA requirements and package them on Amazon S3: 
+If you have a private web server using Apache Airflow v2\.2\.2 or later and you're unable to install requirements because your environment does not have access to external repositories, you can use the following DAG to take your existing Amazon MWAA requirements and package them on Amazon S3: 
 
 ```
 from airflow import DAG
