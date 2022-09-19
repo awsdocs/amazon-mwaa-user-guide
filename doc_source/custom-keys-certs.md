@@ -37,72 +37,72 @@ We add the following [resource based policy](https://docs.aws.amazon.com/IAM/lat
 
 ```
 {
-            "Name": "mwaa-grant-for-env-mgmt-role-{environment name}",
-            "GranteePrincipal": "airflow.{region}.amazonaws.com",
-            "RetiringPrincipal": "airflow.{region}.amazonaws.com",
-            "Operations": [
-              "kms:Encrypt",
-              "kms:Decrypt",
-              "kms:ReEncrypt*",
-              "kms:GenerateDataKey*",
-              "kms:CreateGrant",
-              "kms:DescribeKey",
-              "kms:RetireGrant"
-            ]
-          }
+	"Name": "mwaa-grant-for-env-mgmt-role-{environment name}",
+	"GranteePrincipal": "airflow.{region}.amazonaws.com",
+	"RetiringPrincipal": "airflow.{region}.amazonaws.com",
+	"Operations": [
+		"kms:Encrypt",
+		"kms:Decrypt",
+		"kms:ReEncrypt*",
+		"kms:GenerateDataKey*",
+		"kms:CreateGrant",
+		"kms:DescribeKey",
+		"kms:RetireGrant"
+	]
+}
 ```
 
 ### Grant 2: For ControllerLambdaExecutionRole access<a name="custom-keys-certs-grant-policies-2"></a>
 
 ```
 {
-            "Name": "mwaa-grant-for-lambda-exec-{environment name}",
-            "GranteePrincipal": "airflow.{region}.amazonaws.com",
-            "RetiringPrincipal": "airflow.{region}.amazonaws.com",
-            "Operations": [
-              "kms:Encrypt",
-              "kms:Decrypt",
-              "kms:ReEncrypt*",
-              "kms:GenerateDataKey*",
-              "kms:DescribeKey",
-              "kms:RetireGrant"
-            ]
-          }
+	"Name": "mwaa-grant-for-lambda-exec-{environment name}",
+	"GranteePrincipal": "airflow.{region}.amazonaws.com",
+	"RetiringPrincipal": "airflow.{region}.amazonaws.com",
+	"Operations": [
+		"kms:Encrypt",
+		"kms:Decrypt",
+		"kms:ReEncrypt*",
+		"kms:GenerateDataKey*",
+		"kms:DescribeKey",
+		"kms:RetireGrant"
+	]
+}
 ```
 
 ### Grant 3: For CfnManagementLambdaExecutionRole access<a name="custom-keys-certs-grant-policies-3"></a>
 
 ```
 {
-              "Name": " mwaa-grant-for-cfn-mgmt-{environment name}",
-              "GranteePrincipal": "airflow.{region}.amazonaws.com",
-              "RetiringPrincipal": "airflow.{region}.amazonaws.com",
-              "Operations": [
-                "kms:Encrypt",
-                "kms:Decrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-                "kms:DescribeKey"
-              ]
-            }
+	"Name": " mwaa-grant-for-cfn-mgmt-{environment name}",
+	"GranteePrincipal": "airflow.{region}.amazonaws.com",
+	"RetiringPrincipal": "airflow.{region}.amazonaws.com",
+	"Operations": [
+		"kms:Encrypt",
+		"kms:Decrypt",
+		"kms:ReEncrypt*",
+		"kms:GenerateDataKey*",
+		"kms:DescribeKey"
+	]
+}
 ```
 
 ### Grant 4: For ECS Fargate execution role to access secrets<a name="custom-keys-certs-grant-policies-4"></a>
 
 ```
 {
-                "Name": "mwaa-fargate-access-for-{environment name}",
-                "GranteePrincipal": "airflow.{region}.amazonaws.com",
-                "RetiringPrincipal": "airflow.{region}.amazonaws.com",
-                "Operations": [
-                  "kms:Encrypt",
-                  "kms:Decrypt",
-                  "kms:ReEncrypt*",
-                  "kms:GenerateDataKey*",
-                  "kms:DescribeKey",
-                  "kms:RetireGrant"
-                ]
-              }
+	"Name": "mwaa-fargate-access-for-{environment name}",
+	"GranteePrincipal": "airflow.{region}.amazonaws.com",
+	"RetiringPrincipal": "airflow.{region}.amazonaws.com",
+	"Operations": [
+		"kms:Encrypt",
+		"kms:Decrypt",
+		"kms:ReEncrypt*",
+		"kms:GenerateDataKey*",
+		"kms:DescribeKey",
+		"kms:RetireGrant"
+	]
+}
 ```
 
 ## Attaching key policies to a customer managed key<a name="custom-keys-certs-grant-policies-attach"></a>
@@ -115,22 +115,22 @@ The following example represents a key policy for CloudWatch Logs\. Substitute t
 
 ```
 {
-          "Effect": "Allow",
-          "Principal": {
-          "Service": "logs.us-west-2.amazonaws.com"
-        },
-        "Action": [
-          "kms:Encrypt*",
-          "kms:Decrypt*",
-          "kms:ReEncrypt*",
-          "kms:GenerateDataKey*",
-          "kms:Describe*"
-        ],
-        "Resource": "*",
-        "Condition": {
-          "ArnLike": {
-            "kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:us-west-2:*:*"
-            }
-          }
-        }
+	"Effect": "Allow",
+	"Principal": {
+		"Service": "logs.us-west-2.amazonaws.com"
+	},
+	"Action": [
+		"kms:Encrypt*",
+		"kms:Decrypt*",
+		"kms:ReEncrypt*",
+		"kms:GenerateDataKey*",
+		"kms:Describe*"
+	],
+	"Resource": "*",
+	"Condition": {
+		"ArnLike": {
+			"kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:us-west-2:*:*"
+		}
+	}
+}
 ```
