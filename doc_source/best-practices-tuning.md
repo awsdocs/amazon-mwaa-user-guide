@@ -185,6 +185,6 @@ The default Airflow configuration options that Amazon MWAA overrides are marked 
 
 ## Extending Apache Airflow<a name="best-practices-tuning-extending"></a>
 
-You can use Smart Sensors in Apache Airflow v2 and above to free up task *slots* by consolidating multiple instances of small and light\-weight sensors into a single process\. To learn more, see [Smart Sensors](https://airflow.apache.org/docs/apache-airflow/stable/concepts/smart-sensors.html)\.
+You can use Smart Sensors in Apache Airflow v2 and above to free up task *slots* by consolidating multiple instances of small and light\-weight sensors into a single process\. To learn more, see [Smart Sensors](https://airflow.apache.org/docs/apache-airflow/2.3.4/concepts/smart-sensors.html)\.
 
 Alternatively, sensor tasks can be broken\-up to free task slots for other activities\. For example, rather than configuring a sensor with a timeout of 600 seconds and a single retry, the same sensor could be configured with a timeout of 60 and 10 retries\. The sensor would function the same; however, when it's rescheduling, its task slot is freed for other activities\.
