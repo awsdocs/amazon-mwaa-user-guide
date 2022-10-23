@@ -272,7 +272,6 @@ To use the sample code on this page, you'll need the following:
 1. Copy the contents of the following code sample and save locally as `mwaa-ecs-operator.py`, then upload your new DAG to Amazon S3\.
 
    ```
-   from http import client
    from airflow import DAG
    from airflow.providers.amazon.aws.operators.ecs import ECSOperator
    from airflow.utils.dates import days_ago
