@@ -171,10 +171,7 @@ The following example shows an execution role policy you can use for an [Custome
         { 
             "Effect": "Deny",
             "Action": "s3:ListAllMyBuckets",
-            "Resource": [
-                "arn:aws:s3:::{your-s3-bucket-name}",
-                "arn:aws:s3:::{your-s3-bucket-name}/*"
-            ]
+            "Resource": "*"
         }, 
         { 
             "Effect": "Allow",
@@ -318,10 +315,7 @@ The following example shows an execution role policy you can use for an [AWS own
         { 
             "Effect": "Deny",
             "Action": "s3:ListAllMyBuckets",
-            "Resource": [
-                "arn:aws:s3:::{your-s3-bucket-name}",
-                "arn:aws:s3:::{your-s3-bucket-name}/*"
-            ]
+            "Resource": "*"
         },
         { 
             "Effect": "Allow",

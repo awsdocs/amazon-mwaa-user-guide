@@ -376,9 +376,7 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
                 - !Sub "arn:aws:airflow:${AWS::Region}:${AWS::AccountId}:environment/${EnvironmentName}"
             - Effect: Deny
               Action: s3:ListAllMyBuckets
-              Resource:
-                - !Sub "${EnvironmentBucket.Arn}"
-                - !Sub "${EnvironmentBucket.Arn}/*"
+              Resource: "*"
   
             - Effect: Allow
               Action:

@@ -158,10 +158,7 @@ Create a new role for the Amazon MWAA environment using the steps in [Amazon MWA
         {
             "Effect": "Deny",
             "Action": "s3:ListAllMyBuckets",
-            "Resource": [
-                "arn:aws:s3:::{MWAA_S3_BUCKET}",
-                "arn:aws:s3:::{MWAA_S3_BUCKET}/*"
-            ]
+            "Resource": "*"
         },
         {
             "Effect": "Allow",
