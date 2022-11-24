@@ -238,7 +238,7 @@ To use the sample code on this page, you'll need the following:
       securityGroupId=$(echo "$response" | jq -r '.Environment.NetworkConfiguration.SecurityGroupIds[]')
       subnetIds=$(joinByString '\,' $(echo "$response" | jq -r '.Environment.NetworkConfiguration.SubnetIds[]'))
       
-      aws cloudformation create-stack --stack-name $2 --template-body file://ecs-cfn.json \
+      aws cloudformation create-stack --stack-name $2 --template-body file://ecs-mwaa-cfn.json \
       --parameters ParameterKey=SecurityGroups,ParameterValue=$securityGroupId \
       ParameterKey=SubnetIds,ParameterValue=$subnetIds \
       --capabilities CAPABILITY_IAM
