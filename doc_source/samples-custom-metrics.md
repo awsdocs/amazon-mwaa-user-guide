@@ -1,40 +1,39 @@
 # Using a DAG to write custom metrics in CloudWatch<a name="samples-custom-metrics"></a>
 
-The following sample shows how to write a DAG that runs a `PythonOperator` to retrieve OS\-level metrics for an Amazon Managed Workflows for Apache Airflow \(MWAA\) environment, and publishes the data as custom metrics to Amazon CloudWatch\.
+You can use the following code example to write a directed acyclic graph \(DAG\) that runs a `PythonOperator` to retrieve OS\-level metrics for an Amazon MWAA environment\. The DAG then publishes the data as custom metrics to Amazon CloudWatch\.
+
+ Custom OS\-level metrics provide you with additional visibility about how your environment workers are utilizing resources such as virtual memory and CPU\. You can use this information to select the [environment class](environment-class.md) that best suits your workload\. 
 
 **Topics**
 + [Version](#samples-custom-metrics-version)
 + [Prerequisites](#samples-custom-metrics-prereqs)
 + [Permissions](#samples-custom-metrics-permissions)
 + [Dependencies](#samples-custom-metrics-dependencies)
-+ [Code sample](#samples-custom-metrics-code)
-+ [What's next?](#samples-custom-metrics-next-up)
++ [Code example](#samples-custom-metrics-code)
 
 ## Version<a name="samples-custom-metrics-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ You can use the code example on this page with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-custom-metrics-prereqs"></a>
 
-To use the sample code on this page, you'll need the following:
+To use the code example on this page, you need the following:
 + An [Amazon MWAA environment](get-started.md)\.
 
 ## Permissions<a name="samples-custom-metrics-permissions"></a>
-+ No additional permissions are required to use the sample code on this page\.
++ No additional permissions are required to use the code example on this page\.
 
 ## Dependencies<a name="samples-custom-metrics-dependencies"></a>
-+ To use with Apache Airflow v1, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
-+ To use with Apache Airflow v2, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
++ No additional dependencies are required to use the code example on this page\.
 
-## Code sample<a name="samples-custom-metrics-code"></a>
+## Code example<a name="samples-custom-metrics-code"></a>
 
-1. In your command prompt, navigate to the directory where your DAG code is stored\. For example:
+1. In your command prompt, navigate to the folder where your DAG code is stored\. For example:
 
    ```
    cd dags
    ```
 
-1. Copy the contents of the following code sample and save locally as `dag-custom-metrics.py`\.
+1.  Copy the contents of the following code example and save it locally as `dag-custom-metrics.py`\. Replace `MWAA-ENV-NAME` with your environment name\. 
 
    ```
    from airflow import DAG
@@ -44,7 +43,7 @@ To use the sample code on this page, you'll need the following:
    import os,json,boto3,psutil,socket
    
    def publish_metric(client,name,value,cat,unit='None'):
-       environment_name = os.getenv("AIRFLOW_ENV_NAME")
+       environment_name = os.getenv("MWAA_ENV_NAME")
        value_number=float(value)
        hostname = socket.gethostname()
        ip_address = socket.gethostbyname(hostname)
@@ -105,5 +104,24 @@ To use the sample code on this page, you'll need the following:
        t = PythonOperator(task_id="memory_test", python_callable=python_fn, provide_context=True)
    ```
 
-## What's next?<a name="samples-custom-metrics-next-up"></a>
-+ Learn how to upload the DAG code in this example to the `dags` folder in your Amazon S3 bucket in [Adding or updating DAGs](configuring-dag-folder.md)\.
+1.  Run the following AWS CLI command to copy the DAG to your environment's bucket, then trigger the DAG using the Apache Airflow UI\. 
+
+   ```
+   $ aws s3 cp your-dag.py s3://your-environment-bucket/dags/
+   ```
+
+1. If the DAG runs successfully, you should see something similar to the following in your Apache Airflow logs:
+
+   ```
+   [2022-08-16, 10:54:46 UTC] {{logging_mixin.py:109}} INFO - cpu_stats scpustats(ctx_switches=3253992384, interrupts=1964237163, soft_interrupts=492328209, syscalls=0)
+   [2022-08-16, 10:54:46 UTC] {{logging_mixin.py:109}} INFO - writing value 16024199168.0 to metric virtual_memory_total
+   [2022-08-16, 10:54:46 UTC] {{logging_mixin.py:109}} INFO - {'ResponseMetadata': {'RequestId': 'fad289ac-aa51-46a9-8b18-24e4e4063f4d', 'HTTPStatusCode': 200, 'HTTPHeaders': {'x-amzn-requestid': 'fad289ac-aa51-46a9-8b18-24e4e4063f4d', 'content-type': 'text/xml', 'content-length': '212', 'date': 'Tue, 16 Aug 2022 17:54:45 GMT'}, 'RetryAttempts': 0}}
+   [2022-08-16, 10:54:46 UTC] {{logging_mixin.py:109}} INFO - writing value 14356287488.0 to metric virtual_memory_available
+   [2022-08-16, 10:54:46 UTC] {{logging_mixin.py:109}} INFO - {'ResponseMetadata': {'RequestId': '6ef60085-07ab-4865-8abf-dc94f90cab46', 'HTTPStatusCode': 200, 'HTTPHeaders': {'x-amzn-requestid': '6ef60085-07ab-4865-8abf-dc94f90cab46', 'content-type': 'text/xml', 'content-length': '212', 'date': 'Tue, 16 Aug 2022 17:54:45 GMT'}, 'RetryAttempts': 0}}
+   [2022-08-16, 10:54:46 UTC] {{logging_mixin.py:109}} INFO - writing value 1342296064.0 to metric virtual_memory_used
+   [2022-08-16, 10:54:46 UTC] {{logging_mixin.py:109}} INFO - {'ResponseMetadata': {'RequestId': 'd5331438-5d3c-4df2-bc42-52dcf8d60a00', 'HTTPStatusCode': 200, 'HTTPHeaders': {'x-amzn-requestid': 'd5331438-5d3c-4df2-bc42-52dcf8d60a00', 'content-type': 'text/xml', 'content-length': '212', 'date': 'Tue, 16 Aug 2022 17:54:45 GMT'}, 'RetryAttempts': 0}}
+   ...
+   [2022-08-16, 10:54:46 UTC] {{python.py:152}} INFO - Done. Returned value was: OK
+   [2022-08-16, 10:54:46 UTC] {{taskinstance.py:1280}} INFO - Marking task as SUCCESS. dag_id=dag-custom-metrics, task_id=memory_test, execution_date=20220816T175444, start_date=20220816T175445, end_date=20220816T175446
+   [2022-08-16, 10:54:46 UTC] {{local_task_job.py:154}} INFO - Task exited with return code 0
+   ```

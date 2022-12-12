@@ -11,7 +11,7 @@ The following sample calls AWS Secrets Manager to get a secret key for an Apache
 + [What's next?](#samples-sm-snowflake-next-up)
 
 ## Version<a name="samples-sm-snowflake-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ You can use the code example on this page with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-sm-snowflake-prereqs"></a>
 

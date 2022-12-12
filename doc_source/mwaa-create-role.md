@@ -24,6 +24,12 @@ Permission for Amazon MWAA to use other AWS services used by your environment ar
 + Amazon Simple Storage Service \(Amazon S3\) – to parse your environment's DAG code and supporting files \(such as a `requirements.txt`\)\.
 + Amazon Simple Queue Service \(Amazon SQS\) – to queue your environment's Apache Airflow tasks in an Amazon SQS queue owned by Amazon MWAA\.
 + AWS Key Management Service \(AWS KMS\) – for your environment's data encryption \(using either an [AWS owned key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-owned-cmk) or your [Customer managed key](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk)\)\.
+**Note**  
+ If you have elected for Amazon MWAA to use an AWS managed KMS key to encrypt your data, then you must define permissions in a policy attached to your Amazon MWAA execution role that grant access to arbitrary KMS keys stored outside of your account via Amazon SQS\. The following two conditions are required in order for your environment's execution role to access arbitrary KMS keys:   
+A KMS key in a third\-party account needs to allow this cross account access via its resource policy\.
+Your DAG code needs to access an Amazon SQS queue that starts with `airflow-celery-` in the third\-party account and uses the same KMS key for encryption\.
+ In order to mitigate the risks associated with cross\-account access to resources, we recommend reviewing the code placed in your DAGs to ensure that your workflows are not accessing arbitrary Amazon SQS queues outside your account\. Furthermore, you can use a customer managed KMS key stored in your own account to manage encryption on Amazon MWAA\. This limits your environment's execution role to access only the KMS key in your account\.   
+ Keep in mind that after you choose an encryption option, you cannot change your selection for an existing environment\. 
 
 An execution role also needs permission to the following IAM actions:
 + `airflow:PublishMetrics` – to allow Amazon MWAA to monitor the health of an environment\.

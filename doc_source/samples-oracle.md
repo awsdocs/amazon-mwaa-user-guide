@@ -17,7 +17,7 @@ The following sample walks you through the steps to create a custom plugin using
 
 ## Version<a name="samples-oracle-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ You can use the code example on this page with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-oracle-prereqs"></a>
 
@@ -26,7 +26,7 @@ To use the sample code on this page, you'll need the following:
 +  *Worker* logging enabled at any log level, `CRITICAL` or above, for your environment\. For more information about Amazon MWAA log types and how to manage your log groups, see [Viewing Airflow logs in Amazon CloudWatch](monitoring-airflow.md) 
 
 ## Permissions<a name="samples-oracle-permissions"></a>
-+ No additional permissions are required to use the sample code on this page\.
++ No additional permissions are required to use the code example on this page\.
 
 ## Requirements<a name="samples-oracle-dependencies"></a>
 

@@ -17,9 +17,13 @@ An existing Amazon VPC network *without Internet access* needs additional VPC se
 + [AWS PrivateLink Pricing](http://aws.amazon.com/privatelink/pricing/)
 
 ## Private network and private routing<a name="vpc-vpc-create-onconsole"></a>
-+ **Private network**\. The private network access mode limits access of the Apache Airflow UI to users *within your Amazon VPC* that have been granted access to the [IAM policy for your environment](access-policies.md)\.
 
-  The following image shows where to find the **Private network** option on the Amazon MWAA console\.   
+![\[This image shows the architecture for an Amazon MWAA environment with a private web server.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-private-web-server.png)
+
+The private network access mode limits access of the Apache Airflow UI to users *within your Amazon VPC* that have been granted access to the [IAM policy for your environment](access-policies.md)\.
+
+The following image shows where to find the **Private network** option on the Amazon MWAA console\. 
+
 ![\[This image shows where to find the Private network option on the Amazon MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-private-network.png)
 + **Private routing**\. An [Amazon VPC *without Internet access*](networking-about.md) limits network traffic within the VPC\. This page assumes your Amazon VPC does not have Internet access and requires VPC endpoints for each AWS service used by your environment, and VPC endpoints for Apache Airflow in the same AWS Region and Amazon VPC as your Amazon MWAA environment\.
 

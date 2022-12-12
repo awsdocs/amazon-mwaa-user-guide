@@ -11,3 +11,4 @@ Monitoring is an important part of maintaining the reliability, availability, an
 + [Monitoring dashboards and alarms on Amazon MWAA](monitoring-dashboard.md)
 + [Apache Airflow v2 environment metrics in CloudWatch](access-metrics-cw-202.md)
 + [Apache Airflow v1 environment metrics in CloudWatch](access-metrics-cw-110.md)
++ [Container, queue, and database metrics for Amazon MWAA](accessing-metrics-cw-container-queue-db.md)

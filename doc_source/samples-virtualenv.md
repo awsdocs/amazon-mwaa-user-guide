@@ -15,7 +15,7 @@ The following sample shows how to patch the Apache Airflow PythonVirtualenvOpera
 
 ## Version<a name="samples-virtualenv-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ You can use the code example on this page with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-virtualenv-prereqs"></a>
 
@@ -23,7 +23,7 @@ To use the sample code on this page, you'll need the following:
 + An [Amazon MWAA environment](get-started.md)\.
 
 ## Permissions<a name="samples-virtualenv-permissions"></a>
-+ No additional permissions are required to use the sample code on this page\.
++ No additional permissions are required to use the code example on this page\.
 
 ## Requirements<a name="samples-virtualenv-dependencies"></a>
 

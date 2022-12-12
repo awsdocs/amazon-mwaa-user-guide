@@ -19,7 +19,7 @@ The following sample demonstrates how to use Amazon Managed Workflows for Apache
 
 ## Version<a name="mwaa-eks-example-version"></a>
 + The sample code on this page can be used with **Apache Airflow v1** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
-+ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ You can use the code example on this page with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="eksctl-prereqs"></a>
 

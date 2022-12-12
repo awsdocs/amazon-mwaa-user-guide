@@ -4,7 +4,8 @@ The topics on this page contains resolutions to Amazon CloudWatch Logs and AWS C
 
 **Contents**
 + [Logs](#troubleshooting-view-logs)
-  + [I can't see my task logs or I received a 'Reading remote log from Cloudwatch log\_group' error](#t-task-logs)
+  + [I can't see my task logs, or I received a 'Reading remote log from Cloudwatch log\_group' error](#t-task-logs)
+  + [Tasks are failing without any logs](#t-task-failing-no-logs)
   + [I see a 'ResourceAlreadyExistsException' error in CloudTrail](#t-cloudtrail)
   + [I see an 'Invalid request' error in CloudTrail](#t-cloudtrail-bucket)
   + [I see a 'Cannot locate a 64\-bit Oracle Client library: "libclntsh\.so: cannot open shared object file: No such file or directory' in Apache Airflow logs](#t-plugins-logs)
@@ -16,7 +17,7 @@ The topics on this page contains resolutions to Amazon CloudWatch Logs and AWS C
 
 The following topic describes the errors you may receive when viewing Apache Airflow logs\.
 
-### I can't see my task logs or I received a 'Reading remote log from Cloudwatch log\_group' error<a name="t-task-logs"></a>
+### I can't see my task logs, or I received a 'Reading remote log from Cloudwatch log\_group' error<a name="t-task-logs"></a>
 
 If you see blank logs, or the follow error when viewing *Task logs* in the Airflow UI:
 
@@ -28,6 +29,30 @@ If you see blank logs, or the follow error when viewing *Task logs* in the Airfl
   1. Verify that you enabled task logs at the INFO level for your environment\. To learn more, see [Viewing Airflow logs in Amazon CloudWatch](monitoring-airflow.md)\.
 
   1. Verify that your operator has the appropriate Python libraries to load\. You can try eliminating imports until you find the one that's causing the issue\.
+
+### Tasks are failing without any logs<a name="t-task-failing-no-logs"></a>
+
+ If tasks are failing in a workflow and you can't locate any logs for the failed tasks, check if you are setting the `queue` parameter in your default arguments, as shown in the following\. 
+
+```
+from airflow import DAG
+from airflow.operators.bash_operator import BashOperator
+from airflow.utils.dates import days_ago
+
+# Setting queue argument to default.
+default_args = {
+	"start_date": days_ago(1),
+	"queue": "default"
+}
+
+with DAG(dag_id="any_command_dag", schedule_interval=None, catchup=False, default_args=default_args) as dag:
+    cli_command = BashOperator(
+        task_id="bash_command",
+        bash_command="{{ dag_run.conf['command'] }}"
+    )
+```
+
+ To resovle the issue, remove `queue` from your code, and invoke the DAG again\. 
 
 ### I see a 'ResourceAlreadyExistsException' error in CloudTrail<a name="t-cloudtrail"></a>
 

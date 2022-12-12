@@ -11,7 +11,7 @@
 + [Use a DAG to run a dbt project](#samples-dbt-run-project)
 
 ## Version<a name="samples-dbt-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ You can use the code example on this page with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-dbt-prereqs"></a>
 

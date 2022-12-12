@@ -21,10 +21,10 @@ To use the sample code on this page, you'll need the following:
 + An [Amazon MWAA environment](get-started.md)\.
 
 ## Permissions<a name="samples-env-variables-permissions"></a>
-+ No additional permissions are required to use the sample code on this page\.
++ No additional permissions are required to use the code example on this page\.
 
 ## Requirements<a name="samples-env-variables-dependencies"></a>
-+ To use with Apache Airflow v1, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v1 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
++ To use this code example with Apache Airflow v1, no additional dependencies are required\. The code uses the [Apache Airflow v1 base install](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt) on your environment\.
 
 ## Custom plugin<a name="samples-env-variables-plugins-code"></a>
 

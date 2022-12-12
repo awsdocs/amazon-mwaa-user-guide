@@ -7,20 +7,21 @@ This page describes common questions you may encounter when using Amazon Managed
   + [What does Amazon MWAA support for Apache Airflow v2?](#airflow-support)
   + [Why are older versions of Apache Airflow not supported?](#airflow-version)
   + [What Python version should I use?](#python-version)
-  + [Can I specify more than 25 Apache Airflow Workers?](#scaling-quota)
+  + [What version of `pip` does Amazon MWAA use?](#pip-version)
 + [Use cases](#t-common-questions)
   + [When should I use AWS Step Functions vs\. Amazon MWAA?](#t-step-functions)
 + [Environment specifications](#q-supported-features)
   + [How much task storage is available to each environment?](#worker-storage)
   + [What is the default operating system used for Amazon MWAA environments?](#default-os)
   + [Can I use a custom image for my Amazon MWAA environment?](#custom-image)
-  + [Is MWAA HIPAA compliant?](#hipaa-compliance)
+  + [Is Amazon MWAA HIPAA compliant?](#hipaa-compliance)
   + [Does Amazon MWAA support Spot Instances?](#spot-instances)
   + [Does Amazon MWAA support a custom domain?](#custom-dns)
   + [Can I SSH into my environment?](#ssh-dag)
   + [Why is a self\-referencing rule required on the VPC security group?](#sg-rule)
   + [Can I hide environments from different groups in IAM?](#hide-environments)
   + [Can I store temporary data on the Apache Airflow Worker?](#store-data)
+  + [Can I specify more than 25 Apache Airflow Workers?](#scaling-quota)
   + [Does Amazon MWAA support shared Amazon VPCs or shared subnets?](#shared-vpc)
 + [Metrics](#q-metrics)
   + [What metrics are used to determine whether to scale Workers?](#metrics-workers)
@@ -56,9 +57,14 @@ The following Apache Airflow versions are supported on Amazon Managed Workflows 
 |  v2\.0\.2  |  [Apache Airflow v2\.0\.2 reference guide](http://airflow.apache.org/docs/apache-airflow/2.0.2/index.html)  |  [Apache Airflow v2\.0\.2 constraints file](https://raw.githubusercontent.com/apache/airflow/constraints-2.0.2/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
 |  v1\.10\.12  |  [Apache Airflow v1\.10\.12 reference guide](https://airflow.apache.org/docs/apache-airflow/1.10.12/)  |  [Apache Airflow v1\.10\.12 constraints file](https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt)  |  [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)  | 
 
-### Can I specify more than 25 Apache Airflow Workers?<a name="scaling-quota"></a>
+### What version of `pip` does Amazon MWAA use?<a name="pip-version"></a>
 
- Yes\. Although you can specify up to 25 Apache Airflow workers on the Amazon MWAA console, you can configure up to 50 on an environment by requesting a quota increase\. For more information, see [Requesting a quota increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html)\. 
+ For environments running Apache Airflow v1\.10\.12, Amazon MWAA installs `pip` version 21\.1\.2\. 
+
+**Note**  
+ Amazon MWAA will not upgrade `pip` for Apache Airflow v1\.10\.12 environments\. 
+
+ For environments running Apache Airflow v2 and above, Amazon MWAA installs `pip` version 21\.3\.1\. 
 
 ## Use cases<a name="t-common-questions"></a>
 
@@ -82,9 +88,9 @@ Amazon MWAA environments are created on instances running Amazon Linux AMI\.
 
 Custom images are not supported\. Amazon MWAA uses images that are built on Amazon Linux AMI\. Amazon MWAA installs the additional requirements by running `pip3 -r install` for the requirements specified in the requirements\.txt file you add to the Amazon S3 bucket for the environment\.
 
-### Is MWAA HIPAA compliant?<a name="hipaa-compliance"></a>
+### Is Amazon MWAA HIPAA compliant?<a name="hipaa-compliance"></a>
 
-Amazon MWAA is not currently HIPAA compliant\.
+Amazon MWAA is [Health Insurance Portability and Accountability Act \(HIPPA\)](http://aws.amazon.com/compliance/hipaa-compliance/) eligible\. If you have a HIPAA Business Associate Addendum \(BAA\) in place with AWS, you can use Amazon MWAA for workflows handling Protected Health Information \(PHI\) on environments created on, or after, November 14th, 2022\.
 
 ### Does Amazon MWAA support Spot Instances?<a name="spot-instances"></a>
 
@@ -132,6 +138,10 @@ Your Apache Airflow Operators can store temporary data on the *Workers*\. Apache
 **Note**  
 Total task storage is limited to 10 GB, according to [Amazon ECS Fargate 1\.3](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-storage.html#fargate-task-storage-pv13)\. There's no guarantee that subsequent tasks will run on the same Fargate container instance, which might use a different `/tmp` folder\.
 
+### Can I specify more than 25 Apache Airflow Workers?<a name="scaling-quota"></a>
+
+ Yes\. Although you can specify up to 25 Apache Airflow workers on the Amazon MWAA console, you can configure up to 50 on an environment by requesting a quota increase\. For more information, see [Requesting a quota increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html)\. 
+
 ### Does Amazon MWAA support shared Amazon VPCs or shared subnets?<a name="shared-vpc"></a>
 
  Amazon MWAA does not support shared Amazon VPCs or shared subnets\. The Amazon VPC you select when you create an environment should be owned by the account that is attempting to create the environment\. However, you can route traffic from an Amazon VPC in the Amazon MWAA account to a shared VPC\. For more information, and to see an example of routing traffic to a shared Amazon VPC, see [Centralized outbound routing to the internet](https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-nat-igw.html) in the *Amazon VPC Transit Gateways Guide*\. 
@@ -144,7 +154,7 @@ Amazon MWAA monitors the **QueuedTasks** and **RunningTasks** in CloudWatch to d
 
 ### Can I create custom metrics in CloudWatch?<a name="metrics-custom"></a>
 
-Not on the CloudWatch console\. However, you can create a DAG that writes custom metrics in CloudWatch\. To learn more, see [Using a DAG to write custom metrics in CloudWatch](samples-custom-metrics.md)\.
+Not on the CloudWatch console\. However, you can create a DAG that writes custom metrics in CloudWatch\. For more information, see [Using a DAG to write custom metrics in CloudWatch](samples-custom-metrics.md)\.
 
 ## DAGs, Operators, Connections, and other questions<a name="q-dags"></a>
 

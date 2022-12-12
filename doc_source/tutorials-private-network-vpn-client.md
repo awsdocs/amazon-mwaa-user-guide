@@ -20,9 +20,13 @@ This tutorial walks you through the steps to create a VPN tunnel from your compu
 ## Private network<a name="private-network-vpn-onconsole"></a>
 
 This tutorial assumes you've chosen the **Private network** access mode for your Apache Airflow *Web server*\.
-+ **Private network**\. The private network access mode limits access of the Apache Airflow UI to users *within your Amazon VPC* that have been granted access to the [IAM policy for your environment](access-policies.md)\.
 
-  The following image shows where to find the **Private network** option on the Amazon MWAA console\.   
+![\[This image shows the architecture for an Amazon MWAA environment with a private web server.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-private-web-server.png)
+
+The private network access mode limits access of the Apache Airflow UI to users *within your Amazon VPC* that have been granted access to the [IAM policy for your environment](access-policies.md)\.
+
+The following image shows where to find the **Private network** option on the Amazon MWAA console\. 
+
 ![\[This image shows where to find the Private network option on the Amazon MWAA console.\]](http://docs.aws.amazon.com/mwaa/latest/userguide/images/mwaa-console-private-network.png)
 
 ## Use cases<a name="private-network-vpn-usecases"></a>

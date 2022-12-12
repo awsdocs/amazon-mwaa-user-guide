@@ -11,17 +11,17 @@ The following sample code imports variables using the CLI on Amazon Managed Work
 + [What's next?](#samples-variables-import-next-up)
 
 ## Version<a name="samples-variables-import-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ You can use the code example on this page with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-variables-import-prereqs"></a>
-+ No additional permissions are required to use the sample code on this page\.
++ No additional permissions are required to use the code example on this page\.
 
 ## Permissions<a name="samples-variables-import-permissions"></a>
 
 Your AWS account needs access to the `AmazonMWAAAirflowCliAccess` policy\. To learn more, see [Apache Airflow CLI policy: AmazonMWAAAirflowCliAccess](access-policies.md)\.
 
 ## Dependencies<a name="samples-variables-import-dependencies"></a>
-+ To use with Apache Airflow v2, no additional dependencies are required to use the sample code on this page\. The sample code uses the [Apache Airflow v2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
++ To use this code example with Apache Airflow v2, no additional dependencies are required\. The code uses the [Apache Airflow v2 base install](https://github.com/aws/aws-mwaa-local-runner/blob/main/docker/config/requirements.txt) on your environment\.
 
 ## Code sample<a name="samples-variables-import-code"></a>
 

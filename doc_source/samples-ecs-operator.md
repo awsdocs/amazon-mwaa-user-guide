@@ -10,7 +10,7 @@
 + [Code sample](#samples-ecs-operator-code)
 
 ## Version<a name="samples-ecs-operator-version"></a>
-+ The sample code on this page can be used with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
++ You can use the code example on this page with **Apache Airflow v2 and above** in [Python 3\.7](https://www.python.org/dev/peps/pep-0537/)\.
 
 ## Prerequisites<a name="samples-ecs-operator-prereqs"></a>
 
@@ -288,7 +288,6 @@ To use the sample code on this page, you'll need the following:
        catchup=False,
        start_date=days_ago(1)
    ) as dag:
-   
        client=boto3.client('ecs')
        services=client.list_services(cluster=CLUSTER_NAME,launchType=LAUNCH_TYPE)
        service=client.describe_services(cluster=CLUSTER_NAME,services=services['serviceArns'])
@@ -315,6 +314,12 @@ To use the sample code on this page, you'll need the following:
    ```
 **Note**  
  In the example DAG, for `awslogs_group`, you might need to modify the log group with the name for your Amazon ECS task log group\. The example assumes a log group named `mwaa-ecs-zero`\. For `awslogs_stream_prefix`, use the Amazon ECS task log stream prefix\. The example assumes a log stream prefix, `ecs`\. 
+
+1.  Run the following AWS CLI command to copy the DAG to your environment's bucket, then trigger the DAG using the Apache Airflow UI\. 
+
+   ```
+   $ aws s3 cp your-dag.py s3://your-environment-bucket/dags/
+   ```
 
 1. If successful, you'll see output similar to the following in the task logs for `ecs_operator_task` in the `ecs_fargate_dag` DAG:
 

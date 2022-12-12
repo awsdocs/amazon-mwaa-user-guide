@@ -4,13 +4,13 @@
 *****Copyright &copy; Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
-Amazon's trademarks and trade dress may not be used in 
-     connection with any product or service that is not Amazon's, 
-     in any manner that is likely to cause confusion among customers, 
-     or in any manner that disparages or discredits Amazon. All other 
-     trademarks not owned by Amazon are the property of their respective
-     owners, who may or may not be affiliated with, connected to, or 
-     sponsored by Amazon.
+Amazon's trademarks and trade dress may not be used in
+connection with any product or service that is not Amazon's,
+in any manner that is likely to cause confusion among customers,
+or in any manner that disparages or discredits Amazon. All other
+trademarks not owned by Amazon are the property of their respective
+owners, who may or may not be affiliated with, connected to, or
+sponsored by Amazon.
 
 -----
 ## Contents
@@ -21,8 +21,9 @@ Amazon's trademarks and trade dress may not be used in
    + [Create the VPC network](vpc-create.md)
    + [Create an Amazon MWAA environment](create-environment.md)
 + [Managing access to an Amazon MWAA environment](manage-access.md)
-   + [Amazon MWAA Service-linked role policy](mwaa-slr.md)
+   + [Service-linked role for Amazon MWAA](mwaa-slr.md)
    + [Amazon MWAA execution role](mwaa-create-role.md)
+   + [Cross-service confused deputy prevention](cross-service-confused-deputy-prevention.md)
    + [Apache Airflow access modes](configuring-networking.md)
    + [Accessing an Amazon MWAA environment](access-policies.md)
 + [Accessing the Apache Airflow UI](access-airflow-ui.md)
@@ -59,17 +60,17 @@ Amazon's trademarks and trade dress may not be used in
    + [Using a secret key in AWS Secrets Manager for an Apache Airflow Snowflake connection](samples-sm-snowflake.md)
    + [Using a DAG to write custom metrics in CloudWatch](samples-custom-metrics.md)
    + [Aurora PostgreSQL database cleanup on an Amazon MWAA environment](samples-database-cleanup.md)
-   + [Writing DAG run information to a CSV file on Amazon S3](samples-dag-run-info-to-csv.md)
+   + [Exporting environment metadata to CSV files on Amazon S3](samples-dag-run-info-to-csv.md)
    + [Using a secret key in AWS Secrets Manager for an Apache Airflow variable](samples-secrets-manager-var.md)
    + [Using a secret key in AWS Secrets Manager for an Apache Airflow connection](samples-secrets-manager.md)
    + [Creating a custom plugin with Oracle](samples-oracle.md)
    + [Creating a custom plugin that generates runtime environment variables](samples-env-variables.md)
    + [Changing a DAG's timezone on Amazon MWAA](samples-plugins-timezone.md)
-   + [Using an AWS CodeArtifact token at runtime](samples-code-artifact.md)
+   + [Refreshing a CodeArtifact token](samples-code-artifact.md)
    + [Creating a custom plugin with Apache Hive and Hadoop](samples-hive.md)
    + [Creating a custom plugin for Apache Airflow PythonVirtualenvOperator](samples-virtualenv.md)
-   + [Invoking DAGs with an AWS Lambda function](samples-lambda.md)
-   + [Invoking DAGs in different Amazon MWAA environments](samples-trigger-dag-envab.xml.md)
+   + [Invoking DAGs with a Lambda function](samples-lambda.md)
+   + [Invoking DAGs in different Amazon MWAA environments](samples-invoke-dag.md)
    + [Using Amazon MWAA with Amazon RDS for Microsoft SQL Server](samples-sql-server.md)
    + [Using Amazon MWAA with Amazon EMR](samples-emr.md)
    + [Using Amazon MWAA with Amazon EKS](mwaa-eks-example.md)
@@ -85,6 +86,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Monitoring dashboards and alarms on Amazon MWAA](monitoring-dashboard.md)
    + [Apache Airflow v2 environment metrics in CloudWatch](access-metrics-cw-202.md)
    + [Apache Airflow v1 environment metrics in CloudWatch](access-metrics-cw-110.md)
+   + [Container, queue, and database metrics for Amazon MWAA](accessing-metrics-cw-container-queue-db.md)
 + [Security in Amazon Managed Workflows for Apache Airflow (MWAA)](security.md)
    + [Data Protection in Amazon Managed Workflows for Apache Airflow (MWAA)](data-protection.md)
       + [Encryption at Rest](encryption-at-rest.md)
