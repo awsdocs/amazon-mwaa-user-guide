@@ -68,7 +68,7 @@ try:
         json_dictionary = json.loads(fileconf)
         for key in json_dictionary:
             print(key, " ", json_dictionary[key])
-            val = (key + " " + json_dictionary[key])
+            val = (key + " " + str(json_dictionary[key]))
             mwaa_auth_token = 'Bearer ' + mwaa_cli_token['CliToken']
             mwaa_webserver_hostname = 'https://{0}/aws_mwaa/cli'.format(mwaa_cli_token['WebServerHostname'])
             raw_data = "variables set {0}".format(val)
