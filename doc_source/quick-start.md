@@ -76,7 +76,7 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
       Description: The maximum number of workers that can run in the environment
       Type: Number
       Default: 2
-    DagProcessingLogs:
+    DagProcessingLogsLevel:
       Description: Log level for DagProcessing
       Type: String
       Default: INFO
@@ -311,7 +311,7 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
         MaxWorkers: !Ref MaxWorkerNodes
         LoggingConfiguration:
           DagProcessingLogs:
-            LogLevel: !Ref DagProcessingLogs
+            LogLevel: !Ref DagProcessingLogsLevel
             Enabled: true
           SchedulerLogs:
             LogLevel: !Ref SchedulerLogsLevel
