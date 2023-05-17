@@ -37,7 +37,7 @@ The AWS Command Line Interface \(AWS CLI\) is an open source tool that enables y
 + [AWS CLI – Quick configuration with `aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)\.
 
 ## Step one: Save the AWS CloudFormation template locally<a name="quick-start-template"></a>
-+ Copy the contents of the following template and save locally as `mwaa_public_network.yaml`\. You can also [download the template](./samples/mwaa-public-network.zip)\.
++ Copy the contents of the following template and save locally as `mwaa_public_network.yml`\. You can also [download the template](./samples/mwaa-public-network.zip)\.
 
   ```
   AWSTemplateFormatVersion: "2010-09-09"
